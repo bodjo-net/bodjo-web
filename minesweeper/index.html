@@ -1,0 +1,113 @@
+<!DOCTYPE html>	
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Minesweeper</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Source+Code+Pro:400,700&amp;subset=cyrillic" rel="stylesheet">
+	<script type="text/javascript">
+		// PORT, USERNAME, GAME_SESSION_TOKEN
+		function getParameterByName(name) {
+		    var url = window.location.href;
+		    name = name.replace(/[\[\]]/g, '\\$&');
+		    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		        results = regex.exec(url);
+		    if (!results) return null;
+		    if (!results[2]) return '';
+		    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+
+		PORT = parseInt(getParameterByName('port'));
+		USERNAME = getParameterByName('username');
+		GAME_SESSION_TOKEN = getParameterByName('token');
+
+		history.replaceState(null, document.querySelector('title').innerText, window.location.href.pathname);
+	</script>
+</head>
+<body>
+	<div id="game">
+		<div id="field">
+			<canvas></canvas>
+			<div id="control">
+				
+			</div>
+		</div>
+	</div>
+	<div id="workspace">
+		<div id="resizer"></div>
+		<div id='tabs'>
+			<div class='tab' id="tab-code">Код</div><div class='tab active' id="tab-docs">Документация</div><div class='tab' id="tab-scoreboard">Таблица</div>
+		</div>
+		<div id="content">
+			<div class="section" id="code">
+				<div id="editor"></div>
+			</div>
+			<div class="section active" id="docs">
+				<h1>Документация</h1>
+				<h2><i>bodjo/minesweeper</i></h2>
+				<br>
+				<h3>Правила игры</h3>
+				<p>Игроку дается поле, которое состоит из квадратных ячеек. Ячейки могут содержать в себе мину, либо число, которое показывает сколько мин вокруг ячейки (учитывается диагонали, т.е. максимальное число - 8, минимальное - 0).</p>
+				<p>Игроку дается возможность открывать ячейки и ставить на них флажки. Если игрок открывает ячейку с миной - игрок проигрывает. Чтобы не забыть, где точно находится мина, игрок может поставить на ячейку флажок. Если игрок поставит флажок туда, где мины нет, игра не учтет это за ошибку, но игрок врядли сможет выиграть.</p>
+				<p><b>Цель игрока</b> - открыть все не заминированные ячейки.</p>
+				<br>
+				<h3>Код</h3>
+				<p>Вам дается функция onTick(<i>field</i>), которая запускается после каждого ответа сервера. Функция запускается с одним аргументом матрицы поля. Каждая ячейка дается как символ. Пример:</p>
+<pre>
+[[" ", " ", "1", "F", "2", "2", "2"],
+ [" ", " ", "2", "2", "3", "F", "F"],
+ [" ", " ", "1", "F", "2", "2", "2"],
+ [" ", " ", "1", "1", "1", " ", " "],
+ [" ", " ", " ", " ", " ", " ", " "],
+ [" ", " ", " ", " ", " ", " ", " "]]</pre>
+ 				<p>Значения символов:</p>
+<pre>
+" " - не открытая ячейка
+"012345678" - число
+"F" - флажок
+</pre>
+				<p>При проигрыше или победе функция не вызывается, поэтому символы мин в матрице отсутствуют.</p>
+				<p>Функция должна вернуть объект, содержащий два ключа: <b>action</b> и <b>coordinates</b>.</p>
+				<p><b>Action</b>: 'open' или 'mark' (открыть ячейку или поставить флажок)</p>
+				<p><b>Coordinates</b>: массив с двумя координатами: <b>X</b> и <b>Y</b>.</p>
+				<div class='warning'>
+					<b>Будьте внимательны!</b><br>
+					При использовании матрицы, первая координата будет <b>Y</b> (т.е. field[y][x]), но функция должна возвращать координаты в порядке [<b>X</b>, <b>Y</b>].
+				</div>
+				<p>Пример результата функции:</p>
+<pre>{
+	"action": "open",
+	"coordinates": [ 5, 7 ]
+}</pre>
+			</div>
+			<div class='section' id='scoreboard'>
+
+			</div>
+		</div>
+		<div id="control-panel">
+			<div class='btn ripple' id="play">
+			</div>
+			<div class='btn ripple' id="pause">
+			</div>
+			<div class='btn ripple' id="again">
+			</div>
+			<div class='panel' id="timeout">
+				<div class='img'></div><input type="range" name="timeout" min="5" max="1000" step="5"><p>16 ms</p>
+			</div>
+			<div class='panel' id="difficulty">
+				<div class='img'></div><select>
+					<option>Beginner (8x8, 10 bombs)</option>
+					<option>Intermediate (16x16, 40 bombs)</option>
+					<option>Expert (24x24, 99 bombs)</option>
+					<option>Expert+ (48x48, 460 bombs)</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js"></script>
+	<script src="../ripple.js" type="text/javascript"></script>
+	<script src="main.js" type="text/javascript"></script>
+	<script src="logic.js" type="text/javascript"></script>
+</body>
+</html>

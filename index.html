@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>bodjo/</title>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Source+Code+Pro:400,700&amp;subset=cyrillic" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/styles.css">
+</head>
+<body>
+	<div id="wrapper" style='opacity: 0'>
+		<div id="header">
+			<div id="title">
+				<h1>bodjo.dev/</h1>
+				<h1 class='subdir active'></h1>
+			</div>
+			<div id="auth">
+				<p id="dont-have-account">
+					<span class="link" id="sign-in-btn">sign in</span> / <span class="link" id="sign-up-btn">sign up</span>
+				</p>
+				<p id="have-account" style='display: none; opacity: 0;'>
+					<span class='link' id="my-account">my account</span> / <span class='link' id='sign-out'>sign out</span>
+				</p>
+			</div>
+		</div>
+		<div id="main">
+			<div class='page' id="sign-in">
+				<div class="card small">
+					<div class='back-btn ripple'>
+						<div class='back'></div><p>Back</p>
+					</div>
+					<br>
+					<h2>Sign in</h2>
+					<br>
+					<input type="text" name="username" class='username' placeholder="Username">
+					<input type="password" name="password" class='password' placeholder="Password">
+					<br>
+					<div class='btn ripple white'>Submit</div>
+				</div>
+			</div>
+			<div class='page' id="sign-up">
+				<div class="card small">
+					<div class='back-btn ripple'>
+						<div class='back'></div><p>Back</p>
+					</div>
+					<br>
+					<h2>Sign up</h2>
+					<br>
+					<input type="text" name="username" class='username' placeholder="Username">
+					<input type="password" name="password" class='password' placeholder="Password">
+					<input type="password" name="password-again" class='password-again' placeholder="Password (again)">
+					<br>
+					<input type="text" name="email" class='email' placeholder="E-mail">
+					<select class='place'>
+						<option>KOWO/Ш++ (Kropyvnytskyi)</option>
+						<option>Other</option>
+					</select>
+					<br>
+					<div class='btn ripple white'>Submit</div>
+				</div>
+			</div>
+			<div class='page' id="root">
+				<div class="card service" id='minesweeper'>
+					<div class="bg" style="background-image:url(/assets/minesweeper.png)">
+						<div class='grey'></div>
+					</div>
+					<div class='content1'>
+						<h1>Minesweeper</h1>
+						<p>Clear rectangular board with bombs without detonating any of them.</p>
+						<br>
+						<p><b>Languages</b>: JS</p>
+					</div>
+					<div class='buttons'>
+						<div class='btn empty ripple white spectate'>SPECTATE</div>
+						<div class='btn ripple white play'>PLAY</div>
+					</div>
+				</div>
+				<div id="no-service">
+					<p>¯\_(ツ)_/¯</p>
+					<br>
+					<p>No games are available. Sorry.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var startTime = Date.now();
+	</script>
+	<script type="text/javascript" src="/auth.js"></script>
+	<script type="text/javascript" src="/ripple.js"></script>
+	<script type="text/javascript" src="/title.js"></script>
+	<script type="text/javascript" src="/nav.js"></script>
+</body>
+</html>
