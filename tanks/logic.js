@@ -1,29 +1,29 @@
-// var userToken = localStorage.token || getCookie('token');
-// var username = localStorage.username || getCookie('username');
-// if (!userToken || !username) {
-// 	// bad
-// 	alert('We lost your username or token. Try to come back to https://bodjo.net and connect to game again.');
-// 	window.location.href = 'https://bodjo.net';
-// } else {
-// 	try {
-// 		request('GET', '/play', {gameName: gameName, token: userToken}, function (obj) {
-// 			if (obj.status == 'ok') {
-// 				PORT = obj.port;
-// 				GAME_SESSION_TOKEN = obj.gameSessionToken;
-// 				USERNAME = username;
+var userToken = localStorage.token || getCookie('token');
+var username = localStorage.username || getCookie('username');
+if (!userToken || !username) {
+	// bad
+	alert('We lost your username or token. Try to come back to https://bodjo.net and connect to game again.');
+	window.location.href = 'https://bodjo.net';
+} else {
+	try {
+		request('GET', '/play', {gameName: gameName, token: userToken}, function (obj) {
+			if (obj.status == 'ok') {
+				PORT = obj.port;
+				GAME_SESSION_TOKEN = obj.gameSessionToken;
+				USERNAME = username;
 
-// 				startSocket();
-// 			} else {
-// 				alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
-// 				window.location.href = 'https://bodjo.net';
-// 			}
-// 		});
-// 	} catch (e) {
-// 		alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
-// 		window.location.href = 'https://bodjo.net';
-// 	}
-// }
-startSocket();
+				startSocket();
+			} else {
+				alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
+				window.location.href = 'https://bodjo.net';
+			}
+		});
+	} catch (e) {
+		alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
+		window.location.href = 'https://bodjo.net';
+	}
+}
+// startSocket();
 
 var timeout = 16;
 var isPlaying = false;
