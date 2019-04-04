@@ -221,6 +221,7 @@ function request(method, url, parameters, callback) {
 	try {
 		req.send();
 	} catch (e) {
+		console.log(e)
 		document.querySelector("#no-server").style.display = 'block';
 	}
 }
