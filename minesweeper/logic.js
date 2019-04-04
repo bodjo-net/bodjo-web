@@ -83,12 +83,12 @@ timeoutRange.value = timeout;
 timeoutText.innerText = timeout + 'ms';
 
 function startSocket() {
-	//var url = "wss://vkram.shpp.me:"+PORT;
-	var url = 'ws://localhost:3423'
-	//var username = USERNAME;
-	// var token = GAME_SESSION_TOKEN;
-	var token = '1';
-	var username = '1';
+	var url = "wss://vkram.shpp.me:"+PORT;
+	// var url = 'ws://localhost:3423'
+	var username = USERNAME;
+	var token = GAME_SESSION_TOKEN;
+	// var token = '1';
+	// var username = '1';
 
 	socket = new WebSocket(url);
 	lastID = null;
@@ -97,7 +97,6 @@ function startSocket() {
 			var data = JSON.parse(event.data);
 		} catch (e) {return;}
 
-		console.log(data)
 		if (data.type == 'connect') {
 			if (data.status != 'ok') {
 				if (data.errCode == 2) {
