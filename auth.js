@@ -162,15 +162,20 @@ function getToken () {
 request('GET', '/services', {}, function (obj) {
 	var services = obj.services;
 	services.forEach(function (service) {
-		document.querySelector("#"+service).style.display = 'block';
-		document.querySelector("#"+service+' .play').addEventListener('click', function () {
-			request('GET', '/play', {gameName: service, token: token}, function (_obj) {
+		var name = service.name;
+		var port = service.port;
+		document.querySelector("#"+name).style.display = 'block';
+		document.querySelector("#"+name+' .play').addEventListener('click', function () {
+			request('GET', '/play', {gameName: name, token: token}, function (_obj) {
 				if (_obj.status == 'ok') {
-					window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + service + '/?token=' + encodeURIComponent(_obj.gameSessionToken) + '&username=' + encodeURIComponent(username) + '&port=' + encodeURIComponent(_obj.port);
+					window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + name + '/?token=' + encodeURIComponent(_obj.gameSessionToken) + '&username=' + encodeURIComponent(username) + '&port=' + encodeURIComponent(_obj.port);
 				} else {
 					console.log(_obj);
 				}
 			});
+		});
+		document.querySelector("#"+name+' .spectate').addEventListener('click', function () {
+			window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + name + '/?port=' + encodeURIComponent(port);
 		});
 	});
 
