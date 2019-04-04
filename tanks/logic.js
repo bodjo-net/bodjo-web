@@ -123,7 +123,7 @@ function startSocket() {
 			}
 		} else if (data.type == 'score') {
 			updateScoreboard(data.scoreboard, function (obj) {
-				return [(obj.place+1)+'.', obj.username, obj.kills, obj.deaths, obj.kd];
+				return [(obj.place+1)+'.', obj.username, obj.kills, obj.deaths, obj.kd.toFixed(4)];
 			});
 		}
 	}
