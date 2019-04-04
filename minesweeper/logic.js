@@ -125,7 +125,7 @@ function startSocket() {
 		} else if (data.type == 'score') {
 			updateScoreboard(data.scoreboard, function (obj) {
 				var levels = ['—', 'Beginner', 'Intermediate', 'Expert', 'Expert+'];
-				return [(obj.place+1)+'.', obj.username, levels[obj.level]];
+				return [(obj.place+1)+'.', obj.username, levels[obj.level+1]];
 			});
 		}
 	}
