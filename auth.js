@@ -73,7 +73,7 @@ function signUp() {
 	}
 	var place = signUpPlace.selectedIndex;
 
-	request('POST', '/register', {username: username, password: password,
+	request('POST', '/register', {username: username, password: password1,
 								  email: email, place: place}, function (obj) {
 		if (obj.status == 'ok') {
 			token = obj.token;
