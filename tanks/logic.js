@@ -1,6 +1,6 @@
 var url = "ws://localhost:3423";
-var username = "2";
-var token = "2";
+var username = "1";
+var token = "1";
 
 var timeout = 16;
 var isPlaying = false;
@@ -233,18 +233,17 @@ function render(data) {
 					  (player.y)/height*H);
 		ctx.rotate(player.direction-PI/2);
 		ctx.drawImage(sprites.tank[player.color], 
-			-tankRadius/width*W*1.5*Math.sqrt(2)/2, 
-			-tankRadius/height*H*1.5*Math.sqrt(2)/2, 
-			tankRadius/width*W*1.5*Math.sqrt(2), 
-			tankRadius/height*H*1.5*Math.sqrt(2));
+			-tankRadius/width*W*1.5*sqrt(2)/2, 
+			-tankRadius/height*H*1.5*sqrt(2)/2, 
+			tankRadius/width*W*1.5*sqrt(2), 
+			tankRadius/height*H*1.5*sqrt(2));
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-		var shootAnimation = range(data.time - player.lastShot, 0, 10) / 10;
+		var shootAnimation = range(data.time - player.lastShot, 0, 7) / 7;
 		var r = sin(shootAnimation*PI) * tankRadius*2 / width * W;
 		ctx.drawImage(sprites.whiteSmoke[~~(shootAnimation*5)],
 			(player.x + cos(player.headDirection)*tankRadius)/width*W-r/2, 
 			(player.y + sin(player.headDirection)*tankRadius)/height*H-r/2, r, r);
-
 
 		var barrelSprite = sprites.barrel[player.color];
 		ctx.translate(player.x/width*W, player.y/height*H);
@@ -257,19 +256,17 @@ function render(data) {
 			);
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-
-
 		ctx.strokeStyle = '#000000';
 		ctx.lineWidth = window.devicePixelRatio * 1.5;
 		ctx.fillStyle = '#ff0000';
-		ctx.strokeRect((player.x-tankRadius)/width*W, (player.y-tankRadius)/height*H, tankRadius/width*W*2, tankRadius/height*H*0.25);
-		ctx.fillRect((player.x-tankRadius)/width*W, (player.y-tankRadius)/height*H, (tankRadius/width*W*2)*player.hp, tankRadius/height*H*0.25);
+		ctx.strokeRect((player.x-tankRadius)/width*W, (player.y-tankRadius*1.4)/height*H, tankRadius/width*W*2, tankRadius/height*H*0.25);
+		ctx.fillRect((player.x-tankRadius)/width*W, (player.y-tankRadius*1.4)/height*H, (tankRadius/width*W*2)*player.hp, tankRadius/height*H*0.25);
 
 		ctx.fillStyle = '#000000';
 		ctx.strokeStyle = '#ffffff';
 		ctx.font = tankRadius*0.75/height*H + 'px \'Source Code Pro\'';
 		var text = ctx.measureText(player.username);
-		ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.2)/height*H);
+		ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
 	}
 
 	for (var i = 0; i < data.bullets.length; ++i) {
