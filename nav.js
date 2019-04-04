@@ -5,7 +5,9 @@ var pages = {
 	'#sign-up-btn': 'sign-up',
 	'.back-btn': 'root',
 	'#minesweeper .btn.play': '>minesweeper',
-	'#minesweeper .btn.spectate': '>minesweeper/spectate'
+	'#minesweeper .btn.spectate': '>minesweeper/spectate',
+	'#tanks .btn.play': '#tanks',
+	'#tanks .btn.spectate': '#tanks/spectate'
 };
 var activePage = getActivePage();
 changeTitleActive(activePage=='root'?'':activePage);
