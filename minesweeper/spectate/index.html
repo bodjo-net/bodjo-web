@@ -60,7 +60,7 @@
 	request('GET','/services',{},function (data) {
 		var services = data.services;
 		var i = services.findIndex(function (s) {
-			s.name == 'minesweeper'
+			return s.name == 'minesweeper';
 		});
 		if (i >= 0) {
 			PORT = services[i].port;
