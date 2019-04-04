@@ -124,7 +124,8 @@ function startSocket() {
 			}
 		} else if (data.type == 'score') {
 			updateScoreboard(data.scoreboard, function (obj) {
-				return [(obj.place+1)+'.', obj.username, obj.level==-1?'—':obj.level];
+				var levels = ['—', 'Beginner', 'Intermediate', 'Expert', 'Expert+'];
+				return [(obj.place+1)+'.', obj.username, levels[obj.level]];
 			});
 		}
 	}
