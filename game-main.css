@@ -211,6 +211,7 @@ h1, h2, h3, h4, h5, h6, p {
 	background-color: #ccc;
 }
 .rippleEffect {
+	pointer-events: none;
 	position: absolute;
 	background: rgba(0,0,0,0.2);
 	border-radius: 50%;
@@ -269,6 +270,9 @@ h1, h2, h3, h4, h5, h6, p {
 	word-break: break-all;
     white-space: pre-wrap;
     overflow: hidden;
+}
+#scoreboard {
+	overflow-y: auto;
 }
 #scoreboard table {
 	padding: 1em;

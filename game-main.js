@@ -5,7 +5,7 @@ Object.getOwnPropertyNames(Math).forEach(function(n){window[n]=Math[n]});
 var editor = ace.edit('editor');
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/javascript");
-editor.setValue((localStorage[gameName.toUpperCase()+'_savedCode'] || 'function onTick(field) {\n\t// TODO\n\t\n}'), -1);
+editor.setValue((localStorage[gameName.toUpperCase()+'_savedCode'] || 'function onTick(data) {\n\t// TODO\n\t\n}'), -1);
 if (localStorage[gameName.toUpperCase()+'_caretPos']) {
 	try {
 		let pos = JSON.parse(localStorage[gameName.toUpperCase()+'_caretPos']);
