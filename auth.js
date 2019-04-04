@@ -218,7 +218,11 @@ function request(method, url, parameters, callback) {
 
 		callback(obj);
 	}
-	req.send();
+	try {
+		req.send();
+	} catch (e) {
+		document.querySelector("#no-server").style.display = 'block';
+	}
 }
 function getCookie(name) {
   var matches = document.cookie.match(new RegExp(

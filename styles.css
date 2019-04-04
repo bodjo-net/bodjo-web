@@ -108,7 +108,7 @@ td {
 .service {
 	display: none;
 }
-#no-service {
+#no-service, #no-server {
 	display: none;
 	text-align: center;
     font-size: 1.25em;
