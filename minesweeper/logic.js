@@ -1,4 +1,4 @@
-var url = "wss://shpp.me:"+PORT;
+var url = "wss://vkram.shpp.me:"+PORT;
 var username = USERNAME;
 var token = GAME_SESSION_TOKEN;
 
