@@ -218,12 +218,10 @@ function request(method, url, parameters, callback) {
 
 		callback(obj);
 	}
-	try {
-		req.send();
-	} catch (e) {
-		console.log(e)
+	req.onerror = function () {
 		document.querySelector("#no-server").style.display = 'block';
 	}
+	req.send();
 }
 function getCookie(name) {
   var matches = document.cookie.match(new RegExp(
