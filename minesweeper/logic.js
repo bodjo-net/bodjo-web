@@ -100,7 +100,7 @@ function startSocket() {
 		if (data.type == 'connect') {
 			if (data.status != 'ok') {
 				if (data.errCode == 2) {
-					alert('You have been already connected to game. Probably, you left a tab with the game.');
+					alert('You have already connected to game. Probably, you left a tab with the game.');
 				}
 			}
 		} else if (data.type == 'game' && (lastID == data.id || lastID == null)) {
