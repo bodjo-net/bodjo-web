@@ -175,7 +175,7 @@ request('GET', '/services', {}, function (obj) {
 			});
 		});
 		document.querySelector("#"+name+' .spectate').addEventListener('click', function () {
-			window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + name + '/?port=' + encodeURIComponent(port);
+			window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + name + '/spectate/?port=' + encodeURIComponent(port);
 		});
 	});
 
