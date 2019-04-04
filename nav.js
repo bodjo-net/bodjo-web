@@ -62,8 +62,6 @@ Object.keys(pages).forEach(function (selector) {
 				changeTitleActive(sName, true);
 			});
 		} else {
-			if (element.className.indexOf("play") >= 0)
-				return;
 			element.addEventListener('click', function () {
 				window.location.href += link;
 			});

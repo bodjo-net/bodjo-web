@@ -1,3 +1,4 @@
+var server_url = 'https://vkram.shpp.me:3518';
 Object.getOwnPropertyNames(Math).forEach(function(n){window[n]=Math[n]});
 
 // editor
@@ -141,4 +142,30 @@ function bottom(div) {
 
 function clearErrors() {
 
+}
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+function request(method, url, parameters, callback) {
+	var req = new XMLHttpRequest();
+	var query = Array.from(Object.keys(parameters), function (p) {
+		return p + '=' + encodeURIComponent(parameters[p]);
+	}).join('&');
+	req.open(method, server_url + url + '?' + query, true);
+	req.setRequestHeader('Accept', 'application/json');
+	req.onreadystatechange = function () {
+		if (req.readyState != 4) return;
+		//console.log(req.responseText);
+		try {
+			var obj = JSON.parse(req.responseText)
+		} catch (e) {
+			return;
+		}
+
+		callback(obj);
+	}
+	req.send();
 }

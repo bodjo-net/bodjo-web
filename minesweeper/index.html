@@ -6,28 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="main.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Source+Code+Pro:400,700&amp;subset=cyrillic" rel="stylesheet">
-	<script type="text/javascript">
-		// PORT, USERNAME, GAME_SESSION_TOKEN
-		function getParameterByName(name) {
-		    var url = window.location.href;
-		    name = name.replace(/[\[\]]/g, '\\$&');
-		    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-		        results = regex.exec(url);
-		    if (!results) return null;
-		    if (!results[2]) return '';
-		    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-		}
-
-		PORT = parseInt(getParameterByName('port') || localStorage.MINESWEEPER_PORT);
-		USERNAME = getParameterByName('username') || localStorage.MINESWEEPER_USERNAME;
-		GAME_SESSION_TOKEN = getParameterByName('token') || localStorage.MINESWEEPER_TOKEN;
-
-		localStorage.MINESWEEPER_PORT = PORT;
-		localStorage.MINESWEEPER_USERNAME = USERNAME;
-		localStorage.MINESWEEPER_TOKEN = GAME_SESSION_TOKEN;
-		
-		history.replaceState({}, document.querySelector('title').innerText, location.pathname);
-	</script>
 </head>
 <body>
 	<div id="game">

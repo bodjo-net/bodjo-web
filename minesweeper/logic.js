@@ -1,7 +1,35 @@
-var url = "wss://vkram.shpp.me:"+PORT;
-var username = USERNAME;
-var token = GAME_SESSION_TOKEN;
 
+var gameName = 'minesweeper';
+var userToken = localStorage.token || getCookie('token');
+var username = localStorage.username || getCookie('username');
+if (!userToken || !username) {
+	// bad
+	alert('We lost your username or token. Try to come back to https://bodjo.net and connect to game again.');
+	window.location.href = 'https://bodjo.net';
+} else {
+	request('GET', '/play', {gameName: gameName, token: userToken}, function (obj) {
+		if (obj.status == 'ok') {
+			PORT = obj.port;
+			GAME_SESSION_TOKEN = obj.gameSessionToken;
+			USERNAME = username;
+
+			startSocket();
+		} else {
+			alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
+			window.location.href = 'https://bodjo.net';
+		}
+	});
+}
+		// 	request('GET', '/play', {gameName: name, token: token}, function (_obj) {
+		// 		if (_obj.status == 'ok') {
+		// 			window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + name + '/?token=' + encodeURIComponent(_obj.gameSessionToken) + '&username=' + encodeURIComponent(username) + '&port=' + encodeURIComponent(_obj.port);
+		// 		} else {
+		// 			console.log(_obj);
+		// 		}
+		// 	});
+		// });
+
+var socket, lastID;
 var timeout = 16;
 var isPlaying = false;
 var playBtn = document.querySelector('#play');
@@ -56,47 +84,52 @@ if (localStorage.timeout && !isNaN(parseInt(localStorage.timeout))) {
 timeoutRange.value = timeout;
 timeoutText.innerText = timeout + 'ms';
 
+function startSocket() {
+	var url = "wss://vkram.shpp.me:"+PORT;
+	var username = USERNAME;
+	var token = GAME_SESSION_TOKEN;
 
-var socket = new WebSocket(url);
-var lastID = null;
-socket.onmessage = function (event) {
-	try {
-		var data = JSON.parse(event.data);
-	} catch (e) {return;}
+	socket = new WebSocket(url);
+	lastID = null;
+	socket.onmessage = function (event) {
+		try {
+			var data = JSON.parse(event.data);
+		} catch (e) {return;}
 
-	console.log(data)
-	if (data.type == 'connect') {
-		if (data.status != 'ok') {
-			console.log('connected unsuccessfully');
-		}
-	} else if (data.type == 'game' && (lastID == data.id || lastID == null)) {
+		console.log(data)
+		if (data.type == 'connect') {
+			if (data.status != 'ok') {
+				console.log('connected unsuccessfully');
+			}
+		} else if (data.type == 'game' && (lastID == data.id || lastID == null)) {
 
-		difficultySelect.selectedIndex = (data.level);
-		field = data.field;
-		render(field);
-	
-		if (isPlaying) {	
-			if (data.status == 'playing') {
-				tick();
-			} else if (data.status == 'win' || data.status == 'defeat') {
-				setTimeout(function () {
-					lastID++;
-					socket.send(JSON.stringify({
-						type: 'repeat',
-						id: lastID
-					}));
-				}, timeout*2);
+			difficultySelect.selectedIndex = (data.level);
+			field = data.field;
+			render(field);
+		
+			if (isPlaying) {	
+				if (data.status == 'playing') {
+					tick();
+				} else if (data.status == 'win' || data.status == 'defeat') {
+					setTimeout(function () {
+						lastID++;
+						socket.send(JSON.stringify({
+							type: 'repeat',
+							id: lastID
+						}));
+					}, timeout*2);
+				}
 			}
 		}
 	}
-}
-socket.onopen = function () {
-	socket.send(JSON.stringify({
-		type: 'connect',
-		username,
-		token,
-		role: 'player'
-	}));
+	socket.onopen = function () {
+		socket.send(JSON.stringify({
+			type: 'connect',
+			username,
+			token,
+			role: 'player'
+		}));
+	}
 }
 
 function tick() {
