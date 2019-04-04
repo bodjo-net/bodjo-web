@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Minesweeper spectator</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Source+Code+Pro:400,700&amp;subset=cyrillic" rel="stylesheet">
+	<style type="text/css">
+		head, body, html {
+			margin: 0;
+			padding: 0;
+			font-family: 'Source Code Pro', 'Roboto Mono', Consolas, monospace;
+		}
+		#players {
+			display: inline-block;
+			padding: 1em;
+			padding-right: 200px;
+			width: 100%;
+			box-sizing: border-box;
+		}
+		.player {
+			display: inline-block;
+		}
+		.player h1 {
+			margin: 0;
+			font-size: 1.5em;
+		}
+		.player canvas {
+			width: 250px;
+			height: 250px;
+		}
+	</style>
+</head>
+<body>
+<div id="players">
+</div>
+<script type="text/javascript">
+	var url = "ws://localhost:3423";
+
+	var players = {};
+	var playersContainer = document.querySelector('#players');
+
+	var socket = new WebSocket(url);
+	socket.onmessage = function (event) {
+		try {
+			var data = JSON.parse(event.data);
+		} catch (e) {return;}
+
+		console.log(data)
+		if (data.type == 'connect') {
+			if (data.status != 'ok') {
+				console.log('connected unsuccessfully');
+			}
+		} else if (data.type == 'game') {
+			if (!players[data.username])
+				players[data.username] = createPlayer(data);
+			players[data.username].field = data.field;
+			render(players[data.username].canvas, players[data.username].field);
+		} else if (data.type == 'playerConnected') {
+
+		} else if (data.type == 'playerDisconnected') {
+
+		}
+	}
+	socket.onopen = function () {
+		socket.send(JSON.stringify({
+			type: 'connect',
+			role: 'spectator-all'
+		}));
+	}
+
+	function createPlayer(data) {
+		var playerContainer = document.createElement('div');
+		playerContainer.className = 'player';
+		playerContainer.id = 'u'+data.username;
+		var header = document.createElement('h1');
+		header.innerText = data.username;
+		var canvas = document.createElement('canvas');
+		playerContainer.append(header, canvas);
+
+		playersContainer.append(playerContainer);
+		return {
+			field: data.field,
+			canvas: canvas,
+			container: playerContainer
+		}
+	}
+
+
+	function render(canvas, field) {
+		var ctx = canvas.getContext('2d');
+		var s = 250 / field.length;
+
+		var W = 250 * window.devicePixelRatio;
+
+		canvas.width = canvas.height = W;
+
+		ctx.clearRect(0, 0, W, W);
+		for (let y = 0; y < field.length; ++y)
+			for (let x = 0; x < field[y].length; ++x)
+				renderElement(ctx, x, y, field[y][x], s * window.devicePixelRatio);
+	}
+
+	var tiles = new Image();
+	tiles.src = '../tiles.png';
+	function renderElement(ctx, x, y, c, s) {
+		var map = " Fx012345678*";
+		var X = map.indexOf(c) % 4;
+		var Y = ~~((map.indexOf(c) - X) / 4);
+		// empty, flag, mine, opened
+		// 1, 2, 3, 4
+		// 5, 6, 7, 8
+		ctx.drawImage(tiles, X*(tiles.width/4), Y*(tiles.height/4), 128, 128, x*s, y*s, s, s);
+	}
+
+
+</script>
+</body>
+</html>

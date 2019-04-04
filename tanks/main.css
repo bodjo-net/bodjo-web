@@ -1,0 +1,280 @@
+html, head, body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Source Code Pro', 'Roboto Mono', Consolas, monospace;
+}
+#game {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 550px;
+	bottom: 0;
+	padding: 10px;
+}
+#workspace {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 550px;
+	box-shadow: -2px 0 5px rgba(0,0,0,0.15);
+	background: #fff;
+}
+#tabs {
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	background: #eee;
+	padding: 0.5em 0.2em 0 0.2em;
+}
+#tabs .tab {
+	cursor: pointer;
+	background: #ddd;
+	border-bottom: 1px solid #bbb;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	padding: 0.2em 0.5em;
+	display: inline-block;
+	margin-right: 0.2em;
+}
+#tabs .tab.active {
+	background: #fff;
+	border-bottom: 1px solid #ddd;
+}
+.section {
+	position: absolute;
+	top: 36px;
+	left: 0;
+	right: 0;
+	bottom: 54px;
+	display: none;
+}
+.section.active {
+	display: block;
+}
+#editor {
+	height: 100%;
+}
+#editor .CodeMirror {
+	height: 100%;
+}
+#ace_search {
+	top: -60px;
+	transform: scale(0.5);
+}
+.ace_gutter-cell.ace_error {
+	background-image: none;
+}
+.ace_gutter-cell.ace_error:after {
+	content: " ";
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: -999999px;
+	bottom: 0;
+	background: rgba(255,0,0,0.3);
+}
+.ace_gutter-cell.ace_warning {
+	background-image: none;
+}
+.ace_gutter-cell.ace_warning:after {
+	content: " ";
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: -999999px;
+	bottom: 0;
+	background: rgba(255,255,0,0.3);
+}
+.ace_tooltip {
+	background-image: none;
+	border: 1px solid rgba(0,0,0,0.3);
+}
+#docs, #settings {
+	overflow-y: auto;
+	font-size: 90%;
+	padding: 0.3em 0.5em;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin: 0.25em 0.2em;
+}
+#docs pre {
+	margin: 0.25em 0;
+	padding: 0.5em;
+	background: #efefef;
+	border-radius: 5px;
+	font-family: 'Source Code Pro', 'Roboto Mono', Consolas, monospace;
+}
+#docs div.warning {
+	margin: 0.25em 0;
+	padding: 0.5em;
+	background: #FFF176;
+	border-radius: 5px;
+	font-family: 'Source Code Pro', 'Roboto Mono', Consolas, monospace;
+}
+@media (orientation: portrait) {
+	#game {
+		right: 0;
+		bottom: 50%;
+	}
+	#workspace {
+		left: 0;
+		top: 50%;
+		width: 100%;
+	}
+}
+#field canvas {
+	width: 100%;
+	height: 100%;
+}
+#settings input {
+	font-family: 'Source Code Pro', 'Roboto Mono', Consolas, monospace;
+	display: inline-block;
+	background: none;
+	border: none;
+	outline: none;
+}
+#settings button {
+	cursor: pointer;
+}
+
+#control-panel {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: hidden;
+	box-shadow: 0 0 5px rgba(0,0,0,0.2);
+	background: #fff;
+	z-index: 100;
+	padding: 7px 7px 0 7px;
+	box-sizing: border-box;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+#control-panel .btn {
+	margin-bottom: 7px;
+	border-radius: 2px;
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100%;
+	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 50%;
+	background-color: #fff;
+	transition: background-color ease-in-out 0.25s,
+				box-shadow ease-in-out 0.25s;
+}
+#control-panel .panel {
+	margin-bottom: 7px;
+	border-radius: 2px;
+	vertical-align: middle;
+	line-height: 100%;
+	display: inline-block;
+	min-width: 40px;
+	height: 40px;
+	padding: 0 0.5em 0 0;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 100%;
+	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+	transition: background-color ease-in-out 0.25s,
+				box-shadow ease-in-out 0.25s;
+}
+#control-panel .panel * {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 100%;
+}
+#control-panel .panel div.img {
+	width: 40px;
+	height: 40px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 60%;
+	background-color: #fff;
+}
+#control-panel .panel select,
+#control-panel .panel input[type=range] {
+	outline: none;
+}
+#control-panel .btn:hover {
+	background-color: #eee;
+}
+#control-panel .btn.down {
+	background-color: #ddd;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+#control-panel .btn.down:hover {
+	background-color: #ccc;
+}
+.rippleEffect {
+	position: absolute;
+	background: rgba(0,0,0,0.2);
+	border-radius: 50%;
+	transition: all ease-in-out 0.25s;
+}
+.ripple {
+	overflow: hidden;
+	position: relative;
+}
+#play {
+	background-image: url(../assets/play.png);
+}
+#pause {
+	background-image: url(../assets/pause.png);
+}
+#again {
+	background-image: url(../assets/again.png);
+}
+#difficulty div.img {
+	background-image: url(../assets/difficulty.png);
+}
+#timeout div.img {
+	background-image: url(../assets/timeout.png);
+}
+#resizer {
+	position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -0.5em;
+    width: 1em;
+    z-index: 100500;
+    cursor: w-resize;
+}
+.error {
+	position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    min-height: 10px;
+    background: rgba(255,170,170,0.9);
+    z-index: 50;
+    padding: 5px 5px 5px 25px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(25,0,0);
+    opacity: 1;
+    transition: opacity ease-in-out 0.25s,
+    			bottom ease-in-out 0.25s;
+}
+.error.hide {
+	bottom: -20px;
+	opacity: 0;
+}
+.error pre {
+	margin: 0;
+	word-break: break-all;
+    white-space: pre-wrap;
+    overflow: hidden;
+}

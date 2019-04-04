@@ -137,6 +137,7 @@ function tick() {
 		return false;
 	}
 
+	clearErrors();
 	var llastID = lastID;
 	setTimeout(function () {
 		if (llastID != lastID || !isPlaying)

@@ -1,6 +1,6 @@
-const server_url = 'http://shpp.me:3518';
+const server_url = 'https://vkram.shpp.me:3518';
 var token = getToken();
-var username = null;
+window.username = null;
 var checkedToken = false;
 
 if (token != null) {
@@ -82,6 +82,7 @@ function signUp() {
 			checkedToken = true;
 			setActivePage('root')
 			updateAuthority();
+			window.username = username;
 
 			signUpUsername.value = '';
 			signUpPassword.value = '';
@@ -113,7 +114,7 @@ function signIn() {
 			checkedToken = true;
 			setActivePage('root')
 			updateAuthority();
-
+			window.username = username;
 			signInUsername.value = '';
 			signInPassword.value = '';
 		} else {

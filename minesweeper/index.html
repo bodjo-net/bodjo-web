@@ -18,11 +18,15 @@
 		    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 		}
 
-		PORT = parseInt(getParameterByName('port'));
-		USERNAME = getParameterByName('username');
-		GAME_SESSION_TOKEN = getParameterByName('token');
+		PORT = parseInt(getParameterByName('port') || localStorage.MINESWEEPER_PORT);
+		USERNAME = getParameterByName('username') || localStorage.MINESWEEPER_USERNAME;
+		GAME_SESSION_TOKEN = getParameterByName('token') || localStorage.MINESWEEPER_TOKEN;
 
-		history.replaceState(null, document.querySelector('title').innerText, window.location.href.pathname);
+		localStorage.MINESWEEPER_PORT = PORT;
+		localStorage.MINESWEEPER_USERNAME = USERNAME;
+		localStorage.MINESWEEPER_TOKEN = GAME_SESSION_TOKEN;
+		console.log(location.pathname)
+		history.replaceState({}, document.querySelector('title').innerText, location.pathname);
 	</script>
 </head>
 <body>
