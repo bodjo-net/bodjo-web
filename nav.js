@@ -56,7 +56,7 @@ Object.keys(pages).forEach(function (selector) {
 				activePageElement.className = 'page';
 				currentPageElement.className = 'page active';
 
-				window.history.pushState({"pageTitle": titleElement.innerText}, "", link);
+				//window.history.pushState({"pageTitle": titleElement.innerText}, "", link);
 
 				activePage = name;
 				changeTitleActive(sName, true);
@@ -99,7 +99,7 @@ function setActivePage(page) {
 	activePageElement.className = 'page';
 	currentPageElement.className = 'page active';
 
-	window.history.pushState({"pageTitle": titleElement.innerText}, "", link);
+	//window.history.pushState({"pageTitle": titleElement.innerText}, "", link);
 
 	activePage = page;
 	changeTitleActive(sName, true);
