@@ -1,5 +1,3 @@
-
-var gameName = 'minesweeper';
 var userToken = localStorage.token || getCookie('token');
 var username = localStorage.username || getCookie('username');
 if (!userToken || !username) {
@@ -85,9 +83,12 @@ timeoutRange.value = timeout;
 timeoutText.innerText = timeout + 'ms';
 
 function startSocket() {
-	var url = "wss://vkram.shpp.me:"+PORT;
-	var username = USERNAME;
-	var token = GAME_SESSION_TOKEN;
+	//var url = "wss://vkram.shpp.me:"+PORT;
+	var url = 'ws://localhost:3423'
+	//var username = USERNAME;
+	// var token = GAME_SESSION_TOKEN;
+	var token = '1';
+	var username = '1';
 
 	socket = new WebSocket(url);
 	lastID = null;
@@ -99,7 +100,9 @@ function startSocket() {
 		console.log(data)
 		if (data.type == 'connect') {
 			if (data.status != 'ok') {
-				console.log('connected unsuccessfully');
+				if (data.errCode == 2) {
+					alert('You have been already connected to game. Probably, you left a tab with the game.');
+				}
 			}
 		} else if (data.type == 'game' && (lastID == data.id || lastID == null)) {
 
@@ -120,6 +123,10 @@ function startSocket() {
 					}, timeout*2);
 				}
 			}
+		} else if (data.type == 'score') {
+			updateScoreboard(data.scoreboard, function (obj) {
+				return [(obj.place+1)+'.', obj.username, obj.level==-1?'—':obj.level];
+			});
 		}
 	}
 	socket.onopen = function () {

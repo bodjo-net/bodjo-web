@@ -1,22 +1,23 @@
+var server_url = 'https://vkram.shpp.me:3518';
 Object.getOwnPropertyNames(Math).forEach(function(n){window[n]=Math[n]});
 
 // editor
 var editor = ace.edit('editor');
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/javascript");
-editor.setValue((localStorage.TANKS_savedCode || 'function onTick(field) {\n\t// TODO\n\t\n}'), -1);
-if (localStorage.TANKS_caretPos) {
+editor.setValue((localStorage[gameName.toUpperCase()+'_savedCode'] || 'function onTick(field) {\n\t// TODO\n\t\n}'), -1);
+if (localStorage[gameName.toUpperCase()+'_caretPos']) {
 	try {
-		let pos = JSON.parse(localStorage.TANKS_caretPos);
+		let pos = JSON.parse(localStorage[gameName.toUpperCase()+'_caretPos']);
 		editor.moveCursorTo(pos.row, pos.column);
 	} catch (e) {}
 }
 editor.getSession().on('change', function () {
-	localStorage.TANKS_savedCode = editor.getValue();
-	localStorage.TANKS_caretPos = JSON.stringify(editor.getCursorPosition());
+	localStorage[gameName.toUpperCase()+'_savedCode'] = editor.getValue();
+	localStorage[gameName.toUpperCase()+'_caretPos'] = JSON.stringify(editor.getCursorPosition());
 });
-if (localStorage.TANKS_codeSize)
-	editor.setFontSize(parseInt(localStorage.TANKS_codeSize));
+if (localStorage[gameName.toUpperCase()+'_codeSize'])
+	editor.setFontSize(parseInt(localStorage[gameName.toUpperCase()+'_codeSize']));
 editor.container.addEventListener('keydown', function (e) {
 	if ((e.key == "=" || e.key == "-") && e.altKey) {
 		let fontSize = editor.getFontSize();
@@ -25,7 +26,7 @@ editor.container.addEventListener('keydown', function (e) {
 			(fontSize > 100 && inc > 0))
 			return;
 		editor.setFontSize(fontSize + inc);
-		localStorage.TANKS_codeSize = editor.getFontSize();
+		localStorage[gameName.toUpperCase()+'_codeSize'] = editor.getFontSize();
 	}
 });
 
@@ -34,7 +35,7 @@ var tabs = document.querySelectorAll('.tab');
 var sections = document.querySelectorAll('.section');
 
 var sectionNames = Array.from(sections, function (section) {return section.id});
-var activeSection = localStorage.TANKS_activeSection || "docs";
+var activeSection = localStorage[gameName.toUpperCase()+'_activeSection'] || "docs";
 if (sectionNames.indexOf(activeSection) < 0)
 	activeSection = 'docs';
 
@@ -48,7 +49,7 @@ tabs.forEach(function (tab) {
 });
 
 function setActiveSection(sectionName) {
-	localStorage.TANKS_activeSection = sectionName;
+	localStorage[gameName.toUpperCase()+'_activeSection'] = sectionName;
 	document.querySelector(".section.active").className = "section";
 	document.querySelector(".tab.active").className = "tab";
 
@@ -104,7 +105,7 @@ var codeContainer = document.querySelector('#code');
 function showError(text) {
 	var newErrorDiv = document.createElement('div');
 	var ID = round(random()*1000000);
-	errors.push({id: ID, div: newErrorDiv, removing: false});
+	errors.push({id: ID, div: newErrorDiv});
 	newErrorDiv.className = 'error';
 	newErrorDiv.style.opacity = '0';
 	newErrorDiv.style.bottom = Array.from(errors, function (e) {return e.id==ID?0:e.div.clientHeight}).reduce(function (m, a) {return m+a;}) + 'px';
@@ -119,14 +120,12 @@ function showError(text) {
 	}, 17);
 	setTimeout(function () {
 		if (!newErrorDiv) return;
-		var I = errors.findIndex(function (e) {return e.id == ID});
-		if (I < 0 || errors[I].removing) return;
-
-		var B = bottom(errors[I].div);
 		newErrorDiv.style.bottom = '0px';
 		newErrorDiv.style.opacity = '0';
 		setTimeout(newErrorDiv.remove.bind(newErrorDiv), 250);
 			
+		var I = errors.findIndex(function (e) {return e.id == ID});
+		var B = bottom(errors[I].div);
 		for (var i = 0; i < errors.length; ++i) {
 			var b = bottom(errors[i].div);
 			if (b > B)
@@ -142,14 +141,54 @@ function bottom(div) {
 }
 
 function clearErrors() {
-	for (var i = 0; i < errors.length; ++i) {
-		errors[i].div.style.bottom = '0px';
-		errors[i].div.style.opacity = '0';
-		errors[i].removing = true;
-		setTimeout(errors[i].div.remove.bind(errors[i].div), 250);
+
+}
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+function request(method, url, parameters, callback) {
+	var req = new XMLHttpRequest();
+	var query = Array.from(Object.keys(parameters), function (p) {
+		return p + '=' + encodeURIComponent(parameters[p]);
+	}).join('&');
+	req.open(method, server_url + url + '?' + query, true);
+	req.setRequestHeader('Accept', 'application/json');
+	req.onreadystatechange = function () {
+		if (req.readyState != 4) return;
+		//console.log(req.responseText);
+		try {
+			var obj = JSON.parse(req.responseText)
+		} catch (e) {
+			return;
+		}
+
+		callback(obj);
 	}
+	req.send();
 }
 
+var tagsToReplace = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
+};
+function replaceTag(tag) {
+    return tagsToReplace[tag] || tag;
+}
+function escape(str) {
+	return (str+"").replace(/[&<>]/g, replaceTag);
+}
+
+var scoreboardData = document.querySelector('#scoreboard table tbody:nth-child(2)');
+function updateScoreboard(array, f) {
+	var newHTML = "";
+	for (var i = 0; i < array.length; ++i)
+		newHTML += '<tr><td>' + Array.from(f(array[i]), escape).join('</td><td>') + '<td>';
+	scoreboardData.innerHTML = newHTML;
+}
 function range(x, _min, _max) {
 	return min(max(x, _min), _max);
 }

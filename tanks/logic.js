@@ -1,6 +1,28 @@
-var url = "ws://localhost:3423";
-var username = "1";
-var token = "1";
+var userToken = localStorage.token || getCookie('token');
+var username = localStorage.username || getCookie('username');
+if (!userToken || !username) {
+	// bad
+	alert('We lost your username or token. Try to come back to https://bodjo.net and connect to game again.');
+	window.location.href = 'https://bodjo.net';
+} else {
+	try {
+		request('GET', '/play', {gameName: gameName, token: userToken}, function (obj) {
+			if (obj.status == 'ok') {
+				PORT = obj.port;
+				GAME_SESSION_TOKEN = obj.gameSessionToken;
+				USERNAME = username;
+
+				startSocket();
+			} else {
+				alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
+				window.location.href = 'https://bodjo.net';
+			}
+		});
+	} catch (e) {
+		alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
+		window.location.href = 'https://bodjo.net';
+	}
+}
 
 var timeout = 16;
 var isPlaying = false;
@@ -24,88 +46,99 @@ pauseBtn.addEventListener('click', function () {
 
 var width = null, height, tankRadius;
 
-var socket = new WebSocket(url);
-var lastID = null;
-socket.onmessage = function (event) {
-	try {
-		var data = JSON.parse(event.data);
-	} catch (e) {return;}
+function startSocket() { 
+	var url = "wss://vkram.shpp.me:"+PORT;
+	var username = USERNAME;
+	var token = TOKEN;
 
-	if (data.type == 'connect') {
-		if (data.status != 'ok')
-			console.log(data);
-	} else if (data.type == 'const') {
-		width = data.width;
-		height = data.height;
-		tankRadius = data.tankRadius;
-		onResize();
-	} else if (data.type == 'game') {
+	var socket = new WebSocket(url);
+	var lastID = null;
+	socket.onmessage = function (event) {
+		try {
+			var data = JSON.parse(event.data);
+		} catch (e) {return;}
 
-		render(data);
-
-		if (isPlaying) {
-
-			var code = editor.getValue();
-			try {
-				eval(code);
-			} catch (e) {
-				isPlaying = false;
-				playBtn.className = 'btn ripple';
-				showError(e.stack);
-				return false;
+		if (data.type == 'connect') {
+			if (data.status != 'ok') {
+				if (data.errCode == 2) {
+					alert('You have been already connected to game. Probably, you left a tab with the game.');
+				}
+				console.log(data);
 			}
+		} else if (data.type == 'const') {
+			width = data.width;
+			height = data.height;
+			tankRadius = data.tankRadius;
+			onResize();
+		} else if (data.type == 'game') {
 
-			if (typeof onTick !== 'function') {
-				isPlaying = false;
-				playBtn.className = 'btn ripple';
-				showError('Function \'onTick\' is missing.');
-				return false;
-			}
-			try {
-				var response = onTick(data);
-			} catch (e) {
-				isPlaying = false;
-				playBtn.className = 'btn ripple';
-				showError(e.stack);
-				return false;
-			}
+			render(data);
 
-			if (!(typeof response === 'object' &&
-				Array.isArray(response.move) &&
-				response.move.length == 2 &&
-				response.move[0] >= -1 && response.move[0] <= 1 &&
-				response.move[1] >= -1 && response.move[1] <= 1 &&
-				typeof response.head === 'number' &&
-				Number.isFinite(response.head) &&
-				typeof response.shoot === 'boolean')) {
-				isPlaying = false;
-				playBtn.className = 'btn ripple';
-				var string = JSON.stringify(response,null,'\t');
-				if (string.length > 300)
-					showError('Function \'onTick\' returns bad response.');
-				else showError('Function \'onTick\' returns bad response: \n\n'+string);
-				return false;
-			}
+			if (isPlaying) {
+				var code = editor.getValue();
+				try {
+					eval(code);
+				} catch (e) {
+					isPlaying = false;
+					playBtn.className = 'btn ripple';
+					showError(e.stack);
+					return false;
+				}
 
-			clearErrors();
-			socket.send(JSON.stringify(Object.assign({type:'game'}, response)));
+				if (typeof onTick !== 'function') {
+					isPlaying = false;
+					playBtn.className = 'btn ripple';
+					showError('Function \'onTick\' is missing.');
+					return false;
+				}
+				try {
+					var response = onTick(data);
+				} catch (e) {
+					isPlaying = false;
+					playBtn.className = 'btn ripple';
+					showError(e.stack);
+					return false;
+				}
+
+				if (!(typeof response === 'object' &&
+					Array.isArray(response.move) &&
+					response.move.length == 2 &&
+					response.move[0] >= -1 && response.move[0] <= 1 &&
+					response.move[1] >= -1 && response.move[1] <= 1 &&
+					typeof response.head === 'number' &&
+					Number.isFinite(response.head) &&
+					typeof response.shoot === 'boolean')) {
+					isPlaying = false;
+					playBtn.className = 'btn ripple';
+					var string = JSON.stringify(response,null,'\t');
+					if (string.length > 300)
+						showError('Function \'onTick\' returns bad response.');
+					else showError('Function \'onTick\' returns bad response: \n\n'+string);
+					return false;
+				}
+
+				clearErrors();
+				socket.send(JSON.stringify(Object.assign({type:'game'}, response)));
+			}
+		} else if (data.type == 'score') {
+			updateScoreboard(data.scoreboard, function (obj) {
+				return [(obj.place+1)+'.', obj.username, obj.kills, obj.deaths, obj.kd];
+			});
 		}
 	}
-}
-socket.onopen = function () {
-	socket.send(JSON.stringify({
-		type: 'connect',
-		username,
-		token,
-		role: 'player'
-	}));
+	socket.onopen = function () {
+		socket.send(JSON.stringify({
+			type: 'connect',
+			username,
+			token,
+			role: 'player'
+		}));
+	}
 }
 
 function tick() {
 	if (!isPlaying && field != null) 
 		return;
-
-	
 
 	var llastID = lastID;
 	setTimeout(function () {

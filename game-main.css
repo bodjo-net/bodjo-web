@@ -278,3 +278,11 @@ h1, h2, h3, h4, h5, h6, p {
     white-space: pre-wrap;
     overflow: hidden;
 }
+#scoreboard table {
+	padding: 1em;
+	width: 100%;
+	box-sizing: border-box;
+}
+#scoreboard td {
+	text-align: center;
+}
