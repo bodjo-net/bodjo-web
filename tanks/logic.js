@@ -49,7 +49,7 @@ var width = null, height, tankRadius;
 function startSocket() { 
 	var url = "wss://vkram.shpp.me:"+PORT;
 	var username = USERNAME;
-	var token = TOKEN;
+	var token = GAME_SESSION_TOKEN;
 
 	var socket = new WebSocket(url);
 	var lastID = null;
