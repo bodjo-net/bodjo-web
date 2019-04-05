@@ -24,9 +24,9 @@ pauseBtn.addEventListener('click', function () {
 var width = null, height, tankRadius;
 
 function startSocket() { 
-	var url = "wss://vkram.shpp.me:"+PORT;
-	var username = USERNAME;
-	var token = GAME_SESSION_TOKEN;
+	var url = 'ws://localhost:3423'//"wss://vkram.shpp.me:"+PORT;
+	var username = '1'//USERNAME;
+	var token = '1'//GAME_SESSION_TOKEN;
 
 	socket = new WebSocket(url);
 	socket.onmessage = function (event) {
@@ -58,6 +58,7 @@ function startSocket() {
 					try {
 						eval(code);
 					} catch (e) {
+						console.log();
 						stop();
 						showError(e.stack);
 						return false;

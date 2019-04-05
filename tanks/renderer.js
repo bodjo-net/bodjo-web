@@ -53,9 +53,16 @@ var sprites = {
         beige:'./assets/Tanks/barrelBeige.png'
     }),
     bullet: loadSprites({
+        red:  './assets/Bullets/bulletRed.png',
+        blue: './assets/Bullets/bulletBlue.png',
+        black:'./assets/Bullets/bulletSilver.png',
+        green:'./assets/Bullets/bulletGreen.png',
+        beige:'./assets/Bullets/bulletBeige.png'
+    }),
+    bulletSilver: loadSprites({
         red:  './assets/Bullets/bulletRedSilver.png',
         blue: './assets/Bullets/bulletBlueSilver.png',
-        black:'./assets/Bullets/bulletSilver.png',
+        black:'./assets/Bullets/bulletSilverSilver.png',
         green:'./assets/Bullets/bulletGreenSilver.png',
         beige:'./assets/Bullets/bulletBeigeSilver.png'
     }),
@@ -79,7 +86,11 @@ var sprites = {
         './assets/Smoke/smokeYellow3.png',
         './assets/Smoke/smokeYellow4.png',
         './assets/Smoke/smokeYellow5.png'
-    ])
+    ]),
+    bonuses: loadSprites({
+        heal: './assets/Bonuses/aid.png',
+        strength: './assets/Bonuses/ammo.png'
+    })
 };
 function loadSprites(obj) {
     var res = {};
@@ -89,6 +100,10 @@ function loadSprites(obj) {
         res[key].src = obj[key];
     }
     return res;
+}
+var bonusesColors = {
+    heal: 'rgba(0,185,0,0.25)',
+    strength: 'rgba(150,70,0,0.25)'
 }
 
 var canvas = document.querySelector('canvas');
@@ -144,11 +159,38 @@ function render(data) {
             tankRadius*1.5/height*H
             );
         ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+        var bonuses = Object.keys(player.activeBonuses);
+        for (var i = 0; i < bonuses.length; ++i) {
+            var bonus = player.activeBonuses[bonuses[i]];
+            var t = range(data.time - bonus.start, 0, bonus.duration) / bonus.duration;
+            console.log(bonus)
+            var r = (-pow(t-0.5,10)*1000+1);
+            ctx.fillStyle = bonusesColors[bonuses[i]];
+            ctx.beginPath();
+            ctx.arc(player.x/width*W, player.y/height*H, r*tankRadius*2/width*W, 0, PI*2);
+            ctx.fill();
+        }
+    }
+
+    for (var i = 0; i < data.bonuses.length; ++i) {
+        var bonus = data.bonuses[i];
+        var t = range(data.time-bonus.spawnTime, 0, 10) / 10;
+        var r = (-pow((t-1)*0.5,4)*16+1);
+        ctx.fillStyle = bonus.type == 'heal' ? 'rgba(0,185,0,0.5)' : 'rgba(150,70,0,0.5)';
+        ctx.beginPath();
+        ctx.arc(bonus.x/width*W, bonus.y/height*H, r*bonus.radius/width*W, 0, PI*2);
+        ctx.fill();
+        var sprite = sprites.bonuses[bonus.type];
+        if (sprite) {
+            var w = r*bonus.radius/width*W;
+            ctx.drawImage(sprite, bonus.x/width*W-w/2, bonus.y/height*H-w/2, w, w);
+        }
     }
 
     for (var i = 0; i < data.bullets.length; ++i) {
         var bullet = data.bullets[i];
-        var bulletSprite = sprites.bullet[bullet.color];
+        var bulletSprite = sprites[bullet.type?'bulletSilver':'bullet'][bullet.color];
         ctx.translate(bullet.x/width*W, bullet.y/height*H);
         ctx.rotate(bullet.angle-PI/2+PI);
         ctx.drawImage(bulletSprite,
@@ -158,6 +200,8 @@ function render(data) {
             tankRadius/height*H);
         ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
+
+
     if (data.walls) {
         ctx.strokeStyle = '#9d9783';
         ctx.lineWidth = tankRadius * 0.7 / width * W;
@@ -180,8 +224,8 @@ function render(data) {
     }
     for (var i = 0; i < bulletEvents.length; ++i) {
         var event = bulletEvents[i];
-        var t = range(data.time - event.time, 0, 4) / 4;
-        var r = -pow(t-0.5,4)*16+1 * tankRadius*1.75 / width * W;
+        var t = range(data.time - event.time, 0, 8) / 8;
+        var r = (-pow(t-0.5,4)*16+1) * tankRadius*1.75 / width * W;
         var sprite = sprites.yellowSmoke[round(t*5)];
         var w = r * (100 / sprite.width), a = sprite.width / sprite.height,
             h = w / a;
@@ -219,7 +263,6 @@ function render(data) {
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
 }
-
 function point(x, y, color) {
     ctx.beginPath();
     ctx.fillStyle = color || 'red';
