@@ -182,18 +182,19 @@ function render(data) {
         var event = bulletEvents[i];
         var t = range(data.time - event.time, 0, 10) / 10;
         var r = -pow(t-0.5,4)*16+1 * tankRadius*1.75 / width * W;
-        console.log(t, r)
+        var sprite = sprites.yellowSmoke[round(t*5)];
+        var w = 100 / sprite.width, h = 100 / sprite.height;
         if (event.to == 'wall') {
-            ctx.drawImage(sprites.yellowSmoke[round(t*5)],
-                event.x/width*W-r/2, 
-                event.y/height*H-r/2, r, r);
+            ctx.drawImage(sprite,
+                event.x/width*W-r*w/2, 
+                event.y/height*H-r*h/2, r*w, r*h);
         } else if (event.to == 'player') {
             var player = players.find(function (p) {
                 return p.username == event.username;
             });
-            ctx.drawImage(sprites.yellowSmoke[round(t*5)],
-                player.x/width*W-r/2, 
-                player.y/height*H-r/2, r, r);
+            ctx.drawImage(sprite,
+                player.x/width*W-r*w/2, 
+                player.y/height*H-r*h/2, r*w, r*h);
         }
         if (t == 1) {
             bulletEvents.splice(i, 1);
