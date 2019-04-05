@@ -128,7 +128,7 @@ function render(data) {
             tankRadius/height*H*1.5*sqrt(2));
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-        var shootAnimation = range(data.time - player.lastShot, 0, 7) / 7;
+        var shootAnimation = range(data.time - player.lastShot, 0, 10) / 10;
         var r = sin(shootAnimation*PI) * tankRadius*2 / width * W;
         ctx.drawImage(sprites.whiteSmoke[~~(shootAnimation*5)],
             (player.x + cos(player.headDirection)*tankRadius)/width*W-r/2, 
@@ -139,7 +139,7 @@ function render(data) {
         ctx.rotate(player.headDirection-PI/2);
         ctx.drawImage(barrelSprite,
             -(barrelSprite.width / barrelSprite.height) * (tankRadius*1.5/height*H) / 2, 
-            -tankRadius*(0.25+sin(shootAnimation*PI)/2)/height*H, 
+            -tankRadius*(sin(shootAnimation*PI)/2+0.25)/height*H, 
             (barrelSprite.width / barrelSprite.height) * (tankRadius*1.5/height*H), 
             tankRadius*1.5/height*H
             );
@@ -180,21 +180,22 @@ function render(data) {
     }
     for (var i = 0; i < bulletEvents.length; ++i) {
         var event = bulletEvents[i];
-        var t = range(data.time - event.time, 0, 10) / 10;
+        var t = range(data.time - event.time, 0, 4) / 4;
         var r = -pow(t-0.5,4)*16+1 * tankRadius*1.75 / width * W;
         var sprite = sprites.yellowSmoke[round(t*5)];
-        var w = 100 / sprite.width, h = 100 / sprite.height;
+        var w = r * (100 / sprite.width), a = sprite.width / sprite.height,
+            h = w / a;
         if (event.to == 'wall') {
             ctx.drawImage(sprite,
-                event.x/width*W-r*w/2, 
-                event.y/height*H-r*h/2, r*w, r*h);
+                event.x/width*W-w/2, 
+                event.y/height*H-h/2, w, h);
         } else if (event.to == 'player') {
             var player = players.find(function (p) {
                 return p.username == event.username;
             });
             ctx.drawImage(sprite,
-                player.x/width*W-r*w/2, 
-                player.y/height*H-r*h/2, r*w, r*h);
+                player.x/width*W-w/2, 
+                player.y/height*H-h/2, w, h);
         }
         if (t == 1) {
             bulletEvents.splice(i, 1);
