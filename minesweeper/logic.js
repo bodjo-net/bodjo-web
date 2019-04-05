@@ -1,4 +1,4 @@
-var socket, lastID;
+var socket, lastID, field;
 var timeout = 16;
 var isPlaying = false;
 var playBtn = document.querySelector('#play');
