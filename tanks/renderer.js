@@ -181,17 +181,17 @@ function render(data) {
     for (var i = 0; i < bulletEvents.length; ++i) {
         var event = bulletEvents[i];
         var t = range(data.time - event.time, 0, 10) / 10;
-        var r = -pow(t-0.5,6)*64+1 * tankRadius*1.75 / width * W;
+        var r = -pow(t-0.5,4)*16+1 * tankRadius*1.75 / width * W;
         console.log(t, r)
         if (event.to == 'wall') {
-            ctx.drawImage(sprites.yellowSmoke[~~(t*5)],
+            ctx.drawImage(sprites.yellowSmoke[round(t*5)],
                 event.x/width*W-r/2, 
                 event.y/height*H-r/2, r, r);
         } else if (event.to == 'player') {
             var player = players.find(function (p) {
                 return p.username == event.username;
             });
-            ctx.drawImage(sprites.yellowSmoke[~~(t*5)],
+            ctx.drawImage(sprites.yellowSmoke[round(t*5)],
                 player.x/width*W-r/2, 
                 player.y/height*H-r/2, r, r);
         }
