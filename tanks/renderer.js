@@ -258,7 +258,7 @@ function render(data) {
 
         ctx.fillStyle = '#000000';
         ctx.strokeStyle = '#ffffff';
-        ctx.font = tankRadius*0.75/height*H + 'px \'Source Code Pro\'';
+        ctx.font = tankRadius/height*H + 'px \'Source Code Pro\'';
         var text = ctx.measureText(player.username);
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
