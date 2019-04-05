@@ -152,9 +152,10 @@ function render(data) {
         ctx.strokeStyle = '#9d9783';
         ctx.lineWidth = tankRadius * 0.02 / width * W;
         for (var i = 0; i < data.walls.length; ++i) {
+            var wall = data.walls[i];
             ctx.beginPath();
-            ctx.moveTo(data.walls[0].x/width*W, data.walls[0].y/height*H);
-            ctx.lineTo(data.walls[1].x/width*W, data.walls[1].y/height*H);
+            ctx.moveTo(wall[0].x/width*W, wall[0].y/height*H);
+            ctx.lineTo(wall[1].x/width*W, wall[1].y/height*H);
             ctx.stroke();
         }
     }
