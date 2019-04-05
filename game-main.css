@@ -38,6 +38,7 @@ html, head, body {
 	padding: 0.2em 0.5em;
 	display: inline-block;
 	margin-right: 0.2em;
+	z-index: 2;
 }
 #tabs .tab.active {
 	background: #fff;

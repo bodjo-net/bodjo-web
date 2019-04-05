@@ -19,6 +19,7 @@
 	<div id="workspace">
 		<div id="resizer"></div>
 		<div id='tabs'>
+			<div style='position:absolute;top:1em;right:0.25em;opacity:0.3;z-index:0;font-size:75%'><b>Alt</b>+<b>-</b>, <b>Alt</b>+<b>+</b> (зум в редакторе)</div>
 			<div class='tab' id="tab-code">Код</div><div class='tab active' id="tab-docs">Документация</div><div class='tab' id="tab-scoreboard">Таблица</div>
 		</div>
 		<div id="content">
@@ -146,7 +147,7 @@
 - `line(from, to, (optional) color)` Рисует линию с from к to.
 - `point(your_point, (optional) color)` Рисует точку.
 
-Если цвет не выбрать, стандартный стоит красный.
+Если не выбрать цвет, линия/точка будет нарисована красной.
 Аргументы должны быть объектами с ключами **x** и **y**. Например:
 
 	line(me, enemy);
