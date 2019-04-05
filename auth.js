@@ -128,7 +128,7 @@ function signIn() {
 			signInUsername.value = '';
 			signInPassword.value = '';
 		} else {
-			if (obj.errorCode == 301) {
+			if (obj.errorCode == 401) {
 				errorInput(signUpUsername);
 				errorInput(signUpPassword);
 				return;

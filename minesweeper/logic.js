@@ -170,7 +170,7 @@ function tick() {
 		response.coordinates[1] < 0 || response.coordinates[1] >= field.length) {
 		isPlaying = false;
 		playBtn.className = 'btn ripple';
-		var string = JSON.stringify(response,null,'\t');
+		var string = typeof response == 'undefined' ? 'undefined' : JSON.stringify(response,null,'\t');
 		if (string.length > 300)
 			showError('Function \'onTick\' returns bad response.');
 		else showError('Function \'onTick\' returns bad response: \n\n'+string);
