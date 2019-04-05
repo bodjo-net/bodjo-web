@@ -81,6 +81,22 @@
 
 	},...]
 
+- **[array]** bullets (данные про пули)
+
+	[{
+
+	- **[number]** x (от 0 до width)
+	- **[number]** y (от 0 до height)
+	- **[number]** vx (X-координата вектора полёта)
+	- **[number]** vy (Y-координата вектора полёта)
+	Чтобы предсказать, где будет пуля на следующем кадре, достаточно добавить к координатам вектор. Т.е. newX = x + vx; newY = y + vy.
+	- **[number]** angle (угол полёта пули, в радианах)
+	- **[string]** owner (юзернейм владельца пули)
+	- **[string]** color (цвет пули)
+	- **[boolean]** type (false - обычная, true - элитная)
+
+	},...]
+
 - **[array]** bonuses (не подобранные бонусы)
 	
 	[{
@@ -92,11 +108,61 @@
 
 	},...]
 
+- **[array]** walls (стены; массив массивов с двумя точками стены)
+	Пример:
+
+		[
+			[{x: 7.5, y: 2.5}, {x: 2.5, y: 2.5}],
+			[{x: 2.5, y: 2.5}, {x: 2.5, y: 7.5}],
+			[{x: 2.5, y: 12.5}, {x: 2.5, y: 17.5}],
+			[{x: 2.5, y: 17.5}, {x: 7.5, y: 17.5}]
+		]
+
+### Выходные данные
+
+Ваша функция `onTick` должна возвращать объект с тремя ключами:
+
+- **[number]** headAngle (угол поворота башни танка, в радианах)
+- **[boolean]** shoot (стрелять ли (в направлении headAngle, который вы указали в этом объекте))
+- **[array]** move (вектор движения танка)
+
+	move - массив с двумя числами: X и Y координаты вектора движения. Ниже можно увидеть видео, где A - это вектор.
+
+	Пример:
+	
+		[0.8660254, -0.499999]
+
+	Максимальная скорость - 1, т.е. макс. длина вектора - 1.
+
+	Чтобы поехать с максимальной скоростью по какому-то углу (например 90 градусов, или 0.5pi радиана), достаточно найти точку на окружности с радиусом 1. Подробнее, как найти точку на окружности можно найти [тут](http://lmgtfy.com/?q=get+point+on+circle).
+
+{VIDEO}
+
+## Дополнительно
+
+Можно делать дебаг прямо на игровом поле! Для этого есть две функции:
+
+- `line(from, to, (optional) color)` Рисует линию с from к to.
+- `point(your_point, (optional) color)` Рисует точку.
+
+Если цвет не выбрать, стандартный стоит красный.
+Аргументы должны быть объектами с ключами **x** и **y**. Например:
+
+	line(me, enemy);
+	line(bullet, me);
+
+	point({x: width/2, y: height/2});
+	point(bullet);
+
+Также, для удобства, все функции в **Math** можно писать без **Math.**. Например:
+
+	sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+	point({x: width/2 + cos(PI/4)*10, y: height/2 + sin(PI/4)*10});
 			</div>
 			<script type="text/javascript" src="/lib/markdown.js"></script>
 			<script type="text/javascript">
 				var docs = document.querySelector("#docs");
-				docs.innerHTML = toHTML(docs.innerHTML);
+				docs.innerHTML = toHTML(docs.innerHTML).replace(/{VIDEO}/g, "<video loop autoplay muted style='width:150px'><source src='explanation.mp4' type='video/mp4'></video>").replace(/\<a /g, "<a target='_blank' ");
 			</script>
 			<div class='section' id='scoreboard'>
 				<table>
@@ -122,7 +188,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js"></script>
 	<script type="text/javascript">
 		const gameName = 'tanks';
-		const defaultCode = '// constants: width, height, tankRadius\n// this function is runned every tick\n\nfunction onTick(data) {\n\n\treturn {\n\t\tmove: [0, 0],\n\t\thead: Date.now()/1000*PI,\n\t\tshoot: true\n\t}\n}';
+		const defaultCode = '// constants: width, height, tankRadius\n// this function is runned every tick\n\nfunction onTick(data) {\n\n\treturn {\n\t\tmove: [0, 0],\n\t\theadAngle: Date.now()/1000*PI,\n\t\tshoot: true\n\t}\n}';
 	</script>
 	<script src="../ripple.js" type="text/javascript"></script>
 	<script src="renderer.js" type="text/javascript"></script>

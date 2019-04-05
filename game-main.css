@@ -283,3 +283,8 @@ h1, h2, h3, h4, h5, h6, p {
 #scoreboard td {
 	text-align: center;
 }
+code {
+	font-size: 120%;
+	word-break: break-word;
+    white-space: pre-line;
+}

@@ -117,6 +117,7 @@ function signIn() {
 	request('POST', '/login', {username: username, password: password}, function (obj) {
 		if (obj.status == 'ok') {
 			token = obj.token;
+			username = obj.username;
 			localStorage.token = token;
 			localStorage.username = username;
 			setCookie("token", token);
