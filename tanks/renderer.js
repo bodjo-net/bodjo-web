@@ -150,7 +150,7 @@ function render(data) {
     }
     if (data.walls) {
         ctx.strokeStyle = '#9d9783';
-        ctx.lineWidth = tankRadius * 0.02 / width * W;
+        ctx.lineWidth = tankRadius * 0.25 / width * W;
         for (var i = 0; i < data.walls.length; ++i) {
             var wall = data.walls[i];
             ctx.beginPath();
