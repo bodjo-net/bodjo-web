@@ -7,14 +7,23 @@ var againBtn = document.querySelector('#again');
 var difficultySelect = document.querySelector('#difficulty select');
 var timeoutRange = document.querySelector('#timeout input[type=range]');
 var timeoutText = document.querySelector('#timeout p');
-
+var needToRestart = false;
 playBtn.addEventListener('click', function () {
 	if (!isPlaying) {
 		playBtn.className = 'btn ripple down';
 		isPlaying = true;
 
-		if (socket.readyState == 1)
-			tick();
+		if (needToRestart) {
+			needToRestart = false;
+			lastID++;
+			socket.send(JSON.stringify({
+				type: 'repeat',
+				id: lastID
+			}));
+		} else {
+			if (socket.readyState == 1)
+				tick();
+		}
 	}
 });
 pauseBtn.addEventListener('click', function () {
@@ -84,13 +93,16 @@ function startSocket() {
 				if (data.status == 'playing') {
 					tick();
 				} else if (data.status == 'win' || data.status == 'defeat') {
-					setTimeout(function () {
-						lastID++;
-						socket.send(JSON.stringify({
-							type: 'repeat',
-							id: lastID
-						}));
-					}, timeout*2);
+					isPlaying = false;
+					playBtn.className = 'btn ripple';
+					needToRestart = true;
+					// setTimeout(function () {
+					// 	lastID++;
+					// 	socket.send(JSON.stringify({
+					// 		type: 'repeat',
+					// 		id: lastID
+					// 	}));
+					// }, timeout*2);
 				}
 			}
 		} else if (data.type == 'score') {
@@ -127,11 +139,19 @@ function tick() {
 	if (typeof onTick !== 'function') {
 		isPlaying = false;
 		playBtn.className = 'btn ripple';
-		showError('Function \'onTick\' is missing.');
+		showError('Function \"onTick\" is not found.');
 		return false;
 	}
 
-	var response = onTick(field);
+	try {
+		var response = onTick(field);
+	} catch (e) {
+		isPlaying = false;
+		playBtn.className = 'btn ripple';
+		showError(e);
+		return false;
+	}
+
 	if (typeof response !== 'object' ||
 		typeof response.action !== 'string' ||
 		['open','mark'].indexOf(response.action) < 0 ||
@@ -143,8 +163,8 @@ function tick() {
 		playBtn.className = 'btn ripple';
 		var string = typeof response == 'undefined' ? 'undefined' : JSON.stringify(response,null,'\t');
 		if (string.length > 300)
-			showError('Function \'onTick\' returns bad response.');
-		else showError('Function \'onTick\' returns bad response: \n\n'+string);
+			showError('Function returned bad response.');
+		else showError('Function returned bad response: \n\n'+string);
 		return false;
 	}
 

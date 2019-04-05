@@ -3,12 +3,14 @@ var isPlaying = false;
 var playBtn = document.querySelector('#play');
 var pauseBtn = document.querySelector('#pause');
 var socket;
+var code = null, func = false;
 
 playBtn.addEventListener('click', function () {
 	if (!isPlaying) {
 		playBtn.className = 'btn ripple down';
 		isPlaying = true;
 		if (socket.readyState == 1) {
+			code = editor.getValue();
 			socket.send(JSON.stringify({type: 'start'}));
 		}
 	}
@@ -51,22 +53,31 @@ function startSocket() {
 				return;
 
 			if (isPlaying) {
-				var code = editor.getValue();
-				try {
-					eval(code);
-				} catch (e) {
-					stop();
-					showError(e.stack);
-					return false;
+				if (!func) {
+					code = editor.getValue();
+					try {
+						eval(code);
+					} catch (e) {
+						stop();
+						showError(e.stack);
+						return false;
+					}
+
+					if (typeof onTick !== 'function') {
+						stop();
+						showError('Function \"onTick\" is not found.');
+						return false;
+					}
+					func = onTick;
 				}
 
-				if (typeof onTick !== 'function') {
+				if (typeof func !== 'function') {
 					stop();
-					showError('Function \'onTick\' is missing.');
+					showError('Function \"onTick\" is not found.');
 					return false;
 				}
 				try {
-					var response = onTick(data);
+					var response = func(data);
 				} catch (e) {
 					stop();
 					showError(e.stack);
@@ -85,8 +96,8 @@ function startSocket() {
 					stop()
 					var string = typeof response === 'undefined' ? 'undefined' : JSON.stringify(response,null,'\t');
 					if (string.length > 300)
-						showError('Function \'onTick\' returns bad response.');
-					else showError('Function \'onTick\' returns bad response: \n\n'+string);
+						showError('Function \"onTick\" returned bad response.');
+					else showError('Function \"onTick\" returned bad response: \n\n'+string);
 					return false;
 				}
 
@@ -113,6 +124,8 @@ function stop() {
 	playBtn.className = 'btn ripple';
 	isPlaying = false;
 	if (socket && socket.readyState == 1) {
+		code = null;
+		func = null;
 		socket.send(JSON.stringify({type: 'stop'}));
 	}
 }

@@ -120,7 +120,7 @@ function render(data) {
         var player = players[i];
         ctx.translate((player.x)/width*W, 
                       (player.y)/height*H);
-        ctx.rotate(player.direction-PI/2);
+        ctx.rotate(player.direction%(PI*2)-PI/2);
         ctx.drawImage(sprites.tank[player.color], 
             -tankRadius/width*W*1.5*sqrt(2)/2, 
             -tankRadius/height*H*1.5*sqrt(2)/2, 
@@ -136,7 +136,7 @@ function render(data) {
 
         var barrelSprite = sprites.barrel[player.color];
         ctx.translate(player.x/width*W, player.y/height*H);
-        ctx.rotate(player.headDirection-PI/2);
+        ctx.rotate(player.headDirection%(PI*2)-PI/2);
         ctx.drawImage(barrelSprite,
             -(barrelSprite.width / barrelSprite.height) * (tankRadius*1.5/height*H) / 2, 
             -tankRadius*(sin(shootAnimation*PI)/2+0.25)/height*H, 

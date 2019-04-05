@@ -5,7 +5,7 @@ Object.getOwnPropertyNames(Math).forEach(function(n){window[n]=Math[n]});
 var editor = ace.edit('editor');
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/javascript");
-editor.setValue((localStorage[gameName.toUpperCase()+'_savedCode'] || 'function onTick(data) {\n\t// TODO\n\t\n}'), -1);
+editor.setValue((localStorage[gameName.toUpperCase()+'_savedCode'] || defaultCode), -1);
 if (localStorage[gameName.toUpperCase()+'_caretPos']) {
 	try {
 		let pos = JSON.parse(localStorage[gameName.toUpperCase()+'_caretPos']);
@@ -169,6 +169,21 @@ function request(method, url, parameters, callback) {
 	}
 	req.send();
 }
+
+document.addEventListener('keydown', function (event) {
+	if ((event.ctrlKey || event.metaKey) && [83,189,187].indexOf(event.which) >= 0) {
+		event.preventDefault();
+		if (event.which == 189 || event.which == 187) {
+			let fontSize = editor.getFontSize();
+			let inc = 2 * (e.which == 187 ? 1 : -1)
+			if ((fontSize < 4 && inc < 0) || 
+				(fontSize > 100 && inc > 0))
+				return;
+			editor.setFontSize(fontSize + inc);
+			localStorage[gameName.toUpperCase()+'_codeSize'] = editor.getFontSize();
+		}
+    }
+});
 
 var tagsToReplace = {
     '&': '&amp;',
