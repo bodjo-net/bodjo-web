@@ -135,7 +135,7 @@ function render(data) {
         var player = players[i];
         ctx.translate((player.x)/width*W, 
                       (player.y)/height*H);
-        ctx.rotate(player.direction%(PI*2)-PI/2);
+        ctx.rotate(player.angle%(PI*2)-PI/2);
         ctx.drawImage(sprites.tank[player.color], 
             -tankRadius/width*W*1.5*sqrt(2)/2, 
             -tankRadius/height*H*1.5*sqrt(2)/2, 
@@ -146,12 +146,12 @@ function render(data) {
         var shootAnimation = range(data.time - player.lastShot, 0, 10) / 10;
         var r = sin(shootAnimation*PI) * tankRadius*2 / width * W;
         ctx.drawImage(sprites.whiteSmoke[~~(shootAnimation*5)],
-            (player.x + cos(player.headDirection)*tankRadius)/width*W-r/2, 
-            (player.y + sin(player.headDirection)*tankRadius)/height*H-r/2, r, r);
+            (player.x + cos(player.headAngle)*tankRadius)/width*W-r/2, 
+            (player.y + sin(player.headAngle)*tankRadius)/height*H-r/2, r, r);
 
         var barrelSprite = sprites.barrel[player.color];
         ctx.translate(player.x/width*W, player.y/height*H);
-        ctx.rotate(player.headDirection%(PI*2)-PI/2);
+        ctx.rotate(player.headAngle%(PI*2)-PI/2);
         ctx.drawImage(barrelSprite,
             -(barrelSprite.width / barrelSprite.height) * (tankRadius*1.5/height*H) / 2, 
             -tankRadius*(sin(shootAnimation*PI)/2+0.25)/height*H, 

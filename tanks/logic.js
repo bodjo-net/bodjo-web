@@ -90,8 +90,8 @@ function startSocket() {
 					response.move.length == 2 &&
 					response.move[0] >= -1 && response.move[0] <= 1 &&
 					response.move[1] >= -1 && response.move[1] <= 1 &&
-					typeof response.head === 'number' &&
-					Number.isFinite(response.head) &&
+					typeof response.headAngle === 'number' &&
+					Number.isFinite(response.headAngle) &&
 					typeof response.shoot === 'boolean')) {
 					isPlaying = false;
 					stop()
