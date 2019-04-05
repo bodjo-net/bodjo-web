@@ -265,10 +265,10 @@ function render(data) {
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
 }
-function point(x, y, color) {
+function point(a, color) {
     ctx.beginPath();
     ctx.fillStyle = color || 'red';
-    ctx.arc(x/width*W, y/height*H, 3, 0, PI*2);
+    ctx.arc(a.x/width*W, a.y/height*H, 3, 0, PI*2);
     ctx.fill()
 }
 function line(a, b, color) {
