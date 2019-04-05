@@ -104,8 +104,14 @@ function render(data) {
 
     ctx.strokeRect(0,0,W-1,H-1);
 
-    var players = data.enemies.slice(0);
-    players.push(data.me);
+    var players;
+    if (data.players) {
+        players = data.players;
+    } else {
+        var players = data.enemies.slice(0);
+        players.push(data.me);
+    }
+    
     for (var i = 0; i < players.length; ++i) {
         var player = players[i];
         ctx.translate((player.x)/width*W, 
