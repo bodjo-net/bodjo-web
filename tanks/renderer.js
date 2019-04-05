@@ -150,7 +150,8 @@ function render(data) {
     }
     if (data.walls) {
         ctx.strokeStyle = '#9d9783';
-        ctx.lineWidth = tankRadius * 0.25 / width * W;
+        ctx.lineWidth = tankRadius * 0.7 / width * W;
+        ctx.lineCap = 'round';
         for (var i = 0; i < data.walls.length; ++i) {
             var wall = data.walls[i];
             ctx.beginPath();
