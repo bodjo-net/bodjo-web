@@ -18,10 +18,11 @@ Object.keys(pages).forEach(function (selector) {
 	var name = pages[selector], sName = name;
 	var page, link;
 	if (name[0] == '>') {
-		sName = name = link = name.substring(1);
+		sName = name = name.substring(1);
+		link = '/' + name;
 	} else {
 		page = document.querySelector('#'+name);
-		link = name;
+		link = '/'+name;
 		if (name == 'root') {
 			link = '/';
 			sName = '';

@@ -128,11 +128,9 @@ function signIn() {
 			signInUsername.value = '';
 			signInPassword.value = '';
 		} else {
-			if (obj.errorCode == 401) {
-				errorInput(signUpUsername);
-				errorInput(signUpPassword);
-				return;
-			}
+			errorInput(signInUsername);
+			errorInput(signInPassword);
+			return;
 		}
 	});
 }
@@ -191,10 +189,14 @@ request('GET', '/services', {}, function (obj) {
 var signOutButton = document.querySelector('#sign-out');
 signOutButton.addEventListener('click', function () {
 	if (checkedToken) {
-		checkedToken = false;
-		deleteCookie('token');
-		localStorage.removeItem('token');
-		updateAuthority();
+		request("POST", "/log_out", {token: token}, function (obj) {
+			if (obj.status == 'ok') {
+				checkedToken = false;
+				deleteCookie('token');
+				localStorage.removeItem('token');
+				updateAuthority();
+			}
+		});
 	}
 })
 
