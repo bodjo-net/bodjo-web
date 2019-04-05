@@ -89,7 +89,7 @@ var sprites = {
     ]),
     bonuses: loadSprites({
         heal: './assets/Bonuses/aid.png',
-        strength: './assets/Bonuses/ammo.png'
+        ammo: './assets/Bonuses/ammo.png'
     })
 };
 function loadSprites(obj) {
@@ -103,7 +103,7 @@ function loadSprites(obj) {
 }
 var bonusesColors = {
     heal: 'rgba(0,185,0,0.25)',
-    strength: 'rgba(150,70,0,0.25)'
+    ammo: 'rgba(150,70,0,0.25)'
 }
 
 var canvas = document.querySelector('canvas');
@@ -237,9 +237,11 @@ function render(data) {
             var player = players.find(function (p) {
                 return p.username == event.username;
             });
-            ctx.drawImage(sprite,
-                player.x/width*W-w/2, 
-                player.y/height*H-h/2, w, h);
+            if (player) {
+                ctx.drawImage(sprite,
+                    player.x/width*W-w/2, 
+                    player.y/height*H-h/2, w, h);
+            }
         }
         if (t == 1) {
             bulletEvents.splice(i, 1);

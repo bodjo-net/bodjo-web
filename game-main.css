@@ -19,6 +19,7 @@ html, head, body {
 	width: 550px;
 	box-shadow: -2px 0 5px rgba(0,0,0,0.15);
 	background: #fff;
+    overflow: hidden;
 }
 #tabs {
 	user-select: none;
@@ -95,7 +96,7 @@ html, head, body {
 }
 #docs, #settings {
 	overflow-y: auto;
-	font-size: 90%;
+	font-size: 100%;
 	padding: 0.3em 0.5em;
 }
 h1, h2, h3, h4, h5, h6, p {
