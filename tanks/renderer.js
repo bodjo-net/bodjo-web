@@ -1,6 +1,7 @@
 var gameContainer = document.querySelector("#game");
 var fieldContainer = document.querySelector("#field");
 
+var height, width;
 function onResize() {
     if (width != null) {
         let cWidth = gameContainer.clientWidth - 20;
@@ -93,7 +94,6 @@ function loadSprites(obj) {
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
-var height, width;
 var W, H, s;
 var lastData = null;
 function render(data) {
@@ -102,6 +102,9 @@ function render(data) {
     ctx.fillStyle = ctx.createPattern(sprites.bg.sand, 'repeat');
     ctx.fillRect(0,0,W,H);
 
+    ctx.strokeStyle = '#9d9783';
+    ctx.lineWidth = tankRadius * 0.7 / width * W;
+    ctx.lineCap = 'round';
     ctx.strokeRect(0,0,W-1,H-1);
 
     var players;
