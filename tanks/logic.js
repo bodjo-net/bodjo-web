@@ -2,6 +2,7 @@ var timeout = 16;
 var isPlaying = false;
 var playBtn = document.querySelector('#play');
 var pauseBtn = document.querySelector('#pause');
+var socket;
 
 playBtn.addEventListener('click', function () {
 	if (!isPlaying) {
@@ -29,8 +30,7 @@ function startSocket() {
 	var username = USERNAME;
 	var token = GAME_SESSION_TOKEN;
 
-	var socket = new WebSocket(url);
-	var lastID = null;
+	socket = new WebSocket(url);
 	socket.onmessage = function (event) {
 		try {
 			var data = JSON.parse(event.data);
@@ -113,17 +113,3 @@ function startSocket() {
 		}));
 	}
 }
-
-function tick() {
-	if (!isPlaying && field != null) 
-		return;
-
-	var llastID = lastID;
-	setTimeout(function () {
-		if (llastID != lastID || !isPlaying)
-			return;
-		lastID = (lastID||-1)+1;
-	}, timeout);
-	return true;
-}
-
