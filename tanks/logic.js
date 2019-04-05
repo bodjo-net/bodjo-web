@@ -22,7 +22,7 @@ pauseBtn.addEventListener('click', function () {
 });
 
 var width = null, height, tankRadius;
-
+var difference = -1;
 function startSocket() { 
 	var url = "wss://vkram.shpp.me:"+PORT;
 	var username = USERNAME;
@@ -30,8 +30,9 @@ function startSocket() {
 
 	socket = new WebSocket(url);
 	socket.onmessage = function (event) {
+		var data;
 		try {
-			var data = JSON.parse(event.data);
+			data = JSON.parse(event.data);
 		} catch (e) {return;}
 
 		if (data.type == 'connect') {
@@ -45,9 +46,13 @@ function startSocket() {
 			width = data.width;
 			height = data.height;
 			tankRadius = data.tankRadius;
+			if (data.timestamp)
+				difference = Date.now() - data.timestamp;
 			onResize();
 		} else if (data.type == 'game') {
-
+			if (difference != -1 && abs((Date.now() - difference) - data.timestamp) > 200)
+				return;
+			
 			render(data);
 			if (isPlaying && !data.me)
 				return;

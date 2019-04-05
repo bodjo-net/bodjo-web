@@ -109,6 +109,7 @@ var bonusesColors = {
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
+
 var W, H, s;
 var lastData = null;
 var bulletEvents = [];
@@ -161,11 +162,11 @@ function render(data) {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         var bonuses = Object.keys(player.activeBonuses);
-        for (var i = 0; i < bonuses.length; ++i) {
-            var bonus = player.activeBonuses[bonuses[i]];
+        for (var j = 0; j < bonuses.length; ++j) {
+            var bonus = player.activeBonuses[bonuses[j]];
             var t = range(data.time - bonus.start, 0, bonus.duration) / bonus.duration;
             var r = (-pow(t-0.5,10)*1000+1);
-            ctx.fillStyle = bonusesColors[bonuses[i]];
+            ctx.fillStyle = bonusesColors[bonuses[j]];
             ctx.beginPath();
             ctx.arc(player.x/width*W, player.y/height*H, r*tankRadius*2/width*W, 0, PI*2);
             ctx.fill();
