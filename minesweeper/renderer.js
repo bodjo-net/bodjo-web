@@ -47,9 +47,9 @@ var ctx = canvas.getContext('2d');
 var height, width;
 var W, H, s;
 function render(field, _canvas) {
-	if (width != field[0].length || height != field.length)
-		onResize(true);
 	lastField = field;
+	if (height != field.length || width != field[0].length)
+		onResize(true);
 
 	if (_canvas)
 		ctx = _canvas.getContext('2d');
