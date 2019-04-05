@@ -35,6 +35,19 @@
 <body>
 <div id="players">
 </div>
+<div id="scoreboard">
+	<table>
+		<tbody>
+			<tr>
+				<th>Место</th>
+				<th>Никнейм</th>
+				<th>Пройден уровень</th>
+			</tr>
+		</tbody>
+		<tbody id='scoreboard-data'>
+		</tbody>
+	</table>
+</div>
 <script type="text/javascript">
 	const server_url = 'https://vkram.shpp.me:3518';
 	function request(method, url, parameters, callback) {
@@ -74,6 +87,7 @@
 
 		var players = {};
 		var playersContainer = document.querySelector('#players');
+		var scoreboardContainer = document.querySelector('#scoreboard-data');
 
 		var socket = new WebSocket(url);
 		socket.onmessage = function (event) {
@@ -81,7 +95,6 @@
 				var data = JSON.parse(event.data);
 			} catch (e) {return;}
 
-			console.log(data)
 			if (data.type == 'connect') {
 				if (data.status != 'ok') {
 					console.log('connected unsuccessfully');
@@ -92,9 +105,14 @@
 				players[data.username].field = data.field;
 				render(players[data.username].canvas, players[data.username].field);
 			} else if (data.type == 'playerConnected') {
-
+				players[data.username] = createPlayer(data);
 			} else if (data.type == 'playerDisconnected') {
-
+				removePlayer(data.username);
+			} else if (data.type == 'scoreboard') {
+				var scoreboard = data.scoreboard;
+				scoreboardContainer.innerHTML = Array.from(scoreboard, function () {
+					
+				});
 			}
 		}
 		socket.onopen = function () {
@@ -120,6 +138,12 @@
 				container: playerContainer
 			}
 		}
+		function removePlayer(username) {
+			var player = players[username];
+			player.container.remove();
+			delete players[username];
+		}
+
 
 
 		function render(canvas, field) {

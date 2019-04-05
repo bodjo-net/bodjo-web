@@ -1,32 +1,3 @@
-var userToken = localStorage.token || getCookie('token');
-var username = localStorage.username || getCookie('username');
-if (!userToken || !username) {
-	// bad
-	alert('We lost your username or token. Try to come back to https://bodjo.net and connect to game again.');
-	window.location.href = 'https://bodjo.net';
-} else {
-	request('GET', '/play', {gameName: gameName, token: userToken}, function (obj) {
-		if (obj.status == 'ok') {
-			PORT = obj.port;
-			GAME_SESSION_TOKEN = obj.gameSessionToken;
-			USERNAME = username;
-
-			startSocket();
-		} else {
-			alert('Your token is invalid. Try to come back to https://bodjo.net and sign in again.');
-			window.location.href = 'https://bodjo.net';
-		}
-	});
-}
-		// 	request('GET', '/play', {gameName: name, token: token}, function (_obj) {
-		// 		if (_obj.status == 'ok') {
-		// 			window.location.href = window.location.protocol + '//' + window.location.hostname + '/' + name + '/?token=' + encodeURIComponent(_obj.gameSessionToken) + '&username=' + encodeURIComponent(username) + '&port=' + encodeURIComponent(_obj.port);
-		// 		} else {
-		// 			console.log(_obj);
-		// 		}
-		// 	});
-		// });
-
 var socket, lastID;
 var timeout = 16;
 var isPlaying = false;
@@ -83,12 +54,12 @@ timeoutRange.value = timeout;
 timeoutText.innerText = timeout + 'ms';
 
 function startSocket() {
-	var url = "wss://vkram.shpp.me:"+PORT;
 	// var url = 'ws://localhost:3423'
-	var username = USERNAME;
-	var token = GAME_SESSION_TOKEN;
 	// var token = '1';
 	// var username = '1';
+	var url = "wss://vkram.shpp.me:"+PORT;
+	var username = USERNAME;
+	var token = GAME_SESSION_TOKEN;
 
 	socket = new WebSocket(url);
 	lastID = null;
@@ -192,67 +163,3 @@ function tick() {
 	return true;
 }
 
-
-var field = null;
-
-var gameContainer = document.querySelector("#game");
-var fieldContainer = document.querySelector("#field");
-
-function onResize() {
-	if (field != null)
-		render(field);
-}
-window.addEventListener('resize', onResize);
-
-var canvas = document.querySelector('canvas');
-var ctx = canvas.getContext('2d');
-
-var height, width;
-var W, H, s;
-function render(field) {
-	height = field.length;
-	width = field[0].length;
-	lastFieldSize = [width, height];
-	let cWidth = gameContainer.clientWidth - 20;
-	let cHeight = gameContainer.clientHeight - 20;
-
-	let aspect = width / height;
-	let cAspect = cWidth / cHeight;
-
-	if (height * cAspect > aspect * width) {
-		H = cHeight;
-		W = cHeight * aspect;
-		s = H / height;
-		fieldContainer.style.marginLeft = (cWidth - W) / 2 + "px";
-		fieldContainer.style.marginTop = "0px";
-	} else {
-		W = cWidth;
-		H = cWidth / aspect;
-		s = W / width;
-		fieldContainer.style.marginTop = (cHeight - H) / 2 + "px";
-		fieldContainer.style.marginLeft = "0px";
-	}
-
-	fieldContainer.style.width = W + "px";
-	fieldContainer.style.height = H + "px";
-
-	canvas.width = W * window.devicePixelRatio;
-	canvas.height = H * window.devicePixelRatio;
-
-	ctx.clearRect(0, 0, W, H);
-	for (let y = 0; y < height; ++y)
-		for (let x = 0; x < width; ++x)
-			renderElement(x, y, field[y][x], s * window.devicePixelRatio);
-}
-
-var tiles = new Image();
-tiles.src = 'tiles.png';
-function renderElement(x, y, c, s) {
-	var map = " Fx012345678*";
-	var X = map.indexOf(c) % 4;
-	var Y = ~~((map.indexOf(c) - X) / 4);
-	// empty, flag, mine, opened
-	// 1, 2, 3, 4
-	// 5, 6, 7, 8
-	ctx.drawImage(tiles, X*(tiles.width/4), Y*(tiles.height/4), 128, 128, x*s, y*s, s, s);
-}
