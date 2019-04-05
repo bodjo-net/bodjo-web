@@ -164,7 +164,6 @@ function render(data) {
         for (var i = 0; i < bonuses.length; ++i) {
             var bonus = player.activeBonuses[bonuses[i]];
             var t = range(data.time - bonus.start, 0, bonus.duration) / bonus.duration;
-            console.log(bonus)
             var r = (-pow(t-0.5,10)*1000+1);
             ctx.fillStyle = bonusesColors[bonuses[i]];
             ctx.beginPath();
