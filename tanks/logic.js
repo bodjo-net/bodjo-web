@@ -15,11 +15,7 @@ playBtn.addEventListener('click', function () {
 });
 pauseBtn.addEventListener('click', function () {
 	if (isPlaying) {
-		playBtn.className = 'btn ripple';
-		isPlaying = false;
-		if (socket.readyState == 1) {
-			socket.send(JSON.stringify({type: 'stop'}));
-		}
+		stop();
 	}
 });
 
@@ -51,29 +47,28 @@ function startSocket() {
 		} else if (data.type == 'game') {
 
 			render(data);
+			if (isPlaying && !data.me)
+				return;
 
 			if (isPlaying) {
 				var code = editor.getValue();
 				try {
 					eval(code);
 				} catch (e) {
-					isPlaying = false;
-					playBtn.className = 'btn ripple';
+					stop();
 					showError(e.stack);
 					return false;
 				}
 
 				if (typeof onTick !== 'function') {
-					isPlaying = false;
-					playBtn.className = 'btn ripple';
+					stop();
 					showError('Function \'onTick\' is missing.');
 					return false;
 				}
 				try {
 					var response = onTick(data);
 				} catch (e) {
-					isPlaying = false;
-					playBtn.className = 'btn ripple';
+					stop();
 					showError(e.stack);
 					return false;
 				}
@@ -87,7 +82,7 @@ function startSocket() {
 					Number.isFinite(response.head) &&
 					typeof response.shoot === 'boolean')) {
 					isPlaying = false;
-					playBtn.className = 'btn ripple';
+					stop()
 					var string = JSON.stringify(response,null,'\t');
 					if (string.length > 300)
 						showError('Function \'onTick\' returns bad response.');
@@ -111,5 +106,13 @@ function startSocket() {
 			token,
 			role: 'player'
 		}));
+	}
+}
+
+function stop() {
+	playBtn.className = 'btn ripple';
+	isPlaying = false;
+	if (socket && socket.readyState == 1) {
+		socket.send(JSON.stringify({type: 'stop'}));
 	}
 }
