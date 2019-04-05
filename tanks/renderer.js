@@ -219,3 +219,18 @@ function render(data) {
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
 }
+
+function point(x, y, color) {
+    ctx.beginPath();
+    ctx.fillStyle = color || 'red';
+    ctx.arc(x/width*W, y/height*H, 3, 0, PI*2);
+    ctx.fill()
+}
+function line(a, b, color) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color || 'red';
+    ctx.moveTo(a.x/width*W, a.y/height*H);
+    ctx.lineTo(b.x/width*W, b.y/height*H);
+    ctx.stroke();
+}
