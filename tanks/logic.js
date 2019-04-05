@@ -7,14 +7,18 @@ playBtn.addEventListener('click', function () {
 	if (!isPlaying) {
 		playBtn.className = 'btn ripple down';
 		isPlaying = true;
-		//if (socket.readyState == 1)
-			//tick();
+		if (socket.readyState == 1) {
+			socket.send(JSON.stringify({type: 'start'}));
+		}
 	}
 });
 pauseBtn.addEventListener('click', function () {
 	if (isPlaying) {
 		playBtn.className = 'btn ripple';
 		isPlaying = false;
+		if (socket.readyState == 1) {
+			socket.send(JSON.stringify({type: 'stop'}));
+		}
 	}
 });
 
