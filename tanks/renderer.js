@@ -73,12 +73,12 @@ var sprites = {
         './assets/Smoke/smokeWhite5.png'
     ]),
     yellowSmoke: loadSprites([
-        './assets/Smoke/smokeWhite0.png',
-        './assets/Smoke/smokeWhite1.png',
-        './assets/Smoke/smokeWhite2.png',
-        './assets/Smoke/smokeWhite3.png',
-        './assets/Smoke/smokeWhite4.png',
-        './assets/Smoke/smokeWhite5.png'
+        './assets/Smoke/smokeYellow0.png',
+        './assets/Smoke/smokeYellow1.png',
+        './assets/Smoke/smokeYellow2.png',
+        './assets/Smoke/smokeYellow3.png',
+        './assets/Smoke/smokeYellow4.png',
+        './assets/Smoke/smokeYellow5.png'
     ])
 };
 function loadSprites(obj) {
@@ -96,6 +96,7 @@ var ctx = canvas.getContext('2d');
 
 var W, H, s;
 var lastData = null;
+var bulletEvents = [];
 function render(data) {
     lastData = data;
 
@@ -114,7 +115,7 @@ function render(data) {
         var players = data.enemies.slice(0);
         players.push(data.me);
     }
-    
+
     for (var i = 0; i < players.length; ++i) {
         var player = players[i];
         ctx.translate((player.x)/width*W, 
@@ -167,6 +168,36 @@ function render(data) {
             ctx.moveTo(wall[0].x/width*W, wall[0].y/height*H);
             ctx.lineTo(wall[1].x/width*W, wall[1].y/height*H);
             ctx.stroke();
+        }
+    }
+
+    if (data.bulletEvents) {
+        for (var i = 0; i < data.bulletEvents.length; ++i) {
+            var event = data.bulletEvents[i];
+            event.time = data.time;
+            bulletEvents.push(event);
+        }
+    }
+    for (var i = 0; i < bulletEvents.length; ++i) {
+        var event = bulletEvents[i];
+        var t = range(data.time - event.time, 0, 10) / 10;
+        var r = -pow(t-0.5,6)*64+1 * tankRadius*1.75 / width * W;
+        console.log(t, r)
+        if (event.to == 'wall') {
+            ctx.drawImage(sprites.yellowSmoke[~~(t*5)],
+                event.x/width*W-r/2, 
+                event.y/height*H-r/2, r, r);
+        } else if (event.to == 'player') {
+            var player = players.find(function (p) {
+                return p.username == event.username;
+            });
+            ctx.drawImage(sprites.yellowSmoke[~~(t*5)],
+                player.x/width*W-r/2, 
+                player.y/height*H-r/2, r, r);
+        }
+        if (t == 1) {
+            bulletEvents.splice(i, 1);
+            i--;
         }
     }
 

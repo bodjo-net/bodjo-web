@@ -83,7 +83,7 @@ function startSocket() {
 					typeof response.shoot === 'boolean')) {
 					isPlaying = false;
 					stop()
-					var string = JSON.stringify(response,null,'\t');
+					var string = typeof response === 'undefined' ? 'undefined' : JSON.stringify(response,null,'\t');
 					if (string.length > 300)
 						showError('Function \'onTick\' returns bad response.');
 					else showError('Function \'onTick\' returns bad response: \n\n'+string);
