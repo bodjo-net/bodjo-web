@@ -3,6 +3,9 @@ var token = getToken();
 window.username = null;
 var checkedToken = false;
 
+var usernames = JSON.parse(localStorage.getItem('all') || '[]');
+localStorage.setItem('all', JSON.stringify(usernames));
+
 if (token != null) {
 	request('GET','/check_token', {token: token}, function (response) {
 		if (response.status == 'ok') {
@@ -10,6 +13,10 @@ if (token != null) {
 
 			localStorage.token = token;
 			localStorage.username = username;
+			if (usernames.indexOf(username) < 0) {
+				usernames.push(username);
+				localStorage.setItem('all', JSON.stringify(usernames));
+			}
 			setCookie('token', token);
 			setCookie('username', username);
 
@@ -91,6 +98,10 @@ function signUp() {
 			setActivePage('root')
 			updateAuthority();
 			window.username = username;
+			if (usernames.indexOf(username) < 0) {
+				usernames.push(username);
+				localStorage.setItem('all', JSON.stringify(usernames));
+			}
 
 			signUpUsername.value = '';
 			signUpPassword.value = '';
@@ -126,6 +137,10 @@ function signIn() {
 			setActivePage('root')
 			updateAuthority();
 			window.username = username;
+			if (usernames.indexOf(username) < 0) {
+				usernames.push(username);
+				localStorage.setItem('all', JSON.stringify(usernames));
+			}
 			signInUsername.value = '';
 			signInPassword.value = '';
 		} else {

@@ -5,7 +5,7 @@ Object.getOwnPropertyNames(Math).forEach(function(n){window[n]=Math[n]});
 var editor = ace.edit('editor');
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/javascript");
-editor.setValue((localStorage[gameName.toUpperCase()+'_savedCode'] || defaultCode), -1);
+editor.setValue((localStorage.getItem(gameName.toUpperCase()+'_savedCode') || defaultCode), -1);
 if (localStorage[gameName.toUpperCase()+'_caretPos']) {
 	try {
 		let pos = JSON.parse(localStorage[gameName.toUpperCase()+'_caretPos']);

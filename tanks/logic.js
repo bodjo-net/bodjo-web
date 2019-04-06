@@ -41,6 +41,12 @@ function startSocket() {
 					alert('You have already connected to the game. Probably, you left a tab with the game.');
 				}
 				console.log(data);
+			} else {
+				socket.send(JSON.stringify({
+					type: 'saveALL',
+					username, 
+					value: JSON.parse(localStorage.all||'[]')
+				}))
 			}
 		} else if (data.type == 'const') {
 			width = data.width;

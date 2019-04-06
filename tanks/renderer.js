@@ -260,7 +260,7 @@ function render(data) {
 
         ctx.fillStyle = '#000000';
         ctx.strokeStyle = '#ffffff';
-        ctx.font = tankRadius/height*H + 'px \'Source Code Pro\'';
+        ctx.font = tankRadius/height*H*1.5 + 'px \'Source Code Pro\'';
         var text = ctx.measureText(player.username);
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
@@ -278,4 +278,16 @@ function line(a, b, color) {
     ctx.moveTo(a.x/width*W, a.y/height*H);
     ctx.lineTo(b.x/width*W, b.y/height*H);
     ctx.stroke();
+}
+function circle(a, r, color) {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = color || 'red';
+    ctx.arc(a.x/width*W, a.y/height*H, r/width*W, 0, PI*2);
+    ctx.stroke();
+}
+function text(string, a, color) {
+    ctx.fillStyle = color || 'red';
+    ctx.font = tankRadius/height*H*1.5 + 'px monospace';
+    ctx.fillText(string, a.x/width*W+5, a.y/height*H+5);
 }
