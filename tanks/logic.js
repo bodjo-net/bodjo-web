@@ -16,9 +16,8 @@ playBtn.addEventListener('click', function () {
 	}
 });
 pauseBtn.addEventListener('click', function () {
-	if (isPlaying) {
+	if (isPlaying)
 		stop();
-	}
 });
 
 var width = null, height, tankRadius;
@@ -34,7 +33,7 @@ function startSocket() {
 		try {
 			data = JSON.parse(event.data);
 		} catch (e) {return;}
-		
+
 		if (data.type == 'connect') {
 			if (data.status != 'ok') {
 				if (data.errCode == 2) {
@@ -58,6 +57,20 @@ function startSocket() {
 		} else if (data.type == 'game') {
 			if (difference != -1 && abs((Date.now() - difference) - data.timestamp) > 200)
 				return;
+
+			if (!data.me && data.players) {
+				var playerI = data.players.findIndex(function (PL) {
+					return PL.username == username
+				});
+				if (playerI >= 0) {
+					var me = data.players[playerI];
+					var enemies = data.players.slice(0);
+					enemies.splice(playerI, 1);
+
+					data.me = me;
+					data.enemies = enemies;
+				}
+			}
 			
 			render(data);
 			if (isPlaying && !data.me)
