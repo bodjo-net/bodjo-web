@@ -73,6 +73,11 @@ function startSocket() {
 			}
 			
 			render(data);
+			requestAnimationFrame(function () {
+				socket.send(JSON.stringify({
+					type: 'ready'
+				}))
+			});
 			if (isPlaying && !data.me)
 				return;
 
@@ -142,6 +147,11 @@ function startSocket() {
 			token,
 			role: 'player'
 		}));
+		requestAnimationFrame(function () {
+			socket.send(JSON.stringify({
+				type: 'ready'
+			}))
+		});
 	}
 }
 
