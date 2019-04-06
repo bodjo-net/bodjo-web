@@ -87,6 +87,14 @@ var sprites = {
         './assets/Smoke/smokeYellow4.png',
         './assets/Smoke/smokeYellow5.png'
     ]),
+    orangeSmoke: loadSprites([
+        './assets/Smoke/smokeOrange0.png',
+        './assets/Smoke/smokeOrange1.png',
+        './assets/Smoke/smokeOrange2.png',
+        './assets/Smoke/smokeOrange3.png',
+        './assets/Smoke/smokeOrange4.png',
+        './assets/Smoke/smokeOrange5.png'
+    ]),
     bonuses: loadSprites({
         heal: './assets/Bonuses/aid.png',
         ammo: './assets/Bonuses/ammo.png'
@@ -226,7 +234,7 @@ function render(data) {
         var event = bulletEvents[i];
         var t = range(data.time - event.time, 0, 8) / 8;
         var r = (-pow(t-0.5,4)*16+1) * tankRadius*1.75 / width * W;
-        var sprite = sprites.yellowSmoke[round(t*5)];
+        var sprite = sprites[event.to == 'wall' ? 'yellowSmoke' : 'orangeSmoke'][round(t*5)];
         var w = r * (100 / sprite.width), a = sprite.width / sprite.height,
             h = w / a;
         if (event.to == 'wall') {

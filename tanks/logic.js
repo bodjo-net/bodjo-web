@@ -34,7 +34,7 @@ function startSocket() {
 		try {
 			data = JSON.parse(event.data);
 		} catch (e) {return;}
-
+		
 		if (data.type == 'connect') {
 			if (data.status != 'ok') {
 				if (data.errCode == 2) {
