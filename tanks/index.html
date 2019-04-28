@@ -46,10 +46,10 @@
 Пример:
 
 	[
-		[{x: 7.5, y: 2.5}, {x: 2.5, y: 2.5}],
-		[{x: 2.5, y: 2.5}, {x: 2.5, y: 7.5}],
-		[{x: 2.5, y: 12.5}, {x: 2.5, y: 17.5}],
-		[{x: 2.5, y: 17.5}, {x: 7.5, y: 17.5}]
+			[{x: 7.5, y: 2.5}, {x: 2.5, y: 2.5}],
+			[{x: 2.5, y: 2.5}, {x: 2.5, y: 7.5}],
+			[{x: 2.5, y: 12.5}, {x: 2.5, y: 17.5}],
+			[{x: 2.5, y: 17.5}, {x: 7.5, y: 17.5}]
 	]
 
 Заметьте, что указан tankRadius. На сервере танк - это окружность и все вычисления с танками выполняются, как вычисления с кругами. Это сделано для более простого поворота и просчета колизий, чтобы танк не застрял в стене, повернувшись мгновенно на Х градусов и не зацепил стену углом квадрата.
@@ -70,13 +70,9 @@
     - **[string]** username (ваш юзернейм, вдруг вы забыли)
     - **[string]** color (цвет танка)
     - **[number]** lastShot (номер "тика", когда был последний выстрел; удобно понимать, когда можно стрелять, учитывая, что перезаряд танка - 15 "тиков")
-    - **[object]** activeBonuses (активные бонусы)
-    	- **[object]** heal (бонус "аптечка"; может отсутствовать в объекте, если бонуса нет)
-    		- **[number]** start (номер "тика", когда был подобран бонус)
-    		- **[number]** duration (количество "тиков", сколько бонус будет действовать)
-    	- **[object]** ammo (бонус элитной аммуниции; может отсутствовать в объекте, если бонуса нет)
-    		- **[number]** start (номер "тика", когда был подобран бонус)
-    		- **[number]** duration (количество "тиков", сколько бонус будет действовать)
+    - **[object]** bonuses (активные бонусы)
+    	- **[boolean]** heal (бонус "аптечка")
+    	- **[boolean]** ammo (бонус элитной аммуниции)
 - **[array]** enemies (данные о вражеских танках)
 
 	[{
@@ -203,7 +199,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.3/ace.js"></script>
 	<script type="text/javascript">
 		const gameName = 'tanks';
-		const defaultCode = '// constants: width, height, tankRadius\n// this function is runned every tick\n\nfunction onTick(data) {\n\n\treturn {\n\t\tmove: [0, 0],\n\t\theadAngle: Date.now()/1000*PI,\n\t\tshoot: true\n\t}\n}';
+		const defaultCode = '// constants: width, height, tankRadius, walls\n// this function is runned every tick\n\nfunction onTick(data) {\n\n\treturn {\n\t\tmove: [0, 0],\n\t\theadAngle: Date.now()/1000*PI,\n\t\tshoot: true\n\t}\n}';
 	</script>
 	<script src="../ripple.js" type="text/javascript"></script>
 	<script src="renderer.js" type="text/javascript"></script>
