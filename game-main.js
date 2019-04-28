@@ -213,7 +213,7 @@ var username = localStorage.username || getCookie('username');
 if (!userToken || !username) {
 	// bad
 	alert('We lost your username or token. Try to come back to https://bodjo.net and connect to the game again.');
-	window.location.href = 'https://bodjo.net';
+	// window.location.href = 'https://bodjo.net';
 } else {
 	try {
 		request('GET', '/play', {gameName: gameName, token: userToken}, function (obj) {

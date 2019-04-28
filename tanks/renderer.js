@@ -122,8 +122,6 @@ var W, H, s;
 var lastData = null;
 var bulletEvents = [];
 function render(data) {
-    lastData = data;
-
     ctx.fillStyle = ctx.createPattern(sprites.bg.sand, 'repeat');
     ctx.fillRect(0,0,W,H);
 
@@ -132,13 +130,7 @@ function render(data) {
     ctx.lineCap = 'round';
     ctx.strokeRect(0,0,W-1,H-1);
 
-    var players;
-    if (data.players) {
-        players = data.players;
-    } else {
-        var players = data.enemies.slice(0);
-        players.push(data.me);
-    }
+    var players = data.players;
 
     for (var i = 0; i < players.length; ++i) {
         var player = players[i];
@@ -152,7 +144,7 @@ function render(data) {
             tankRadius/height*H*1.5*sqrt(2));
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-        var shootAnimation = range(data.time - player.lastShot, 0, 10) / 10;
+        var shootAnimation = range(player.lastShot, 0, 10) / 10;
         var r = sin(shootAnimation*PI) * tankRadius*2 / width * W;
         ctx.drawImage(sprites.whiteSmoke[~~(shootAnimation*5)],
             (player.x + cos(player.headAngle)*tankRadius)/width*W-r/2, 
@@ -169,53 +161,58 @@ function render(data) {
             );
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-        var bonuses = Object.keys(player.activeBonuses);
+        var bonuses = Object.keys(player.bonuses);
         for (var j = 0; j < bonuses.length; ++j) {
-            var bonus = player.activeBonuses[bonuses[j]];
-            var t = range(data.time - bonus.start, 0, bonus.duration) / bonus.duration;
-            var r = (-pow(t-0.5,10)*1000+1);
-            ctx.fillStyle = bonusesColors[bonuses[j]];
+            if (player.bonuses[bonuses[j]]) {
+                // var t = range(data.time - bonus.start, 0, bonus.duration) / bonus.duration;
+                // var r = (-pow(t-0.5,10)*1000+1);
+                ctx.fillStyle = bonusesColors[bonuses[j]];
+                ctx.beginPath();
+                ctx.arc(player.x/width*W, player.y/height*H, /*r**/tankRadius*2/width*W, 0, PI*2);
+                ctx.fill();
+            }
+        }
+    }
+
+    if (data.bonuses) {
+        for (var i = 0; i < data.bonuses.length; ++i) {
+            var bonus = data.bonuses[i];
+            // var t = range(data.time-bonus.spawnTime, 0, 10) / 10;
+            // var r = (-pow((t-1)*0.5,4)*16+1);
+            ctx.fillStyle = bonus.type == 'heal' ? 'rgba(0,185,0,0.5)' : 'rgba(150,70,0,0.5)';
             ctx.beginPath();
-            ctx.arc(player.x/width*W, player.y/height*H, r*tankRadius*2/width*W, 0, PI*2);
+            ctx.arc(bonus.x/width*W, bonus.y/height*H, /*r**/bonus.radius/width*W, 0, PI*2);
             ctx.fill();
+            var sprite = sprites.bonuses[bonus.type];
+            if (sprite) {
+                var w = /*r**/bonus.radius/width*W;
+                ctx.drawImage(sprite, bonus.x/width*W-w/2, bonus.y/height*H-w/2, w, w);
+            }
         }
     }
 
-    for (var i = 0; i < data.bonuses.length; ++i) {
-        var bonus = data.bonuses[i];
-        var t = range(data.time-bonus.spawnTime, 0, 10) / 10;
-        var r = (-pow((t-1)*0.5,4)*16+1);
-        ctx.fillStyle = bonus.type == 'heal' ? 'rgba(0,185,0,0.5)' : 'rgba(150,70,0,0.5)';
-        ctx.beginPath();
-        ctx.arc(bonus.x/width*W, bonus.y/height*H, r*bonus.radius/width*W, 0, PI*2);
-        ctx.fill();
-        var sprite = sprites.bonuses[bonus.type];
-        if (sprite) {
-            var w = r*bonus.radius/width*W;
-            ctx.drawImage(sprite, bonus.x/width*W-w/2, bonus.y/height*H-w/2, w, w);
+    if (data.bullets) {
+        for (var i = 0; i < data.bullets.length; ++i) {
+            var bullet = data.bullets[i];
+            var bulletSprite = sprites[bullet.type?'bulletSilver':'bullet'][bullet.color];
+            ctx.translate(bullet.x/width*W, bullet.y/height*H);
+            ctx.rotate(bullet.angle-PI/2+PI);
+            ctx.drawImage(bulletSprite,
+                -(bulletSprite.width/bulletSprite.height)*(tankRadius/height*H)/2, 
+                0, 
+                (bulletSprite.width/bulletSprite.height)*(tankRadius/height*H), 
+                tankRadius/height*H);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
     }
 
-    for (var i = 0; i < data.bullets.length; ++i) {
-        var bullet = data.bullets[i];
-        var bulletSprite = sprites[bullet.type?'bulletSilver':'bullet'][bullet.color];
-        ctx.translate(bullet.x/width*W, bullet.y/height*H);
-        ctx.rotate(bullet.angle-PI/2+PI);
-        ctx.drawImage(bulletSprite,
-            -(bulletSprite.width/bulletSprite.height)*(tankRadius/height*H)/2, 
-            0, 
-            (bulletSprite.width/bulletSprite.height)*(tankRadius/height*H), 
-            tankRadius/height*H);
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-    }
 
-
-    if (data.walls) {
+    if (typeof walls === 'object') {
         ctx.strokeStyle = '#9d9783';
         ctx.lineWidth = tankRadius * 0.7 / width * W;
         ctx.lineCap = 'round';
-        for (var i = 0; i < data.walls.length; ++i) {
-            var wall = data.walls[i];
+        for (var i = 0; i < walls.length; ++i) {
+            var wall = walls[i];
             ctx.beginPath();
             ctx.moveTo(wall[0].x/width*W, wall[0].y/height*H);
             ctx.lineTo(wall[1].x/width*W, wall[1].y/height*H);
@@ -274,12 +271,16 @@ function render(data) {
     }
 }
 function point(a, color) {
+    if (typeof a === 'undefined')
+        return;
     ctx.beginPath();
     ctx.fillStyle = color || 'red';
     ctx.arc(a.x/width*W, a.y/height*H, 3, 0, PI*2);
     ctx.fill()
 }
 function line(a, b, color) {
+    if (typeof a === 'undefined' || typeof b === 'undefined')
+        return;
     ctx.beginPath();
     ctx.lineWidth = 2;
     ctx.strokeStyle = color || 'red';
@@ -288,6 +289,8 @@ function line(a, b, color) {
     ctx.stroke();
 }
 function circle(a, r, color) {
+    if (typeof a === 'undefined')
+        return;
     ctx.beginPath();
     ctx.lineWidth = 2;
     ctx.strokeStyle = color || 'red';
@@ -295,6 +298,8 @@ function circle(a, r, color) {
     ctx.stroke();
 }
 function text(string, a, color) {
+    if (typeof a === 'undefined')
+        return;
     ctx.fillStyle = color || 'red';
     ctx.font = tankRadius/height*H*1.5 + 'px monospace';
     ctx.fillText(string, a.x/width*W+5, a.y/height*H+5);

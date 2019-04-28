@@ -6,8 +6,6 @@ var fieldContainer = document.querySelector("#field");
 
 function onResize(noNeedRender) {
 	if (lastField != null) {
-		if (!noNeedRender)
-			render(lastField);
 
 		height = field.length;
 		width = field[0].length;
@@ -37,6 +35,11 @@ function onResize(noNeedRender) {
 
 		canvas.width = W * window.devicePixelRatio;
 		canvas.height = H * window.devicePixelRatio;
+
+		
+		if (typeof noNeedRender !== 'boolean' ||
+			!noNeedRender)
+			render(lastField);
 	}
 }
 window.addEventListener('resize', onResize);

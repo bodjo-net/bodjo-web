@@ -63,7 +63,7 @@ timeoutRange.value = timeout;
 timeoutText.innerText = timeout + 'ms';
 
 function startSocket() {
-	// var url = 'ws://localhost:3423'
+	// var url = 'ws://localhost:3424'
 	// var token = '1';
 	// var username = '1';
 	var url = "wss://vkram.shpp.me:"+PORT;
