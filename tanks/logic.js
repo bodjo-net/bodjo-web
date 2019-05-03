@@ -143,6 +143,7 @@ function startSocket() {
 		if (event.data instanceof ArrayBuffer) {
 			var data = processData(event.data);
 			render(data);
+			requestAnimationFrame(sendReady);
 			if (isPlaying && data.me) {
 				if (!func) {
 					code = editor.getValue();
@@ -228,6 +229,7 @@ function startSocket() {
 			walls = data.walls;
 			TPS = data.TPS;
 			onResize();
+		requestAnimationFrame(sendReady);
 		} else if (data.type == 'score') {
 			for (var i = 0; i < data.scoreboard.length; ++i) {
 				if (typeof data.scoreboard[i].id === 'number')
@@ -246,6 +248,10 @@ function startSocket() {
 			role: 'player'
 		}));
 	}
+}
+
+function sendReady() {
+	socket.send('r');
 }
 
 function stop() {

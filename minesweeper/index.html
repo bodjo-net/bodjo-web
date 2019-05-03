@@ -101,6 +101,7 @@
 	<script type="text/javascript">
 		const gameName = 'minesweeper';
 		const defaultCode = '// this function is runned every tick\n\nfunction onTick(field) {\n\n\treturn {\n\t\taction: \"open\",\n\t\tcoordinates: [\n\t\t\tround(random()*(field.length-1)),\n\t\t\tround(random()*(field[0].length-1))\n\t\t]\n\t}\n}';
+		const needToConnect = true;
 	</script>
 	<script src="../ripple.js" type="text/javascript"></script>
 	<script src="renderer.js" type="text/javascript"></script>
