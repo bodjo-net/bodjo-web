@@ -251,7 +251,7 @@ function startSocket() {
 }
 
 function sendReady() {
-	socket.send('r');
+	// socket.send('r');
 }
 
 function stop() {
