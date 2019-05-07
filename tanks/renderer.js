@@ -117,6 +117,13 @@ var bonusesColors = {
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
+var debug = false;
+canvas.addEventListener('keyup', function (e) {
+    // console.log(e.code)
+    if (e.code == 'KeyD')
+        debug = !debug;
+})
+
 var lastDataT = -1;
 var W, H, s;
 var lastData = null;
@@ -125,10 +132,18 @@ function render() {
     requestAnimationFrame(render);
     var data = typeof lastData !== 'undefined' ? lastData : null;
     if (data == null || data.time == lastDataT) {
+        if (debug) {
+            ctx.clearRect(0, 0, 100, 100)
+            ctx.fillStyle = 'red';
+            ctx.font = '25px Consolas';
+            ctx.fillText('[debug]', 0, 25);
+            ctx.fillText(Date.now() - lastDataRendered + 'ms', 0, 50)
+        }
         return;
     }
     lastDataT = data.time;
     sendReady();
+
 
     ctx.fillStyle = ctx.createPattern(sprites.bg.sand, 'repeat');
     ctx.fillRect(0,0,W,H);
@@ -277,39 +292,74 @@ function render() {
         var text = ctx.measureText(player.username);
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
+
+    if (data._render) {
+        for (var i = 0; i < data._render.length; ++i) {
+            var m = data._render[i];
+            if (m.type == 'point') {
+                ctx.beginPath();
+                ctx.fillStyle = m.color || 'red';
+                ctx.arc(m.a.x/width*W, m.a.y/height*H, 3, 0, PI*2);
+                ctx.fill()
+            } else if (m.type == 'text') {
+                ctx.fillStyle = color || 'red';
+                ctx.font = tankRadius/height*H*1.5 + 'px monospace';
+                ctx.fillText(string, a.x/width*W+5, a.y/height*H+5);
+            } else if (m.type == 'line') {
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = m.color || 'red';
+                ctx.moveTo(m.a.x/width*W, m.a.y/height*H);
+                ctx.lineTo(m.b.x/width*W, m.b.y/height*H);
+                ctx.stroke();
+            } else if (m.type == 'circle') {
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = m.color || 'red';
+                ctx.arc(m.a.x/width*W, m.a.y/height*H, m.r/width*W, 0, PI*2);
+                ctx.stroke();
+            }
+        }
+    }
+
+    if (debug) {
+        ctx.clearRect(0, 0, 100, 100)
+        ctx.fillStyle = 'red';
+        ctx.font = '25px Consolas';
+        ctx.fillText('[debug]', 0, 25);
+        ctx.fillText(Date.now() - lastDataRendered + 'ms', 0, 50)
+    }
 }
 render();
 function point(a, color) {
     if (typeof a === 'undefined')
         return;
-    ctx.beginPath();
-    ctx.fillStyle = color || 'red';
-    ctx.arc(a.x/width*W, a.y/height*H, 3, 0, PI*2);
-    ctx.fill()
+    // ctx.beginPath();
+    // ctx.fillStyle = color || 'red';
+    // ctx.arc(a.x/width*W, a.y/height*H, 3, 0, PI*2);
+    // ctx.fill()
+    if (!Array.isArray(lastData._render))
+        lastData._render = [];
+    lastData._render.push({color: color, a: a, type: 'point'});
 }
 function line(a, b, color) {
     if (typeof a === 'undefined' || typeof b === 'undefined')
         return;
-    ctx.beginPath();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = color || 'red';
-    ctx.moveTo(a.x/width*W, a.y/height*H);
-    ctx.lineTo(b.x/width*W, b.y/height*H);
-    ctx.stroke();
+    if (!Array.isArray(lastData._render))
+        lastData._render = [];
+    lastData._render.push({color: color, a: a, b: b, type: 'line'});
 }
 function circle(a, r, color) {
     if (typeof a === 'undefined')
         return;
-    ctx.beginPath();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = color || 'red';
-    ctx.arc(a.x/width*W, a.y/height*H, r/width*W, 0, PI*2);
-    ctx.stroke();
+    if (!Array.isArray(lastData._render))
+        lastData._render = [];
+    lastData._render.push({color: color, a: a, r: r, type: 'circle'});
 }
 function text(string, a, color) {
     if (typeof a === 'undefined')
         return;
-    ctx.fillStyle = color || 'red';
-    ctx.font = tankRadius/height*H*1.5 + 'px monospace';
-    ctx.fillText(string, a.x/width*W+5, a.y/height*H+5);
+    if (!Array.isArray(lastData._render))
+        lastData._render = [];
+    lastData._render.push({color: color, text: string, a: a, type: 'text'});
 }

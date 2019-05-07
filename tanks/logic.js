@@ -190,7 +190,7 @@ function startSocket() {
 				dataToRender = data;
 				lastDataRendered = Date.now()
 				// render(data);
-					console.log(data)
+					// console.log(data)
 				if (isPlaying && data.me) {
 					if (!func) {
 						code = editor.getValue();
