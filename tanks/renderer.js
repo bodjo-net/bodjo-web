@@ -117,11 +117,19 @@ var bonusesColors = {
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
 
-
+var lastDataT = -1;
 var W, H, s;
 var lastData = null;
 var bulletEvents = [];
-function render(data) {
+function render() {
+    requestAnimationFrame(render);
+    var data = typeof lastData !== 'undefined' ? lastData : null;
+    if (data == null || data.time == lastDataT) {
+        return;
+    }
+    lastDataT = data.time;
+    sendReady();
+
     ctx.fillStyle = ctx.createPattern(sprites.bg.sand, 'repeat');
     ctx.fillRect(0,0,W,H);
 
@@ -270,6 +278,7 @@ function render(data) {
         ctx.fillText(player.username, (player.x)/width*W-text.width/2, (player.y-tankRadius*1.6)/height*H);
     }
 }
+render();
 function point(a, color) {
     if (typeof a === 'undefined')
         return;
