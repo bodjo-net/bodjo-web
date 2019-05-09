@@ -255,7 +255,12 @@ function startSocket() {
 					clearErrors();
 					var buffer = new ArrayBuffer(4);
 					var bufferView = new DataView(buffer);
-					bufferView.setUint16(0, response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1) << 1 + (response.shoot-0));
+					function s(g) {
+						g=g.toString(2);
+						return '0'.repeat(Math.max(0,16-g.length))+g;
+					}
+					bufferView.setUint16(0, (round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1)) << 1) + (response.shoot-0));
+					// console.log(s(round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1))))
 					var angle = Math.atan2(response.move[1], response.move[0]);
 					var speed = range(Math.sqrt(Math.pow(response.move[1], 2) + Math.pow(response.move[0], 2)), 0, 1);
 					bufferView.setUint8(2, angle / (Math.PI*2) * 255);
