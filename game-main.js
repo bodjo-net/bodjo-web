@@ -208,6 +208,8 @@ function range(x, _min, _max) {
 	return min(max(x, _min), _max);
 }
 
+var gameSessionTokenField = document.querySelector('#gameSessionToken');
+
 if (needToConnect) {
 	var userToken = localStorage.token || getCookie('token');
 	var username = localStorage.username || getCookie('username');
@@ -222,6 +224,9 @@ if (needToConnect) {
 					PORT = obj.port;
 					GAME_SESSION_TOKEN = obj.gameSessionToken;
 					USERNAME = username;
+
+					if (gameSessionTokenField)
+						gameSessionTokenField.value = GAME_SESSION_TOKEN;
 
 					startSocket();
 				} else {

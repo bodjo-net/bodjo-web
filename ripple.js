@@ -20,6 +20,7 @@ function createRipple(element, event) {
 	newRipple.style.top = y + "px";
 	newRipple.style.left = x + "px";
 	newRipple.style.width = newRipple.style.height = '0px';
+	newRipple.id = 's' + Date.now();
 	setTimeout(function () {
 		newRipple.style.opacity = '1';
 		newRipple.style.top = (y-R) + "px";
@@ -36,7 +37,15 @@ function removeRipples(element) {
 
 	for (var i = 0; i < ripples.length; ++i) {
 		var ripple = ripples[i];
-		ripple.style.opacity = '0';
-		setTimeout(ripple.remove.bind(ripple), 250);
+		var start = parseInt(ripple.id.substring(1));
+		if (Date.now() - start > 250) {
+			ripple.style.opacity = '0';
+			setTimeout(ripple.remove.bind(ripple), 250);
+		} else {
+			setTimeout(function () {
+				ripple.style.opacity = '0';
+				setTimeout(ripple.remove.bind(ripple), 250);
+			}, 250 - (Date.now() - start))
+		}
 	}
 }

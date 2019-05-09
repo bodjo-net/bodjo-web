@@ -95,7 +95,7 @@ html, head, body {
 	background-image: none;
 	border: 1px solid rgba(0,0,0,0.3);
 }
-#docs, #settings {
+#docs, #settings, #client {
 	overflow-y: auto;
 	font-size: 100%;
 	padding: 0.3em 0.5em;
@@ -103,14 +103,15 @@ html, head, body {
 h1, h2, h3, h4, h5, h6, p {
 	margin: 0.25em 0.2em;
 }
-#docs pre {
+#docs pre, #client pre {
 	margin: 0.25em 0;
 	padding: 0.5em;
 	background: #efefef;
 	border-radius: 5px;
 	font-family: 'Source Code Pro', 'Roboto Mono', Consolas, monospace;
 }
-#docs div.warning {
+#docs div.warning,
+#client div.warning {
 	margin: 0.25em 0;
 	padding: 0.5em;
 	background: #FFF176;
@@ -148,7 +149,29 @@ h1, h2, h3, h4, h5, h6, p {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 }
-#control-panel .btn {
+input[disabled] {
+	background: transparent;
+	border: none;
+}
+input#gameSessionToken {
+	padding: 0.5em;
+    width: 230px;
+    border-bottom: 1px solid lightgrey;
+    margin-right: 0.5em;
+}
+span#gameSessionTokenSpan {
+	margin: 0.25em 0.2em;
+}
+.btn.long {
+	width: inherit;
+	height: inherit;
+	padding: 0.5em;
+}
+.btn {
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 	margin-bottom: 7px;
 	border-radius: 2px;
 	display: inline-block;
@@ -202,14 +225,14 @@ h1, h2, h3, h4, h5, h6, p {
 #control-panel .panel input[type=range] {
 	outline: none;
 }
-#control-panel .btn:hover {
+.btn:hover {
 	background-color: #eee;
 }
-#control-panel .btn.down {
+.btn.down {
 	background-color: #ddd;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
-#control-panel .btn.down:hover {
+.btn.down:hover {
 	background-color: #ccc;
 }
 .rippleEffect {
@@ -222,6 +245,12 @@ h1, h2, h3, h4, h5, h6, p {
 .ripple {
 	overflow: hidden;
 	position: relative;
+}
+#visible-off {
+	background-image: url(../assets/visibility-off.png);
+}
+#visible {
+	background-image: url(../assets/visibility-on.png);
 }
 #play {
 	background-image: url(../assets/play.png);

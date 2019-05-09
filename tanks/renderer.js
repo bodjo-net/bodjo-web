@@ -144,10 +144,9 @@ function render() {
     lastDataT = data.time;
     sendReady();
 
-
     ctx.fillStyle = ctx.createPattern(sprites.bg.sand, 'repeat');
     ctx.fillRect(0,0,W,H);
-
+    
     ctx.strokeStyle = '#9d9783';
     ctx.lineWidth = tankRadius * 0.7 / width * W;
     ctx.lineCap = 'round';

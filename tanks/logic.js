@@ -1,5 +1,7 @@
 const local = false;
 
+var gtype = location.href.indexOf('type=spectator')<0;
+
 var dataToRender = null;
 var lastDataRendered = 0;
 
@@ -14,16 +16,24 @@ var id = -1;
 var TPS;
 var timeout = 16;
 var isPlaying = false;
+var controlPanel = document.querySelector('#control-panel');
 var playBtn = document.querySelector('#play');
 var pauseBtn = document.querySelector('#pause');
 var socket;
 var code = null, func = false;
 var lastScores = null;
 
+if (!gtype) {
+	controlPanel.style.display = 'none';
+	// if (activeSection == 'code')
+	// 	setActiveSection('client');
+	document.querySelector('#tab-code').style.display = 'none'
+}
+
 var usernames = {};
 
 playBtn.addEventListener('click', function () {
-	if (!isPlaying) {
+	if (!isPlaying && gtype) {
 		playBtn.className = 'btn ripple down';
 		isPlaying = true;
 		if (socket.readyState == 1) {
@@ -33,7 +43,7 @@ playBtn.addEventListener('click', function () {
 	}
 });
 pauseBtn.addEventListener('click', function () {
-	if (isPlaying)
+	if (isPlaying && gtype)
 		stop();
 });
 
@@ -189,9 +199,10 @@ function startSocket() {
 			} else if (data.messageType == 'game') {
 				dataToRender = data;
 				lastDataRendered = Date.now()
+
 				// render(data);
 					// console.log(data)
-				if (isPlaying && data.me) {
+				if (isPlaying && data.me && gtype) {
 					if (!func) {
 						code = editor.getValue();
 						try {
@@ -282,12 +293,20 @@ function startSocket() {
 		}
 	}
 	socket.onopen = function () {
-		socket.send(JSON.stringify({
-			type: 'connect',
-			username,
-			token,
-			role: 'player'
-		}));
+		if (gtype) {
+			socket.send(JSON.stringify({
+				type: 'connect',
+				username,
+				token,
+				role: 'player'
+			}));
+		} else {
+			socket.send(JSON.stringify({
+				type: 'connect',
+				token,
+				role: 'spectator-all'
+			}));
+		}
 	}
 }
 
@@ -296,6 +315,8 @@ function sendReady() {
 }
 
 function stop() {
+	if (!gtype)
+		return;
 	playBtn.className = 'btn ripple';
 	isPlaying = false;
 	if (socket && socket.readyState == 1) {
