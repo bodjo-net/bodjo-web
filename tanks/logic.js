@@ -1,4 +1,4 @@
-const local = true;
+const local = false;
 
 var gtype = location.href.indexOf('type=spectator')<0;
 
