@@ -1,4 +1,4 @@
-const local = false;
+const local = true;
 
 var gtype = location.href.indexOf('type=spectator')<0;
 
@@ -83,7 +83,8 @@ function processData(data) {
 			pO.bonuses = {};
 			pO.bonuses.heal = d3[2] == 1 || d3[2] == 3;
 			pO.bonuses.ammo = d3[2] == 2 || d3[2] == 3;
-			pO.headAngle = new Float32Array(data.slice(offset, offset+=4))[0];
+			// pO.headAngle = new Float32Array(data.slice(offset, offset+=4))[0];
+			pO.headAngle = new Uint8Array(data.slice(offset, offset+=1))[0] / max8 * (Math.PI*2);
 			O.players[i] = pO;
 			if (pO.id == id) {
 				O.me = pO;
@@ -252,12 +253,16 @@ function startSocket() {
 					}
 
 					clearErrors();
-					var buffer = new ArrayBuffer(13);
+					var buffer = new ArrayBuffer(4);
 					var bufferView = new DataView(buffer);
-					bufferView.setFloat32(0, response.headAngle % (Math.PI*2));
-					bufferView.setFloat32(4, response.move[0]);
-					bufferView.setFloat32(8, response.move[1]);
-					bufferView.setInt8(12, !!response.shoot-0);
+					bufferView.setUint16(0, response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1) << 1 + (response.shoot-0));
+					var angle = Math.atan2(response.move[1], response.move[0]);
+					var speed = range(Math.sqrt(Math.pow(response.move[1], 2) + Math.pow(response.move[0], 2)), 0, 1);
+					bufferView.setUint8(2, angle / (Math.PI*2) * 255);
+					bufferView.setUint8(3, speed * 255);
+					// bufferView.setUint8(2, response.move[0]);
+					// bufferView.setFloat32(8, response.move[1]);
+
 					socket.send(bufferView);
 				}
 			}
@@ -292,6 +297,7 @@ function startSocket() {
 			requestAnimationFrame(sendReady);
 		}
 	}
+	var pingpongInterval;
 	socket.onopen = function () {
 		if (gtype) {
 			socket.send(JSON.stringify({
@@ -307,6 +313,13 @@ function startSocket() {
 				role: 'spectator-all'
 			}));
 		}
+
+		if (pingpongInterval)
+			clearInterval(pingpongInterval);
+		pingpongInterval = setInterval(function () {
+			if (socket.readyState == WebSocket.OPEN)
+				socket.send("ping");
+		}, 5000);
 	}
 }
 
