@@ -260,6 +260,7 @@ function startSocket() {
 						return '0'.repeat(Math.max(0,16-g.length))+g;
 					}
 					bufferView.setUint16(0, (round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1)) << 1) + (response.shoot-0));
+					
 					// console.log(s(round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1))))
 					var angle = Math.atan2(response.move[1], response.move[0]);
 					var speed = range(Math.sqrt(Math.pow(response.move[1], 2) + Math.pow(response.move[0], 2)), 0, 1);
