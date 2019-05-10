@@ -75,8 +75,8 @@ function processData(data) {
 			pO.color = colors[d1[1]];
 			pO.x = d2[0] / max16 * width;
 			pO.y = d2[1] / max16 * height;
-			pO.vx = (d2[2] / max16 * 2 - 1) / TPS * 2.5;
-			pO.vy = (d2[3] / max16 * 2 - 1) / TPS * 2.5;
+			pO.vx = round((d2[2] / max16 * 2 - 1)*100)/100 / TPS * 2.5;
+			pO.vy = round((d2[3] / max16 * 2 - 1)*100)/100 / TPS * 2.5;
 			pO.angle = atan2(pO.vy, pO.vx);
 			pO.hp = d3[0] / max8;
 			pO.lastShot = d3[1];
@@ -84,7 +84,7 @@ function processData(data) {
 			pO.bonuses.heal = d3[2] == 1 || d3[2] == 3;
 			pO.bonuses.ammo = d3[2] == 2 || d3[2] == 3;
 			// pO.headAngle = new Float32Array(data.slice(offset, offset+=4))[0];
-			pO.headAngle = new Float32Array(data.slice(offset, offset+=4))[0];
+			pO.headAngle = new Uint8Array(data.slice(offset, offset+=1))[0] / max8 * (Math.PI*2);
 			O.players[i] = pO;
 			if (pO.id == id) {
 				O.me = pO;
