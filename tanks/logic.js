@@ -84,7 +84,7 @@ function processData(data) {
 			pO.bonuses.heal = d3[2] == 1 || d3[2] == 3;
 			pO.bonuses.ammo = d3[2] == 2 || d3[2] == 3;
 			// pO.headAngle = new Float32Array(data.slice(offset, offset+=4))[0];
-			pO.headAngle = new Uint8Array(data.slice(offset, offset+=1))[0] / max8 * (Math.PI*2);
+			pO.headAngle = new Float32Array(data.slice(offset, offset+=4))[0];
 			O.players[i] = pO;
 			if (pO.id == id) {
 				O.me = pO;
@@ -174,13 +174,15 @@ function processData(data) {
 var url, username, token;
 var width = null, height, tankRadius, bonusRadius, walls;
 var difference = -1;
+if (local)
+	startSocket();
 function startSocket() { 
 	if (!local) {
 		url = "wss://vkram.shpp.me:"+PORT;
 		username = USERNAME;
 		token = GAME_SESSION_TOKEN;
 	} else {
-		url = 'ws://localhost:3424';
+		url = 'ws://vkram.shpp.me:3424';
 		username = token = prompt();
 	}
 
@@ -259,8 +261,10 @@ function startSocket() {
 						g=g.toString(2);
 						return '0'.repeat(Math.max(0,16-g.length))+g;
 					}
+
+					// [1111 1111][1111 1111][1111 1111][1111 1111]
 					bufferView.setUint16(0, (round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1)) << 1) + (response.shoot-0));
-					
+
 					// console.log(s(round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1))))
 					var angle = Math.atan2(response.move[1], response.move[0]);
 					var speed = range(Math.sqrt(Math.pow(response.move[1], 2) + Math.pow(response.move[0], 2)), 0, 1);

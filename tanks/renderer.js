@@ -130,6 +130,7 @@ var lastData = null;
 var bulletEvents = [];
 function render() {
     requestAnimationFrame(render);
+    // console.log('render()')
     var data = typeof lastData !== 'undefined' ? lastData : null;
     if (data == null || data.time == lastDataT) {
         if (debug) {
@@ -146,7 +147,7 @@ function render() {
 
     ctx.fillStyle = ctx.createPattern(sprites.bg.sand, 'repeat');
     ctx.fillRect(0,0,W,H);
-    
+
     ctx.strokeStyle = '#9d9783';
     ctx.lineWidth = tankRadius * 0.7 / width * W;
     ctx.lineCap = 'round';
