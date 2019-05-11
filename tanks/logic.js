@@ -178,15 +178,20 @@ var width = null, height, tankRadius, bonusRadius, walls;
 var difference = -1;
 if (local)
 	startSocket();
+var localIP = '192.168.1.98';
 function startSocket() { 
-	if (!local) {
-		url = "wss://vkram.shpp.me:"+PORT;
-		username = USERNAME;
-		token = GAME_SESSION_TOKEN;
-	} else {
-		url = 'ws://vkram.shpp.me:3424';
-		username = token = prompt();
-	}
+	// if (!local) {
+	// 	url = "wss://vkram.shpp.me:"+PORT;
+	// 	username = USERNAME;
+	// 	token = GAME_SESSION_TOKEN;
+	// } else {
+	// 	url = 'ws://vkram.shpp.me:3424';
+	// 	username = token = prompt();
+	// }
+	url = 'ws://' + localIP + ':81';
+	username = USERNAME;
+	token = GAME_SESSION_TOKEN;
+
 
 	socket = new WebSocket(url);
 	socket.binaryType = 'arraybuffer';
