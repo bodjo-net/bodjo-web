@@ -318,3 +318,17 @@ code {
 	word-break: break-word;
     white-space: pre-line;
 }
+#docs img {
+    width: 50%;
+    float: right;
+}
+#docs img.formula {
+	float: initial;
+	width: initial;
+	height: 30px;
+}
+#docs img.formulaE {
+	float: initial;
+	width: initial;
+	height: 60px;
+}
