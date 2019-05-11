@@ -25,9 +25,11 @@ var lastScores = null;
 
 if (!gtype) {
 	controlPanel.style.display = 'none';
-	// if (activeSection == 'code')
-	// 	setActiveSection('client');
-	document.querySelector('#tab-code').style.display = 'none'
+	document.querySelector('#tab-code').style.display = 'none';
+	window.addEventListener('load', function () {
+		if (activeSection == 'code')
+			setActiveSection('client');
+	});
 }
 
 var usernames = {};
@@ -263,7 +265,16 @@ function startSocket() {
 					}
 
 					// [1111 1111][1111 1111][1111 1111][1111 1111]
-					bufferView.setUint16(0, (round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1)) << 1) + (response.shoot-0));
+					var angle = response.headAngle % (Math.PI*2);
+					if (angle < 0) {
+						// console.log('<= ' + angle/Math.PI*180)
+						angle = Math.PI*2 + angle;
+
+						// console.log('=> ' + angle/Math.PI*180)
+					}
+						// console.log('== ' + angle/Math.PI*180)
+
+					bufferView.setUint16(0, (round(angle / (Math.PI*2) * (Math.pow(2, 15)-1)) << 1) + (response.shoot-0));
 
 					// console.log(s(round(response.headAngle % (Math.PI*2) / (Math.PI*2) * (Math.pow(2, 15)-1))))
 					var angle = Math.atan2(response.move[1], response.move[0]);
