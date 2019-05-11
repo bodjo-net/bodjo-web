@@ -5,7 +5,7 @@ Object.getOwnPropertyNames(Math).forEach(function(n){window[n]=Math[n]});
 var editor = ace.edit('editor');
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/javascript");
-editor.setValue((localStorage.getItem(gameName.toUpperCase()+'_savedCode') || defaultCode), -1);
+editor.setValue((localStorage.getItem(gameName.toUpperCase()+'__savedCode') || defaultCode), -1);
 if (localStorage[gameName.toUpperCase()+'_caretPos']) {
 	try {
 		let pos = JSON.parse(localStorage[gameName.toUpperCase()+'_caretPos']);
@@ -13,7 +13,7 @@ if (localStorage[gameName.toUpperCase()+'_caretPos']) {
 	} catch (e) {}
 }
 editor.getSession().on('change', function () {
-	localStorage[gameName.toUpperCase()+'_savedCode'] = editor.getValue();
+	localStorage[gameName.toUpperCase()+'__savedCode'] = editor.getValue();
 	localStorage[gameName.toUpperCase()+'_caretPos'] = JSON.stringify(editor.getCursorPosition());
 });
 if (localStorage[gameName.toUpperCase()+'_codeSize'])
