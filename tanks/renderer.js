@@ -302,9 +302,9 @@ function render() {
                 ctx.arc(m.a.x/width*W, m.a.y/height*H, 3, 0, PI*2);
                 ctx.fill()
             } else if (m.type == 'text') {
-                ctx.fillStyle = color || 'red';
+                ctx.fillStyle = m.color || 'red';
                 ctx.font = tankRadius/height*H*1.5 + 'px monospace';
-                ctx.fillText(string, a.x/width*W+5, a.y/height*H+5);
+                ctx.fillText(m.text, m.a.x/width*W+5, m.a.y/height*H+5);
             } else if (m.type == 'line') {
                 ctx.beginPath();
                 ctx.lineWidth = 2;
