@@ -39,7 +39,7 @@
 		<div id="resizer"></div>
 		<div id='tabs'>
 			<!--div style='position:absolute;top:1em;right:0.25em;opacity:0.3;z-index:0;font-size:75%'><b>Alt</b>+<b>-</b>, <b>Alt</b>+<b>+</b> (зум в редакторе)</div-->
-			<div class='tab' id="tab-code">Код</div><div class='tab active' id="tab-docs">Документация</div><!--div class='tab' id="tab-client">Клиент</div--><div class='tab' id="tab-scoreboard">Таблица</div>
+			<div class='tab' id="tab-code">Код</div><div class='tab active' id="tab-docs">Документация</div><div class='tab' id="tab-client">Клиент</div><div class='tab' id="tab-scoreboard">Таблица</div>
 		</div>
 		<div id="content">
 			<div class="section" id="code">
@@ -220,6 +220,8 @@ move - массив с двумя числами: X и Y координаты в
 
 	Допустим, у нас есть окружность радиусом 2 (R=2) и центром в точке (0, 0). Тогда, чтобы найти точку на круге на определенном углу (в js: в радианах), мы можем воспользоваться этой формулой:
 
+	a - угол (в радианах), на которой будет точка.
+
 	![](assets/2_1formula.png)
 
 	Но, если центр окружности не на (0, 0), то стоит дополнить эту формулу, где с(x) и c(y) - центр круга.
@@ -249,7 +251,7 @@ move - массив с двумя числами: X и Y координаты в
 				var docs = document.querySelector("#docs");
 				docs.innerHTML = toHTML(docs.innerHTML).replace(/{VIDEO}/g, "<video loop autoplay muted style='width:150px'><source src='assets/explanation.mp4' type='video/mp4'></video>").replace(/\<a /g, "<a target='_blank' ").replace(/{WARN_START}/g,"<div class='warning'>").replace(/{WARN_END}/g,"</div>").replace(/formula\.png\"/g, "formula.png\" class='formula'").replace(/formulaE\.png\"/g, "formulaE.png\" class='formulaE'")
 			</script>
-			<!--div class='section' id='client'>
+			<div class='section' id='client'>
 				<h3>Вам надоел браузер? <span style='text-decoration: line-through;'>Или может JS?</span></h3>
 				<p>Писать в браузере код - это удобно, и мы никогда не уберем такую возможность. Однако все же браузер имеет свои недостатки. Например, вам необходимо держать вкладку всегда открытой и даже переключение на другую будет вызывать заметные задержки.</p>
 				<p>Но и клиент не идеален. В данном случае это консольное приложение, поэтому дебаг функции не будут отображаться. Мы рекомендуем воспользоваться клиентом, когда код бота уже готов.</p>
@@ -272,7 +274,7 @@ move - массив с двумя числами: X и Y координаты в
 					tokenInput.type = tokenInput.type == 'password' ? '' : 'password';
 					this.id = tokenInput.type == 'password' ? 'visible' : 'visible-off';
 				"></span>
-			</div-->
+			</div>
 			<div class='section' id='scoreboard'>
 				<table>
 					<tbody>
