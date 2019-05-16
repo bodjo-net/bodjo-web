@@ -62,6 +62,7 @@ if (localStorage.timeout && !isNaN(parseInt(localStorage.timeout))) {
 timeoutRange.value = timeout;
 timeoutText.innerText = timeout + 'ms';
 
+var pingpongInterval;
 function startSocket() {
 	// var url = 'ws://localhost:3424'
 	// var token = '1';
@@ -119,6 +120,14 @@ function startSocket() {
 			token,
 			role: 'player'
 		}));
+
+
+		if (pingpongInterval)
+			clearInterval(pingpongInterval);
+		pingpongInterval = setInterval(function () {
+			if (socket.readyState == WebSocket.OPEN)
+				socket.send("ping");
+		}, 5000);
 	}
 }
 
