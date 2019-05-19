@@ -297,9 +297,8 @@ function startSocket() {
 
 		if (data.type == 'connect') {
 			if (data.status != 'ok') {
-				if (data.errCode == 2) {
+				if (data.errCode == 2)
 					alert('You have already connected to the game. Probably, you left a tab with the game.');
-				}
 			} else {
 				socket.send(JSON.stringify({
 					type: 'saveALL',
