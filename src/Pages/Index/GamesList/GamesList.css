@@ -107,6 +107,7 @@
 .game-server div.go.disabled .label a {
 	color: #FFFFFF;
 	border-color: #FFFFFF;
+	vertical-align: initial;
 }
 .game-server b.loading {
 	position: relative;

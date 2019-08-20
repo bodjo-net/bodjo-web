@@ -1,4 +1,4 @@
-const domain = 'bodjo';
+const domain = 'bodjo.net';
 let Storage = {
 	get: function (name) {
 		let o = null;
