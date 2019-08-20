@@ -1,0 +1,38 @@
+#register-page-wrapper {
+	display: block;
+	text-align: center;
+}
+#register-page {
+	text-align: left;
+	display: inline-block;
+	margin: 15px auto;
+	padding: 20px;
+	background: #FFFFFF;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	border-radius: 2px;
+}
+#register-page h3 {
+	margin: 0;
+	display: inline-block;
+}
+#register-page > div.inputs {
+	margin: 15px 0 20px 0;
+}
+#register-page .loader {
+	margin: 0 20px;
+}
+#register-page > div.inputs > div {
+	margin-bottom: 2px;
+}
+#register-page > div.inputs > div > * {
+	display: inline-block;
+	vertical-align: top;
+}
+#register-page > div.inputs input {
+	margin-right: 5px;
+}
+#register-page > div.inputs > div > span {
+	font-size: 75%;
+	vertical-align: bottom;
+	max-width: 250px;
+}

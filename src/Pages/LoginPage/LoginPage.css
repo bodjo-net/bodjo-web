@@ -1,0 +1,23 @@
+#login-page-wrapper {
+	display: block;
+	text-align: center;
+}
+#login-page {
+	text-align: left;
+	display: inline-block;
+	margin: 15px auto;
+	padding: 20px;
+	background: #FFFFFF;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	border-radius: 2px;
+}
+#login-page h3 {
+	margin: 0;
+	display: inline-block;
+}
+#login-page > div.inputs {
+	margin: 15px 0 20px 0;
+}
+#login-page .loader {
+	margin: 0 20px;
+}

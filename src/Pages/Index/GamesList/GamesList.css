@@ -1,0 +1,135 @@
+.no-games {
+	text-align: center;
+}
+.no-games * {
+	opacity: 0.5;
+	margin: 0;
+}
+.games h3 {
+	margin: 0;
+}
+
+.game {
+	display: block;
+	position: relative;
+	overflow: hidden;
+	border-radius: 3px;
+	color: #FFFFFF;
+	z-index: 1;
+	padding: 5px;
+	background-size: cover;
+	background-position: center;
+	margin-bottom: 10px;
+}
+.game h3 {
+	font-size: 150%;
+	margin-bottom: 5px;
+}
+.game > .grey {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 1 !important;
+}
+.game > * {
+	position: relative;
+	z-index: 2;
+}
+.games .game-server {
+	padding: 5px 0;
+}
+.game-server .info .status {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	display: inline-block;
+	margin: 3px;
+	margin-right: 5px;
+	box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.game-server .info .status.enabled {
+	background-color: #00FF00;
+}
+.game-server .info .status.disabled {
+	background-color: #FF0000;
+}
+.game-server > * {
+	vertical-align: middle;
+}
+.game-server span.players-count {
+	margin-right: 5px;
+}
+.game-server div.info {
+	display: inline-block;
+}
+.game-server div.go {
+	position: relative;
+	display: inline-block;
+	float: right;
+}
+.game-server div.go > * {
+	vertical-align: middle;
+}
+.game-server .ping {
+	color: rgba(255,255,255,0.75);
+	margin: 0 10px;
+}
+.game-server div.go div.button {
+	padding: 4px 7px;
+}
+.game-server div.go.disabled > * {
+	opacity: 0.25;
+}
+.game-server div.go .label {
+	opacity: 0;
+	display: none;
+}
+.game-server div.go.disabled .label {
+	opacity: 1;
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	line-height: 30px;
+	vertical-align: middle;
+	white-space: nowrap;
+	overflow: hidden;
+	opacity: 1 !important;
+	color: #FFFFFF;
+	font-style: italic;
+}
+.game-server div.go.disabled .label a {
+	color: #FFFFFF;
+	border-color: #FFFFFF;
+}
+.game-server b.loading {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+	white-space: nowrap;
+	vertical-align: top;
+	width: 10px;
+	height: 20px;
+}
+.game-server b.loading span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	animation: gameserver-loading 0.5s infinite step-start;
+}
+@keyframes gameserver-loading {
+	0% {left: 0;}
+	24.5% {left: 0;}
+	25% {left: -10px;}
+	49.5% {left: -10px;}
+	50% {left: -20px;}
+	74.5% {left: -20px;}
+	75% {left: -30px;}
+	100% {left: -30px;}
+}

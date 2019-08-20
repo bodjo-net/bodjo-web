@@ -1,0 +1,8 @@
+#scoreboard {
+	text-align: center;
+	opacity: 0.5;
+	padding: 10px 0;
+}
+#scoreboard * {
+	margin: 0;
+}

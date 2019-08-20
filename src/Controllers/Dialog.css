@@ -1,0 +1,23 @@
+.dialog {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: #FFFFFF;
+}
+.dialog-content {
+	width: 80%;
+	max-width: 600px;
+	display: block;
+	margin: 30px auto;
+}
+.dialog-content h1 {
+	color: black;
+}
+.dialog-content h2 {
+	color: #B71C1C;
+}
+.dialog-content span {
+	opacity: 0.5;
+}

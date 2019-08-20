@@ -1,0 +1,19 @@
+a.link {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 100%;
+	color: #000000;
+	text-decoration: none;
+	border-bottom: 1px dotted #000000;
+}
+a.link:hover {
+	border-bottom: 1px dashed #000000;
+}
+a.link:active {
+	font-weight: bold;
+	border-bottom: 1px solid #000000;
+}
+a.link.active {
+	font-weight: bold;
+	border-bottom: 1px solid #000000;
+}

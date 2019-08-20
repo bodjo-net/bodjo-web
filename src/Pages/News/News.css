@@ -1,0 +1,8 @@
+#news {
+	text-align: center;
+	opacity: 0.5;
+	padding: 10px 0;
+}
+#news * {
+	margin: 0;
+}

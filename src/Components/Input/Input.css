@@ -1,0 +1,59 @@
+input[type=text],
+input[type=password] {
+	background: transparent;
+	font-family: inherit;
+	font-size: inherit;
+	display: block;
+	border: none;
+	padding: 5px 0;
+	margin: 10px 0 0 0;
+	margin-bottom: 1px;
+	outline: none;
+	border-bottom: 1px solid rgba(0,0,0,0.25);
+	transition: border-bottom-color 0.1s ease-in-out,
+				margin-bottom 0.1s linear,
+				border-width 0.1s linear,
+				color 0.1s ease-in-out;
+}
+input[type=text]:focus,
+input[type=password]:focus {
+	border-bottom-color: rgba(0,0,0,0.75);
+}
+input[type=text].error,
+input[type=password].error {
+	border-bottom-color: rgba(240,0,0,0.75) !important;
+	border-width: 2px;
+	margin-bottom: 0px;
+	color: #B71C1C;
+	animation: input-error 0.5s;
+}
+input[type=text].error::placeholder,
+input[type=password].error::placeholder {
+	color: #D32F2F;
+}
+@keyframes input-error {
+	0% {transform: translateX(0);}
+	10% {transform: translateX(1px);}
+	20% {transform: translateX(-2px);}
+	30% {transform: translateX(3px);}
+	40% {transform: translateX(-4px);}
+	50% {transform: translateX(5px);}
+	60% {transform: translateX(-4px);}
+	70% {transform: translateX(3px);}
+	80% {transform: translateX(-2px);}
+	90% {transform: translateX(1px);}
+	100% {transform: translateX(0);}
+}
+input[type=text]:-internal-autofill-selected,
+input[type=text]:-webkit-autofill,
+input[type=text]:-webkit-autofill:hover, 
+input[type=text]:-webkit-autofill:focus,
+input[type=password]:-internal-autofill-selected,
+input[type=password]:-webkit-autofill,
+input[type=password]:-webkit-autofill:hover, 
+input[type=password]:-webkit-autofill:focus {
+	-webkit-text-fill-color: #000000 !important;
+	-webkit-box-shadow: 0 0 0 30px white inset !important;
+    background-color: #ffffff !important;
+    border-bottom: 2px solid #BBDEFB;
+}
