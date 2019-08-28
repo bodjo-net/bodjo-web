@@ -26,6 +26,7 @@ let API = {
 			tryToParse = true;
 		let xhr = new XMLHttpRequest();
 		let isAPIRequest = false;
+		let censoredURL = url;
 		if (typeof data === 'object') {
 			if (API.SERVER_HOST == null) {
 				API.__query.push(['GET'].concat(Array.prototype.slice.apply(arguments)));
@@ -33,6 +34,7 @@ let API = {
 			}
 			isAPIRequest = true;
 			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
+			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key=='token'||key=='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
 		}
 		console.log('[API] GET ' + url);
 		xhr.open('GET', url, true);
@@ -50,7 +52,7 @@ let API = {
 				cb(true, data);
 			} else {
 				if (isAPIRequest) {
-					window.showDialog('GET API Request: bad response', 'Received bad HTTP GET response:\n\nGET ' + url + '\n'+xhr.getAllResponseHeaders(), 'ERR_BAD_GET_REQUEST')
+					window.showDialog('Bad API Response', 'Received bad HTTP response:\n\nGET ' + censoredURL + '\n'+xhr.getAllResponseHeaders()+'\n\n'+xhr.statusText, 'ERR_BAD_API_REQUEST')
 				}
 
 				console.error('Bad HTTP Response: ' + xhr.statusCode + " - " + xhr.statusText);
@@ -69,6 +71,7 @@ let API = {
 			tryToParse = true;
 		let xhr = new XMLHttpRequest();
 		let isAPIRequest = false;
+		let censoredURL = url;
 		if (typeof data === 'object') {
 			if (API.SERVER_HOST == null) {
 				API.__query.push(['POST'].concat(Array.prototype.slice.apply(arguments)));
@@ -77,6 +80,7 @@ let API = {
 			isAPIRequest = true;
 
 			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
+			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key=='token'||key=='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
 		}
 		console.log('[API] POST ' + url);
 		xhr.open('POST', url, true);
@@ -94,7 +98,7 @@ let API = {
 				cb(true, data);
 			} else {
 				if (isAPIRequest) {
-					window.showDialog('POST API Request: bad response', 'Received bad HTTP POST response:\n\nPOST ' + url + '\n'+xhr.getAllResponseHeaders(), 'ERR_BAD_POST_REQUEST')
+					window.showDialog('Bad API Response', 'Received bad HTTP response:\n\nGET ' + censoredURL + '\n'+xhr.getAllResponseHeaders()+'\n\n'+xhr.statusText, 'ERR_BAD_API_REQUEST')
 				}
 
 				console.error('Bad HTTP Response: ' + xhr.statusCode + " - " + xhr.statusText);

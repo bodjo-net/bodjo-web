@@ -40,6 +40,8 @@
 }
 .games .game-server {
 	padding: 5px 0;
+	display: inline-block;
+    width: 100%;
 }
 .game-server .info .status {
 	width: 5px;
@@ -81,7 +83,7 @@
 	padding: 4px 7px;
 }
 .game-server div.go.disabled > * {
-	opacity: 0.25;
+	opacity: 0.5;
 }
 .game-server div.go .label {
 	opacity: 0;

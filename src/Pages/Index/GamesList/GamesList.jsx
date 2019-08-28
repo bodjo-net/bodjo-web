@@ -121,12 +121,13 @@ class GameServer {
 	constructor(info, onUpdate) {
 		this.onUpdate = onUpdate;
 		this.host = info.host;
+		this.apihost = info.apihost;
 		this.name = info.name;
 		this.game = info.game;
 		this.status = false;
 		this.link = info.host;
 		if (this.link.indexOf('http:\/\/') < 0 &&
-			this.link.indexOf('https:\/\/'))
+			this.link.indexOf('https:\/\/') < 0)
 			this.link = 'http:\/\/' + this.link;
 		this.loading = true;
 
@@ -163,7 +164,7 @@ class GameServer {
 	}
 
 	loadInfo(callback) {
-		API.GET(this.link+'/status', (status, data) => {
+		API.GET(this.apihost+'/status', (status, data) => {
 			if (status) {
 				this.players.value = data.playersCount;
 				this.players.max = data.maxPlayersCount;
@@ -184,7 +185,7 @@ class GameServer {
 
 	ping (callback) {
 		let start = Date.now();
-		API.GET(this.link+'/ping', (status, timestamp) => {
+		API.GET(this.apihost+'/ping', (status, timestamp) => {
 			let end = Date.now(), middle = parseInt(timestamp);
 			if (status && !isNaN(middle)) {
 				this.pings.push(end-start);

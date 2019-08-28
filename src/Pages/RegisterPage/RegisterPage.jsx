@@ -14,6 +14,7 @@ class RegisterPage extends React.Component {
 
 		this.usernameInput = React.createRef();
 		this.passwordInput = React.createRef();
+		this.repeatPasswordInput = React.createRef();
 		this.emailInput = React.createRef();
 
 		let update = () => this.forceUpdate();
@@ -24,13 +25,17 @@ class RegisterPage extends React.Component {
 	onSubmit() {
 		let username = this.usernameInput.current.value();
 		let password = this.passwordInput.current.value();
+		let passwordRepeat = this.repeatPasswordInput.current.value()
 		let email = this.emailInput.current.value();
 
-		if (username.length < 3 || username.length > 15)
+		if (username.length < 3 || username.length > 15 || /^bot.+$/g.test(username))
 			this.usernameInput.current.error();
 		else if (password.length < 6 || password.length > 100)
 			this.passwordInput.current.error();
-		else if (email.length > 0 && !account.EMAIL_REGEX.test(email))
+		else if (password !== passwordRepeat) {
+			this.passwordInput.current.error();
+			this.repeatPasswordInput.current.error();
+		} else if (email.length > 0 && !account.EMAIL_REGEX.test(email))
 			this.emailInput.current.error();
 		else {
 			account.register(username, password, email, (status, errParameter) => {
@@ -59,11 +64,13 @@ class RegisterPage extends React.Component {
 							<span>
 								<b>уникальный</b><br />
 								<b>длина</b>: 3-15 (включительно)<br />
-								<b>символы</b>: латинские буквы (нижнего и верхнего регистра), цифры, символ "_"
+								<b>символы</b>: латинские буквы (нижнего и верхнего регистра), цифры, символ "_"<br />
+								<b>запрещенный шаблон</b>: bot в начале ника
 							</span>
 						</div>
 						<div>
 							<Input ref={this.passwordInput} placeholder="пароль" type="password" className='password' />
+							<Input ref={this.repeatPasswordInput} placeholder="пароль (повтор)" type="password" className='password' />
 							<span>
 								<b>длина</b>: 6-100 (включительно)
 							</span>
@@ -71,8 +78,8 @@ class RegisterPage extends React.Component {
 						<div>
 							<Input ref={this.emailInput} placeholder="эл. адрес (необязательно)" type="text" className='email' />
 							<span>
-								<b>необязательно</b>
-								<b>шаблон</b>: эл. адрес<br />
+								<b>необязательно</b><br />
+								<b>шаблон</b>: эл. адрес
 							</span>
 						</div>
 					</div>
