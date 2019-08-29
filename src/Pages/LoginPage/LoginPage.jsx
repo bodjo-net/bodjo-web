@@ -50,8 +50,8 @@ class LoginPage extends React.Component {
 				<div id='login-page'> 
 					<h3>Войти</h3>
 					<div className='inputs'>
-						<Input ref={this.usernameInput} placeholder="username" type="text" className='username' />
-						<Input ref={this.passwordInput} placeholder="password" type="password" className='password' />
+						<Input ref={this.usernameInput} placeholder="юзернейм" type="text" className='username' />
+						<Input ref={this.passwordInput} placeholder="пароль" type="password" className='password' />
 					</div>
 					{account.loading ? 
 						<Loading inline /> :

@@ -69,8 +69,10 @@ class RegisterPage extends React.Component {
 							</span>
 						</div>
 						<div>
-							<Input ref={this.passwordInput} placeholder="пароль" type="password" className='password' />
-							<Input ref={this.repeatPasswordInput} placeholder="пароль (повтор)" type="password" className='password' />
+							<div>
+								<Input ref={this.passwordInput} placeholder="пароль" type="password" className='password' />
+								<Input ref={this.repeatPasswordInput} placeholder="пароль (повтор)" type="password" className='password-repeat' />
+							</div>
 							<span>
 								<b>длина</b>: 6-100 (включительно)
 							</span>

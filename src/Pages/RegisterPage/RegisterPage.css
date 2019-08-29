@@ -22,7 +22,7 @@
 	margin: 0 20px;
 }
 #register-page > div.inputs > div {
-	margin-bottom: 2px;
+	margin: 10px 0;
 }
 #register-page > div.inputs > div > * {
 	display: inline-block;
@@ -30,9 +30,10 @@
 }
 #register-page > div.inputs input {
 	margin-right: 5px;
+	margin-top: 0;
 }
 #register-page > div.inputs > div > span {
 	font-size: 75%;
-	vertical-align: bottom;
+	vertical-align: top;
 	max-width: 250px;
 }

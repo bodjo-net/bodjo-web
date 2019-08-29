@@ -1,13 +1,14 @@
 const domain = 'bodjo.net';
 let Storage = {
+	data: {},
 	get: function (name) {
 		let o = null;
 		if (getCookie(name)) {
 			o = getCookie(name);
-			if (typeof localStorage.getItem(name) === 'undefined')
-				localStorage.setItem(name, o);
-		} else if (localStorage.getItem(name)) {
-			o = localStorage.getItem(name);
+			if (typeof localStorageGet(name) === 'undefined')
+				localStorageSet(name, o);
+		} else if (localStorageGet(name)) {
+			o = localStorageGet(name);
 			setCookie(name, o);
 			setCookie(name, o, {domain});
 		}
@@ -15,21 +16,40 @@ let Storage = {
 			try {
 				o = JSON.parse(o)
 			} catch (e) {}
+		} else if (typeof Storage.data[name] !== 'undefined') {
+			return Storage.data[name];
 		}
 		return o;
 	},
 	set: function (name, value) {
 		let v = JSON.stringify(value);
-		localStorage.setItem(name, v);
+		localStorageSet(name, v);
 		setCookie(name, v);
 		setCookie(name, v, {domain});
+		Storage.data[name] = value;
 	},
 	remove: function (name) {
 		deleteCookie(name);
 		localStorage.removeItem(name);
+		delete Storage.data[name];
 	}
 };
 window.Storage = Storage;
+
+function localStorageGet(name) {
+	try {
+		return localStorage.getItem(name);
+	} catch (e) {
+		return null;
+	}
+}
+function localStorageSet(name, value) {
+	try {
+		return localStorage.setItem(name, value);
+	} catch (e) {
+		return null;
+	}
+}
 
 // cookies (thanks to https://learn.javascript.ru/cookie)
 function getCookie(name) {
