@@ -69,6 +69,7 @@ class GamesList extends React.Component {
 			for (let gameName in games) {
 				let serversContent = [];
 				for (let server of games[gameName]) {
+					// console.log(server.spectateLink)
 					serversContent.push(
 						<div className="game-server" key={server.name}>
 							<div className="info">
@@ -81,9 +82,12 @@ class GamesList extends React.Component {
 								<span className="name">{server.name}</span>
 							</div>
 							<div className={"go"+(!account.verified?" disabled":"")}>
-								<span className="ping">{(server.ping||0).toFixed(2)}ms</span>
-								<Button disabled={!server.status || !account.verified} invert to={server.link}>Играть</Button>
-								<span className="label">нужно <Link to="/login/">войти</Link></span>
+								<div>
+									<span className="ping">{(server.ping||0).toFixed(1)}ms</span>
+									<Button disabled={!server.status || !account.verified} to={server.link}>Играть</Button>
+									<span className="label">нужно <Link to="/login/">войти</Link></span>
+								</div>
+								<Button invert disabled={!server.status} to={server.spectateLink}>Наблюдать</Button>
 							</div>
 						</div>
 					);
@@ -129,6 +133,7 @@ class GameServer {
 		if (this.link.indexOf('http:\/\/') < 0 &&
 			this.link.indexOf('https:\/\/') < 0)
 			this.link = 'http:\/\/' + this.link;
+		this.spectateLink = this.link + '/spectate';
 		this.loading = true;
 
 		this.pings = [];
@@ -149,7 +154,8 @@ class GameServer {
 			link: this.link,
 			ping: this.pingValue,
 			status: this.status,
-			players: this.players
+			players: this.players,
+			spectateLink: this.spectateLink
 		};
 	}
 

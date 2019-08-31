@@ -20,6 +20,7 @@
 	background-size: cover;
 	background-position: center;
 	margin-bottom: 10px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 .game h3 {
 	font-size: 150%;
@@ -72,25 +73,32 @@
 	display: inline-block;
 	float: right;
 }
-.game-server div.go > * {
+.game-server div.go * {
 	vertical-align: middle;
 }
 .game-server .ping {
 	color: rgba(255,255,255,0.75);
 	margin: 0 10px;
+	font-size: 75%;
 }
-.game-server div.go div.button {
+.game-server div.button {
 	padding: 4px 7px;
 }
-.game-server div.go.disabled > * {
-	opacity: 0.5;
+.game-server div.go > div {
+	position: relative;
+	display: inline-block;
+	margin-right: 5px;
 }
-.game-server div.go .label {
+.game-server div.go.disabled > div * {
+	opacity: 0.25;
+}
+.game-server div.go > div .label {
 	opacity: 0;
 	display: none;
 }
-.game-server div.go.disabled .label {
-	opacity: 1;
+.game-server div.go.disabled > div .label {
+	vertical-align: middle;
+	opacity: 1 !important;
 	display: block;
 	position: absolute;
 	top: 0;
@@ -102,12 +110,12 @@
 	vertical-align: middle;
 	white-space: nowrap;
 	overflow: hidden;
-	opacity: 1 !important;
 	color: #FFFFFF;
 	font-style: italic;
 }
 .game-server div.go.disabled .label a {
-	color: #FFFFFF;
+	opacity: 1 !important;
+	color: #FFFFFF !important;
 	border-color: #FFFFFF;
 	vertical-align: initial;
 }
