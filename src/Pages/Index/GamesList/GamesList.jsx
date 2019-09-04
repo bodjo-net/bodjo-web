@@ -53,6 +53,13 @@ class GamesList extends React.Component {
 		this.state = {};
 	}
 
+	go(name, link) {
+		API.GET('/games/join', {name: name, token: account.token}, (status, data) => {
+			if (status && data.status === 'ok')
+				window.location.href = link + '/#' + data.username + ':' + data.gameSessionToken;
+		});
+	}
+
 	render() {
 		let content = [];
 
@@ -84,7 +91,7 @@ class GamesList extends React.Component {
 							<div className={"go"+(!account.verified?" disabled":"")}>
 								<div>
 									<span className="ping">{(server.ping||0).toFixed(1)}ms</span>
-									<Button disabled={!server.status || !account.verified} to={server.link}>Играть</Button>
+									<Button disabled={!server.status || !account.verified} onClick={this.go.bind(this, server.name, server.link)}>Играть</Button>
 									<span className="label">нужно <Link to="/login/">войти</Link></span>
 								</div>
 								<Button invert disabled={!server.status} to={server.spectateLink}>Наблюдать</Button>
@@ -93,7 +100,7 @@ class GamesList extends React.Component {
 					);
 				}
 
-				content.push(
+				content.unshift(
 					<div className="game" key={gameName} style={{backgroundImage: 'url(assets/games/'+gameName+'/bg.png)'}}>
 						<h3>{gameName}</h3>
 						{serversContent}
@@ -188,7 +195,6 @@ class GameServer {
 				callback();
 		});
 	}
-
 	ping (callback) {
 		let start = Date.now();
 		API.GET(this.apihost+'/ping', (status, timestamp) => {
