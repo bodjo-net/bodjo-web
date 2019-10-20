@@ -1,6 +1,7 @@
 import React from 'react';
 import GamesList from './GamesList/GamesList';
 import NewsList from './NewsList/NewsList';
+import T from '../../Controllers/LanguageController';
 import './Index.css';
 
 class IndexPage extends React.Component {
@@ -10,7 +11,7 @@ class IndexPage extends React.Component {
 
 
 	render() {
-		setTimeout(window.loadBodjoPage.bind(null, 'main.about.ru', '#index .whatisit', {
+		setTimeout(window.loadBodjoPage.bind(null, 'main.about.' + T.lang, '#index .whatisit', {
 			signature: false,
 			cache: true
 		}), 1);

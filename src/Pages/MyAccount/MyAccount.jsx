@@ -1,5 +1,6 @@
 import React from 'react';
 import account from './../../Controllers/AccountController';
+import T from './../../Controllers/LanguageController';
 import UserInfo from './../../Controllers/UserInfoController';
 import Textarea from './../../Components/Textarea/Textarea';
 import Input from './../../Components/Input/Input';
@@ -8,15 +9,6 @@ import Loading from './../../Components/Loading/Loading';
 import {Redirect} from "react-router-dom";
 
 import './MyAccount.css';
-
-const TIME_RANGES = [
-	{string: ['год', 'года', 'года', 'года', 'лет'], value: 1000 * 60 * 60 * 24 * 365},
-	{string: ['месяц', 'месяца', 'месяца', "месяца", "месяцев"], value: 1000 * 60 * 60 * 24 * 30},
-	{string: ['день', 'дня', "дня", "дня", "дней"], value: 1000 * 60 * 60 * 24},
-	{string: ['час', 'часа', "часа", "часа", "часов"], value: 1000 * 60 * 60},
-	{string: ['минуту', 'минуты', "минуты", "минуты", "минут"], value: 1000 * 60},
-	{string: ['секунду', 'секунды', "секунды", "секунды", "секунд"], value: 1000}
-];
 
 function range(x, min, max) {
 	return Math.min(Math.max(x, min), max);
@@ -99,19 +91,21 @@ class MyAccountPage extends React.Component {
 		});
 	}
 	update() {
-		this.submitButton.current.setDisabled(
+		this.submitButton.current.setState({disabled: (
 			this.aboutInput.current.value() == this.state.info.about &&
 			this.emailInput.current.value() == this.state.info.email
-		);
+		)});
 	}
 	getTimeString() {
 		let timeSpent = Date.now() - this.state.info['registration-time'];
 		let timeString = '';
-		for (let d = timeSpent, i = 0; i < TIME_RANGES.length; ++i) {
-			let v = Math.floor(d / TIME_RANGES[i].value);
+		let timeRanges = T('myaccount_usertime_ranges');
+		let countLastNumber = T('myaccount_usertime_ranges_countlastnumber');
+		for (let d = timeSpent, i = 0; i < timeRanges.length; ++i) {
+			let v = Math.floor(d / timeRanges[i].value);
 			if (v < 1) continue;
-			timeString += v + ' ' + TIME_RANGES[i].string[range(digit(v), 1, TIME_RANGES[i].string.length)-1] + ' ';
-			d -= v * TIME_RANGES[i].value;
+			timeString += v + ' ' + timeRanges[i].string[range(countLastNumber ? digit(v) : v, 1, timeRanges[i].string.length)-1] + ' ';
+			d -= v * timeRanges[i].value;
 		}
 		return timeString;
 	}
@@ -133,14 +127,14 @@ class MyAccountPage extends React.Component {
 					</span>
 					<div id="user-info">
 						<h1>{this.state.info.username}</h1>
-						<p id="user-time">в bodjo уже {timeString}</p>
+						<p id="user-time">{T('myaccount_usertime')}{timeString}</p>
 						<br />
-						<Input ref={this.emailInput} onKeyUp={this.update.bind(this)} onChange={this.update.bind(this)} type='text' placeholder='Эл. адрес' value={this.state.info.email} />
-						<Textarea ref={this.aboutInput} onKeyUp={this.update.bind(this)} onChange={this.update.bind(this)} type='text' placeholder='О себе' value={this.state.info.about} max={250} />
+						<Input ref={this.emailInput} onKeyUp={this.update.bind(this)} onChange={this.update.bind(this)} type='text' placeholder={T('myaccount_email_placeholder')} value={this.state.info.email} />
+						<Textarea ref={this.aboutInput} onKeyUp={this.update.bind(this)} onChange={this.update.bind(this)} type='text' placeholder={T('myaccount_bio_placeholder')} value={this.state.info.about} max={250} />
 						<br />
-						<Button disabled ref={this.submitButton} enter onClick={this.handleEdit.bind(this)}>Изменить</Button>
+						<Button disabled ref={this.submitButton} enter onClick={this.handleEdit.bind(this)}>{T('myaccount_change')}</Button>
 						<span className='space' />
-						<Button invert onClick={this.handleLogout}>Выйти</Button>
+						<Button invert onClick={this.handleLogout}>{T('myaccount_logout')}</Button>
 					</div>
 				</div>
 			</div>

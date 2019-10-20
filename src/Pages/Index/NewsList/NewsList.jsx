@@ -14,7 +14,7 @@ class NewsList extends React.Component {
 
 		function obtain(component, isMounted, data) {
 			function more(page) {
-				return '<span class="closer"></span><a class="link more" href="https://pages.bodjo.net/#'+page.id+'">Подробнее...</a>';
+				return '<span class="closer"></span><a class="link more" href="https://pages.bodjo.net/'+page.id+'">'+window.T('news_moreinfo')+'</a>';
 			}
 			let news = data.pages;
 			for (let newsPiece of news)
@@ -32,7 +32,7 @@ class NewsList extends React.Component {
 		if (window.__newsListCache) {
 			obtain(this, false, window.__newsListCache)
 		} else {	
-			API.GET('/pages/search', {q: 'news.', preview: 1, order: false, count: pagesCount}, (status, data) => {
+			API.GET('/pages/search', {q: 'news.', lang: window.T.lang, preview: 1, order: false, count: pagesCount}, (status, data) => {
 				if (status && data.status === 'ok') {
 					obtain(this, true, data);
 					window.__newsListCache = data;
@@ -44,11 +44,11 @@ class NewsList extends React.Component {
 	render() {
 		return (
 			<div className="section news">
-				<h2><img src='/assets/news.png' />Новости</h2>
+				<h2><img src='/assets/news.png' />{ window.T('tab_news') }</h2>
 				{this.state.loading ? <Loading /> :
 					[
 						this.state.news.map(page => <div key={page.id} className='news-piece bodjo-page' dangerouslySetInnerHTML={{__html:page.html}}></div>),
-						(this.state.newsTotal > pagesCount ? <Link to="/news/">Больше новостей...</Link> : '')
+						(this.state.newsTotal > pagesCount ? <Link to="/news/">{ window.T('news_morenews') }</Link> : '')
 					]
 				}
 			</div>

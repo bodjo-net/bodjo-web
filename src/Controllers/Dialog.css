@@ -18,6 +18,6 @@
 .dialog-content h2 {
 	color: #B71C1C;
 }
-.dialog-content span {
-	opacity: 0.5;
+.dialog-content pre {
+	opacity: 0.75;
 }

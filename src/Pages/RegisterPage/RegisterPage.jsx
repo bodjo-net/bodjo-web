@@ -5,6 +5,7 @@ import Button from './../../Components/Button/Button';
 import { Redirect } from "react-router-dom";
 
 import account from './../../Controllers/AccountController';
+import T from './../../Controllers/LanguageController';
 
 import './RegisterPage.css';
 
@@ -57,37 +58,27 @@ class RegisterPage extends React.Component {
 		return (
 			<div id='register-page-wrapper'>
 				<div id='register-page'> 
-					<h3>Зарегистрироваться</h3>
+					<h3>{ T('register_header') }</h3>
 					<div className='inputs'>
 						<div>
-							<Input ref={this.usernameInput} placeholder="юзернейм" type="text" className='username' />
-							<span>
-								<b>уникальный</b><br />
-								<b>длина</b>: 3-15 (включительно)<br />
-								<b>символы</b>: латинские буквы (нижнего и верхнего регистра), цифры, символ "_"<br />
-								<b>запрещенный шаблон</b>: bot в начале ника
-							</span>
+							<Input ref={this.usernameInput} placeholder={ T('register_username_placeholder') } type="text" className='username' />
+							<span dangerouslySetInnerHTML={ {__html: T('register_username_rules') } } ></span>
 						</div>
 						<div>
 							<div>
-								<Input ref={this.passwordInput} placeholder="пароль" type="password" className='password' />
-								<Input ref={this.repeatPasswordInput} placeholder="пароль (повтор)" type="password" className='password-repeat' />
+								<Input ref={this.passwordInput} placeholder={ T('register_password_placeholder') } type="password" className='password' />
+								<Input ref={this.repeatPasswordInput} placeholder={ T('register_password_repeat_placeholder') } type="password" className='password-repeat' />
 							</div>
-							<span>
-								<b>длина</b>: 6-100 (включительно)
-							</span>
+							<span dangerouslySetInnerHTML={ {__html: T('register_password_rules') } } ></span>
 						</div>
 						<div>
-							<Input ref={this.emailInput} placeholder="эл. адрес (необязательно)" type="text" className='email' />
-							<span>
-								<b>необязательно</b><br />
-								<b>шаблон</b>: эл. адрес
-							</span>
+							<Input ref={this.emailInput} placeholder={ T('register_email_placeholder') } type="text" className='email' />
+							<span dangerouslySetInnerHTML={ {__html: T('register_email_rules') } } ></span>
 						</div>
 					</div>
 					{account.loading ? 
 						<Loading inline /> :
-						<Button enter invert onClick={this.onSubmit.bind(this)}>Submit</Button>
+						<Button enter invert onClick={this.onSubmit.bind(this)}>{ T('register_submit') }</Button>
 					}
 				</div>
 			</div>

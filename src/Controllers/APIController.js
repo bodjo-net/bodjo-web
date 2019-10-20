@@ -13,7 +13,7 @@ let API = {
 					API.__query.forEach(args => API[args[0]].apply(API, args.slice(1)));
 				}
 			} else {
-				window.showDialog('Obtaining main server hostname error.', 'https://bodjo.net\nGET /SERVER_HOST/', 'ERR_SERVER_HOST_MISSING')
+				window.showDialog('Tried to obtain server\'s hostname.', 'https://bodjo.net\nGET /SERVER_HOST/')
 			}
 		});
 	},
@@ -33,8 +33,8 @@ let API = {
 				return;
 			}
 			isAPIRequest = true;
-			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
 			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key=='token'||key=='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
+			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
 		}
 		console.log('[API] GET ' + url);
 		xhr.open('GET', url, true);
@@ -52,7 +52,7 @@ let API = {
 				cb(true, data);
 			} else {
 				if (isAPIRequest) {
-					window.showDialog('Bad API Response', 'Received bad HTTP response:\n\nGET ' + censoredURL + '\n'+xhr.getAllResponseHeaders()+'\n\n'+xhr.statusText, 'ERR_BAD_API_REQUEST')
+					window.showDialog('Server, where are you?', 'Tried to make request:\n\nGET ' + censoredURL + '\n'+xhr.getAllResponseHeaders()+'\n\n'+xhr.statusText)
 				}
 
 				console.error('Bad HTTP Response: ' + xhr.statusCode + " - " + xhr.statusText);
@@ -79,8 +79,8 @@ let API = {
 			}
 			isAPIRequest = true;
 
-			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
 			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key=='token'||key=='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
+			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
 		}
 		console.log('[API] POST ' + url);
 		xhr.open('POST', url, true);
@@ -98,7 +98,7 @@ let API = {
 				cb(true, data);
 			} else {
 				if (isAPIRequest) {
-					window.showDialog('Bad API Response', 'Received bad HTTP response:\n\nGET ' + censoredURL + '\n'+xhr.getAllResponseHeaders()+'\n\n'+xhr.statusText, 'ERR_BAD_API_REQUEST')
+					window.showDialog('Server, where are you?', 'Tried to make request:\n\nGET ' + censoredURL + '\n'+xhr.getAllResponseHeaders()+'\n\n'+xhr.statusText)
 				}
 
 				console.error('Bad HTTP Response: ' + xhr.statusCode + " - " + xhr.statusText);

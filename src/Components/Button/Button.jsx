@@ -7,11 +7,13 @@ class Button extends React.Component {
 		super(props);
 
 		this.enterHandler = this.onEnter.bind(this);
-		this.disabled = props.disabled || false;
+		this.state = {
+			disabled: props.disabled
+		};
 	}
 	
 	_down(element, event) {
-		if (this.disabled)
+		if (this.state.disabled)
 			return;
 		let rect = element.getBoundingClientRect();
 		let x = (event.clientX - rect.left), y = (event.clientY - rect.top);
@@ -82,25 +84,15 @@ class Button extends React.Component {
 
 		document.body.removeEventListener('mouseup', this.up);
 	}
-
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.disabled !== this.state.disabled)
+			this.setState({ disabled: nextProps.disabled });
+	}
 	onEnter(event) {
 		if (event.keyCode == 13) {
 			if (typeof this.props.onClick === 'function')
 				this.props.onClick();
 		}
-	}	
-
-	setDisabled(value) {
-		this.disabled = value;
-		let element = ReactDOM.findDOMNode(this);
-		let classes = element.className.split(' ');
-		if (value && classes.indexOf('disabled') < 0)
-			classes.push('disabled');
-		else if (!value) {
-			while (classes.indexOf('disabled') >= 0)
-				classes.splice(classes.indexOf('disabled'), 1);
-		}
-		element.className = classes.join(' ');
 	}
 
 	redirect(to) {
@@ -111,10 +103,8 @@ class Button extends React.Component {
 		let className = this.props.className || '';
 		if (this.props.invert)
 			className += ' invert';
-		if (this.disabled || this.props.disabled) {
-			this.disabled = this.props.disabled;
+		if (this.state.disabled)
 			className += ' disabled';
-		}
 		return ( 
 			<div className={className+' button'} 
 				 id={this.props.id} 

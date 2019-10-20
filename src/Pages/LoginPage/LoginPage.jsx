@@ -5,6 +5,7 @@ import Button from './../../Components/Button/Button';
 import { Redirect } from "react-router-dom";
 
 import account from './../../Controllers/AccountController';
+import T from './../../Controllers/LanguageController';
 
 import './LoginPage.css';
 
@@ -48,14 +49,14 @@ class LoginPage extends React.Component {
 		return (
 			<div id='login-page-wrapper'>
 				<div id='login-page'> 
-					<h3>Войти</h3>
+					<h3>{ T('login_header') }</h3>
 					<div className='inputs'>
-						<Input ref={this.usernameInput} placeholder="юзернейм" type="text" className='username' />
-						<Input ref={this.passwordInput} placeholder="пароль" type="password" className='password' />
+						<Input ref={this.usernameInput} placeholder={ T('login_username_placeholder') } type="text" className='username' />
+						<Input ref={this.passwordInput} placeholder={ T('login_password_placeholder') } type="password" className='password' />
 					</div>
 					{account.loading ? 
 						<Loading inline /> :
-						<Button enter invert onClick={this.onSubmit.bind(this)}>Submit</Button>
+						<Button enter invert onClick={this.onSubmit.bind(this)}>{ T('login_submit') }</Button>
 					}
 				</div>
 			</div>

@@ -12,7 +12,7 @@
 .game {
 	display: block;
 	position: relative;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	border-radius: 3px;
 	color: #FFFFFF;
 	z-index: 1;
@@ -34,6 +34,7 @@
 	bottom: 0;
 	background-color: rgba(0,0,0,0.5);
 	z-index: 1 !important;
+	border-radius: 3px;
 }
 .game > * {
 	position: relative;
@@ -89,6 +90,10 @@
 	display: inline-block;
 	margin-right: 5px;
 }
+.game-server div.go > div:first-child {
+	min-width: 110px;
+	text-align: right;
+}
 .game-server div.go.disabled > div * {
 	opacity: 0.25;
 }
@@ -143,4 +148,49 @@
 	74.5% {left: -20px;}
 	75% {left: -30px;}
 	100% {left: -30px;}
+}
+.game.event {
+	margin-top: 8px;
+	margin-bottom: 20px;
+}
+.eventanim {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+}
+.eventanim span {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	border-radius: 3px;
+	border: 1.5px solid #00DC7D;
+	animation: eventanim 3s infinite ease-in-out;
+}
+.eventanim span:nth-child(1) {
+	animation-delay: 0s;
+}
+.eventanim span:nth-child(2) {
+	animation-delay: 1s;
+}
+.eventanim span:nth-child(3) {
+	animation-delay: 2s;
+}
+@keyframes eventanim {
+	0% {
+		border-radius: 3px;
+		opacity: 0;
+		margin: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		margin: -10px;
+		border-radius: 6px;
+		opacity: 0;
+	}
 }
