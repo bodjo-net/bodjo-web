@@ -1,8 +1,5 @@
 import './Dialog.css';
-
-window.randomFace = function () {
-	return ;
-}
+import randomFace from '../Components/Face/Face';
 
 let zindex = 100500;
 window.showDialog = function (header, content, code) {
@@ -14,7 +11,7 @@ window.showDialog = function (header, content, code) {
 	dialogContent.className = "dialog-content";
 
 	let h1 = document.createElement('h1');
-	h1.innerHTML = window.randomFace('html');
+	h1.innerHTML = randomFace('html');
 	dialogContent.appendChild(h1);
 
 	let h2 = document.createElement('h2');
