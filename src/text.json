@@ -35,6 +35,7 @@
 		"myaccount_bio_placeholder": "Bio",
 		"myaccount_change": "UPDATE",
 		"myaccount_logout": "LOGOUT",
+		"myaccount_attach_header": "Attach another OAuth accounts:",
 		"register_header": "Registration",
 		"register_username_placeholder": "username",
 		"register_username_rules": "<b>unique</b><br><b>length</b>: [3, 15]<br><b>symbols</b>: A-Z, a-z, 0-9, -, _<br><b>forbidden template</b>: \"bot\" at the start",
@@ -47,8 +48,8 @@
 		"register_submit": "SUBMIT",
 		"news_missing": "will be available soon ;/",
 		"scoreboard_missing": "oops, it is not ready",
-		"404_header": "Whooops...",
-		"404_text": "",
+		"404_header": "Whooops... 404!",
+		"404_text": "It seems you are not in a right place. Did I send you this link? Or did you decide to find something? Anyway, it is empty here. I'm sorry. By the way, do you want to organize hackathon, don't you? It would be great! Email me.",
 		"404_button": "Back to the main page"
 	},
 	"ru": {
@@ -87,6 +88,7 @@
 		"myaccount_bio_placeholder": "О себе",
 		"myaccount_change": "ИЗМЕНИТЬ",
 		"myaccount_logout": "ВЫЙТИ",
+		"myaccount_attach_header": "Привязать другие аккаунты:",
 		"register_header": "Регистрация",
 		"register_username_placeholder": "юзернейм",
 		"register_username_rules": "<b>уникальный</b><br><b>длина</b>: [3, 15]<br><b>символы</b>: A-Z, a-z, 0-9, -, _<br><b>запрещённый шаблон</b>: \"bot\" в начале",

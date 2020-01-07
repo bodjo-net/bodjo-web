@@ -149,7 +149,7 @@ class MyAccountPage extends React.Component {
 						<Button invert onClick={this.handleLogout}>{T('myaccount_logout')}</Button>
 						<br />
 						<br />
-						<h3>Привязать другие аккаунты:</h3>
+						<h3>{T('myaccount_attach_header')}</h3>
 						{
 							account.socials.map(social => [
 								//<h3 key={social+'-header'} style={{margin: '10px 0 5px 0'}}>{capitalize(social)}</h3>,
