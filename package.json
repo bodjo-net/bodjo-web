@@ -21,9 +21,7 @@
   },
   "homepage": "https://bodjo.net",
   "browserslist": {
-    "production": [
-    ],
-    "development": [
-    ]
+    "production": [],
+    "development": []
   }
 }

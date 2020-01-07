@@ -30,10 +30,20 @@ class AccountController {
 			listener.apply(listener, args);
 	}
 
-	login(username, password, callback) {
+	putVerifiedToken(token) {
+		let username = token.username;
+		this.verified = true;
+		this.token = token.value;
+		this.username = username;
+		storage.set('bodjo-token', this.token);
+		storage.set('bodjo-username', this.username);
+		this.emit('checked', this.verified);
+	}
+
+	loginByPassword(username, password, callback) {
 		this.loading = true;
 		this.emit('checking');
-		API.GET('/account/login', {username, password}, (status, data) => {
+		API.GET('/account/_login', {username, password}, (status, data) => {
 			this.loading = false;
 			this.verified = (status && data.status === 'ok');
 			if (this.verified) {
@@ -48,14 +58,12 @@ class AccountController {
 		});
 	}
 
-	register(username, password, email, callback) {
+	register(hash, username, email, about, callback) {
 		this.loading = true;
 		this.emit('checking');
-		let data = {username, password};
-		if (typeof email !== 'undefined' &&
-			email.length > 0)
-			data.email = email;
-		API.GET('/account/register', data, (status, data) => {
+		API.GET('/account/register', {
+			hash, username, email, about
+		}, (status, data) => {
 			this.loading = false;
 			this.verified = (status && data.status === 'ok');
 			if (this.verified) {

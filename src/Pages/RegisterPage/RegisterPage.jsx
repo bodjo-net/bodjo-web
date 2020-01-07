@@ -1,6 +1,7 @@
 import React from 'react';
 import Loading from './../../Components/Loading/Loading';
 import Input from './../../Components/Input/Input';
+import Textarea from './../../Components/Textarea/Textarea';
 import Button from './../../Components/Button/Button';
 import { Redirect } from "react-router-dom";
 
@@ -9,13 +10,32 @@ import T from './../../Controllers/LanguageController';
 
 import './RegisterPage.css';
 
+function queryObject(str) {
+	if (typeof str === 'undefined') {
+		let href = window.location.href;
+		str = (href.indexOf('?') >= 0 ? href.substring(href.indexOf('?')+1) : '');
+	}
+
+	let o = {};
+	str.split('&').map(param => {
+		if (param.indexOf('=') < 0)
+			o[decodeURIComponent(param)] = true;
+		else
+			o[decodeURIComponent(param.substring(0, param.indexOf('=')))] = decodeURIComponent(param.substring(param.indexOf('=')+1));
+	});
+	return o;
+}
+
 class RegisterPage extends React.Component {
 	constructor(props){ 
 		super(props);
 
+		this.inited = false;
+		this.query = queryObject();
+		this.hash = this.query.hash;
+
 		this.usernameInput = React.createRef();
-		this.passwordInput = React.createRef();
-		this.repeatPasswordInput = React.createRef();
+		this.aboutInput = React.createRef();
 		this.emailInput = React.createRef();
 
 		let update = () => this.forceUpdate();
@@ -25,33 +45,29 @@ class RegisterPage extends React.Component {
 
 	onSubmit() {
 		let username = this.usernameInput.current.value();
-		let password = this.passwordInput.current.value();
-		let passwordRepeat = this.repeatPasswordInput.current.value()
+		let about = this.aboutInput.current.value();
 		let email = this.emailInput.current.value();
 
 		if (username.length < 3 || username.length > 15 || /^bot.+$/g.test(username))
 			this.usernameInput.current.error();
-		else if (password.length < 6 || password.length > 100)
-			this.passwordInput.current.error();
-		else if (password !== passwordRepeat) {
-			this.passwordInput.current.error();
-			this.repeatPasswordInput.current.error();
-		} else if (email.length > 0 && !account.EMAIL_REGEX.test(email))
+		else if (email.length > 0 && !account.EMAIL_REGEX.test(email))
 			this.emailInput.current.error();
 		else {
-			account.register(username, password, email, (status, errParameter) => {
+			account.register(this.hash, username, email, about, (status, errParameter) => {
 				if (errParameter === 'username')
 					this.usernameInput.current.error();
-				if (errParameter === 'password')
-					this.passwordInput.current.error();
 				if (errParameter === 'email')
 					this.emailInput.current.error();
+				if (errParameter === 'hash') {
+					this.hash = null;
+					this.forceUpdate();
+				}
 			});
 		}
 	}
 
 	render () {
-		if (account.verified) {
+		if (account.verified || typeof this.hash !== 'string') {
 			return <Redirect to="/" />
 		}
 
@@ -61,19 +77,36 @@ class RegisterPage extends React.Component {
 					<h3>{ T('register_header') }</h3>
 					<div className='inputs'>
 						<div>
-							<Input ref={this.usernameInput} placeholder={ T('register_username_placeholder') } type="text" className='username' />
-							<span dangerouslySetInnerHTML={ {__html: T('register_username_rules') } } ></span>
+							<Input 
+								ref={this.usernameInput} 
+								placeholder={ T('register_username_placeholder') } 
+								type="text" 
+								className='username'
+								value={!this.inited ? this.query.username : ''}
+							/>
+							<span
+								dangerouslySetInnerHTML={ {__html: T('register_username_rules') } } 
+							></span>
 						</div>
 						<div>
-							<div>
-								<Input ref={this.passwordInput} placeholder={ T('register_password_placeholder') } type="password" className='password' />
-								<Input ref={this.repeatPasswordInput} placeholder={ T('register_password_repeat_placeholder') } type="password" className='password-repeat' />
-							</div>
-							<span dangerouslySetInnerHTML={ {__html: T('register_password_rules') } } ></span>
+							<Input
+								ref={this.emailInput}
+								placeholder={ T('register_email_placeholder') }
+								type="text"
+								className='email'
+								value={!this.inited ? this.query.email : ''}
+							/>
+							<span
+								dangerouslySetInnerHTML={ {__html: T('register_email_rules') } }
+							></span>
 						</div>
 						<div>
-							<Input ref={this.emailInput} placeholder={ T('register_email_placeholder') } type="text" className='email' />
-							<span dangerouslySetInnerHTML={ {__html: T('register_email_rules') } } ></span>
+							<Textarea
+								style={{width: '100%'}}
+								ref={this.aboutInput}
+								placeholder={ T('register_about_placeholder') }
+								className='about'
+							/>
 						</div>
 					</div>
 					{account.loading ? 

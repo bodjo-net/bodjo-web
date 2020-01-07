@@ -39,7 +39,8 @@ class Textarea extends React.Component {
 	}
 	render() {
 		return (
-			<div className='textarea'>
+			<div className='textarea'
+				 style={this.props.style}>
 			 	<textarea
 					type={this.props.type}
 					placeholder={this.props.placeholder}
@@ -49,6 +50,7 @@ class Textarea extends React.Component {
 					onChange={this.props.onChange}
 					onKeyUp={this.onKeyUp.bind(this)}
 					defaultValue={this.props.value}
+					style={this.props.style}
 				></textarea>
 				<span>{(this.props.value||'').length + (this.props.max ? ' ('+this.props.max+')' : '')}</span>
 			</div>

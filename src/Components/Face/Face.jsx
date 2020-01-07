@@ -21,10 +21,10 @@ export default (window.randomFace = function (type) {
 		type = 'react';
 	let text = window.faces[Math.round(Math.random()*(window.faces.length-1))];
 
-	if (type == 'react') {
+	if (type === 'react') {
 		let spans = [];
 		for (let i = 0; i < text.length; ++i) {
-			spans.push(<span style={{animationDelay: (i / 3) % 1 + 's'}}>{text[i]}</span>)
+			spans.push(<span key={i+''} style={{animationDelay: (i / 3) % 1 + 's'}}>{text[i]}</span>)
 		}
 		return <div className="face">{spans}</div>;
 	} else {

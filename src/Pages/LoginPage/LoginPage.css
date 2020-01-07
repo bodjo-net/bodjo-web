@@ -10,6 +10,7 @@
 	background: #FFFFFF;
 	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 	border-radius: 2px;
+	position: relative;
 }
 #login-page h3 {
 	margin: 0;
@@ -20,4 +21,21 @@
 }
 #login-page .loader {
 	margin: 0 20px;
+}
+#login-page .separator {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 1px;
+	background: #E0E0E0;
+}
+#login-page p {
+	max-width: 300px;
+}
+#login-page div.socialbuttons {
+	text-align: center;
+	width: 100%;
+}
+#login-page div.socialbuttons > .socialbutton {
+	display: inline-block;
 }

@@ -1,0 +1,16 @@
+.socialbutton {
+	padding-left: 40px;
+	min-width: 200px;
+	text-align: left;
+}
+.socialbutton img {
+	top: 9px;
+	left: 10px;
+	width: 20px;
+	position: absolute;
+}
+.socialbutton p {
+	text-transform: none;
+	margin: 0;
+	display: inline-block;
+}

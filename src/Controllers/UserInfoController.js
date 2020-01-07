@@ -11,18 +11,17 @@ let UserInfo = window.UserInfo = {
 			return;
 		}
 
-		let i = UserInfo.__query.length;
 		UserInfo.__query.push(username);
 		UserInfo.__callbacks.push(callback);
 		let lastQueryAppend = UserInfo.__lastQueryAppend = Date.now();
 		setTimeout(function () {
-			if (lastQueryAppend == UserInfo.__lastQueryAppend &&
+			if (lastQueryAppend === UserInfo.__lastQueryAppend &&
 				UserInfo.__query.length > 0) {
 
 				API.GET('/account/info', {usernames: UserInfo.__query}, (status, data) => {
 					for (let _username in data.result) {
 						UserInfo.cache[_username] = data.result[_username];
-						if (username == _username)
+						if (username === _username)
 							callback(UserInfo.cache[_username]);
 					}
 

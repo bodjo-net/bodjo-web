@@ -19,6 +19,12 @@ html, body {
 body {
 	overflow-y: scroll;
 }
+br {
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
 
 #root {
 	position: relative;

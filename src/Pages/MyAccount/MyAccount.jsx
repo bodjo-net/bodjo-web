@@ -6,6 +6,7 @@ import Textarea from './../../Components/Textarea/Textarea';
 import Input from './../../Components/Input/Input';
 import Button from './../../Components/Button/Button';
 import Loading from './../../Components/Loading/Loading';
+import SocialButton from './../../Components/SocialButton/SocialButton';
 import {Redirect} from "react-router-dom";
 
 import './MyAccount.css';
@@ -21,6 +22,17 @@ function digit(x) {
 		return b;
 	return x;
 }
+function capitalize(string) {
+	return string[0].toUpperCase() + string.substring(1);
+}
+
+function arrayPutBetween(arr, el) {
+	for (let i = arr.length-1; i > 0; i -= 1)
+		arr.splice(i, 0, el);
+	return arr;
+}
+
+
 
 class MyAccountPage extends React.Component {
 	constructor(props) {
@@ -135,6 +147,15 @@ class MyAccountPage extends React.Component {
 						<Button disabled ref={this.submitButton} enter onClick={this.handleEdit.bind(this)}>{T('myaccount_change')}</Button>
 						<span className='space' />
 						<Button invert onClick={this.handleLogout}>{T('myaccount_logout')}</Button>
+						<br />
+						<br />
+						<h3>Привязать другие аккаунты:</h3>
+						{
+							account.socials.map(social => [
+								//<h3 key={social+'-header'} style={{margin: '10px 0 5px 0'}}>{capitalize(social)}</h3>,
+								<SocialButton key={social+'-button'} disabled={this.state.info[social]} purpose="attach" social={social} />
+							])
+						}
 					</div>
 				</div>
 			</div>

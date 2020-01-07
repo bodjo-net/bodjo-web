@@ -6,7 +6,7 @@ import './Header.css';
 export default function Header() {
 	return (
 		<div id="header">
-			<div id="title">bodjo<Link className='version' to={'https://pages.bodjo.net/main.devstatus.' + window.T.lang}>v2.0</Link></div>
+			<div id="title">bodjo<Link className='version' to={'https://pages.bodjo.net/main.devstatus.' + window.T.lang}>v2.5</Link></div>
 			<div id="auth">
 				<Auth></Auth>
 			</div>

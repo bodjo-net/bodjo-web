@@ -63,7 +63,6 @@ class Button extends React.Component {
 		}
 	}
 
-
 	componentDidMount() {
 		let element = ReactDOM.findDOMNode(this);
 		element.style.position = 'relative';
@@ -89,13 +88,15 @@ class Button extends React.Component {
 			this.setState({ disabled: nextProps.disabled });
 	}
 	onEnter(event) {
-		if (event.keyCode == 13) {
-			if (typeof this.props.onClick === 'function')
+		if (event.keyCode == 13 && !event.ctrlKey && !event.metaKey) {
+			if (typeof this.props.onClick === 'function' && !this.props.disabled)
 				this.props.onClick();
 		}
 	}
 
 	redirect(to) {
+		if (this.props.disabled)
+			return;
 		window.location.href = to;
 	}
 
@@ -108,7 +109,12 @@ class Button extends React.Component {
 		return ( 
 			<div className={className+' button'} 
 				 id={this.props.id} 
-				 onClick={this.props.to ? this.redirect.bind(this, this.props.to) : this.props.onClick}>
+				 onClick={(function () {
+				 	if (this.props.disabled)
+				 		return;
+				 	(this.props.to ? this.redirect.bind(this, this.props.to) : this.props.onClick)();	
+				 }).bind(this)}
+				 style={this.props.style}>
 				 {this.props.children}
 			</div> 
 		);

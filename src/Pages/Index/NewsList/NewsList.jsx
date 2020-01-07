@@ -48,7 +48,7 @@ class NewsList extends React.Component {
 				{this.state.loading ? <Loading /> :
 					[
 						this.state.news.map(page => <div key={page.id} className='news-piece bodjo-page' dangerouslySetInnerHTML={{__html:page.html}}></div>),
-						(this.state.newsTotal > pagesCount ? <Link to="/news/">{ window.T('news_morenews') }</Link> : '')
+						(this.state.newsTotal > pagesCount ? <Link key="morenews" to="/news/">{ window.T('news_morenews') }</Link> : '')
 					]
 				}
 			</div>

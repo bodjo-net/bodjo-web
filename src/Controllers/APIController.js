@@ -1,7 +1,5 @@
 import './DialogController.js';
 
-let SERVER_HOST = null;
-
 let API = {
 	SERVER_HOST: null,
 	__query: [],
@@ -28,12 +26,12 @@ let API = {
 		let isAPIRequest = false;
 		let censoredURL = url;
 		if (typeof data === 'object') {
-			if (API.SERVER_HOST == null) {
+			if (API.SERVER_HOST === null) {
 				API.__query.push(['GET'].concat(Array.prototype.slice.apply(arguments)));
 				return;
 			}
 			isAPIRequest = true;
-			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key=='token'||key=='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
+			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key==='token'||key==='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
 			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
 		}
 		console.log('[API] GET ' + url);
@@ -42,7 +40,7 @@ let API = {
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState !== 4) return;
 
-			if (xhr.status == 200) {
+			if (xhr.status === 200) {
 				let data = xhr.responseText;
 				if (tryToParse) {
 					try {
@@ -73,13 +71,13 @@ let API = {
 		let isAPIRequest = false;
 		let censoredURL = url;
 		if (typeof data === 'object') {
-			if (API.SERVER_HOST == null) {
+			if (API.SERVER_HOST === null) {
 				API.__query.push(['POST'].concat(Array.prototype.slice.apply(arguments)));
 				return;
 			}
 			isAPIRequest = true;
 
-			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key=='token'||key=='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
+			censoredURL = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + (key==='token'||key==='password'?'<'+key+'>':encodeURIComponent(data[key]))).join('&');
 			url = API.SERVER_HOST + url + '?' + Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
 		}
 		console.log('[API] POST ' + url);
@@ -88,7 +86,7 @@ let API = {
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState !== 4) return;
 
-			if (xhr.status == 200) {
+			if (xhr.status === 200) {
 				let data = xhr.responseText;
 				if (tryToParse) {
 					try {

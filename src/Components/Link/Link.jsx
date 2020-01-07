@@ -14,7 +14,7 @@ class _Link extends React.Component {
 	}
 
 	componentWillUnmount() {
-		let index = links[this.props.to].findIndex(link => link == this);
+		let index = links[this.props.to].findIndex(link => link === this);
 		if (index >= 0)
 			links[this.props.to].splice(index, 1);
 	}
@@ -22,7 +22,7 @@ class _Link extends React.Component {
 	onClick(to) {
 		let current = window.location.pathname;
 		for (let dest in links) {
-			if (dest == current || dest == to) {
+			if (dest === current || dest === to) {
 				for (let link of links[dest])
 					link.forceUpdate();
 			}
@@ -31,17 +31,17 @@ class _Link extends React.Component {
 	}
 
 	render() {
-		if (this.props.to.indexOf('\/\/') == 0 ||
-			this.props.to.indexOf('http:\/\/') == 0 ||
-			this.props.to.indexOf('https:\/\/') == 0)
+		if (this.props.to.indexOf('//') === 0 ||
+			this.props.to.indexOf('http://') === 0 ||
+			this.props.to.indexOf('https://') === 0)
 			return <a href={this.props.to} className={(this.props.className||'')+' link'}>{this.props.children}</a>;
 
 		return <Link 
 					to={this.props.to} 
 					onClick={this.onClick.bind(this, this.props.to)}
 					className={'link '+(this.props.className||'')+
-							   ((window.location.pathname == this.props.to ||
-								 window.location.pathname == this.__to) ? ' active' : '')}>
+							   ((window.location.pathname === this.props.to ||
+								 window.location.pathname === this.__to) ? ' active' : '')}>
 					{this.props.children}
 				</Link>;
 	}

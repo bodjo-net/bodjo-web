@@ -5,6 +5,7 @@
 		"menu_scoreboard": "scoreboard",
 		"menu_login": "login",
 		"menu_register": "register",
+		"menu_enter": "login",
 		"tab_games": "Games",
 		"tab_news": "News",
 		"news_moreinfo": "More info...",
@@ -14,6 +15,9 @@
 		"game_shouldlogin1": "must",
 		"game_shouldlogin2": "login",
 		"login_header": "Login",
+		"login_social_button": "Login with",
+		"login_description": "After 2.5 update you shouldn't remember your password, you can simply login with OAuth accounts.",
+		"login_description_old": "Old accounts, that have been registered before 2.5 update, should be logged in with password.",
 		"login_username_placeholder": "username",
 		"login_password_placeholder": "password",
 		"login_submit": "SUBMIT",
@@ -34,6 +38,7 @@
 		"register_header": "Registration",
 		"register_username_placeholder": "username",
 		"register_username_rules": "<b>unique</b><br><b>length</b>: [3, 15]<br><b>symbols</b>: A-Z, a-z, 0-9, -, _<br><b>forbidden template</b>: \"bot\" at the start",
+		"register_about_placeholder": "bio",
 		"register_password_placeholder": "password",
 		"register_password_repeat_placeholder": "password (again)",
 		"register_password_rules": "<b>length</b>: [6, 100]",
@@ -41,7 +46,10 @@
 		"register_email_rules": "<b>optional</b><br><b>template</b>: e-mail",
 		"register_submit": "SUBMIT",
 		"news_missing": "will be available soon ;/",
-		"scoreboard_missing": "oops, it is not ready"
+		"scoreboard_missing": "oops, it is not ready",
+		"404_header": "Whooops...",
+		"404_text": "",
+		"404_button": "Back to the main page"
 	},
 	"ru": {
 		"menu_main": "главная",
@@ -49,6 +57,7 @@
 		"menu_scoreboard": "таблица",
 		"menu_login": "войти",
 		"menu_register": "регистрация",
+		"menu_enter": "войти",
 		"tab_games": "Игры",
 		"tab_news": "Новости",
 		"news_moreinfo": "Подробнее...",
@@ -58,6 +67,9 @@
 		"game_shouldlogin1": "нужно",
 		"game_shouldlogin2": "войти",
 		"login_header": "Вход",
+		"login_social_button": "Войти через",
+		"login_description": "Теперь вам не нужно запоминать пароль для регистрации, достаточно войти под одним из указанных аккаунтов:",
+		"login_description_old": "Старые аккаунты, которые были зарегистрированы до 2.5 обновления, всё еще доступны для входа через пароль.",
 		"login_username_placeholder": "юзернейм",
 		"login_password_placeholder": "пароль",
 		"login_submit": "Войти",
@@ -78,6 +90,7 @@
 		"register_header": "Регистрация",
 		"register_username_placeholder": "юзернейм",
 		"register_username_rules": "<b>уникальный</b><br><b>длина</b>: [3, 15]<br><b>символы</b>: A-Z, a-z, 0-9, -, _<br><b>запрещённый шаблон</b>: \"bot\" в начале",
+		"register_about_placeholder": "био",
 		"register_password_placeholder": "пароль",
 		"register_password_repeat_placeholder": "пароль (повтор)",
 		"register_password_rules": "<b>длина</b>: [6, 100]",
@@ -85,6 +98,9 @@
 		"register_email_rules": "<b>необязательно</b><br><b>шаблон</b>: эл. адрес",
 		"register_submit": "ЗАРЕГИСТРИРОВАТЬСЯ",
 		"news_missing": "еще не готово ;/",
-		"scoreboard_missing": "упс, нужно сделать..."
+		"scoreboard_missing": "упс, нужно сделать...",
+		"404_header": "Упс... 404!",
+		"404_text": "Кажется, вы не туда попали. Это я вам скинул ссылку сюда? Или вы сами решили что-то найти? В любом случае, тут ничего нет. Мне очень жаль. А вы, случаем, не хотите организовать хакатон? Было бы круто, напишите мне.",
+		"404_button": "Обратно на главную страницу"
 	}
 }

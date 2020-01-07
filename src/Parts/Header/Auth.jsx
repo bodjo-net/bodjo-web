@@ -23,7 +23,7 @@ class Auth extends React.Component {
 
 		return (
 			<div>
-				<Link to="/login/">{ window.T('menu_login') }</Link> <span>/</span> <Link to="/register/">{ window.T('menu_register') }</Link>
+				<Link to="/login/">{ window.T('menu_enter') }</Link>
 			</div>
 		);
 	}
