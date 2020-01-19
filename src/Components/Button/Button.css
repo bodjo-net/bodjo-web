@@ -13,7 +13,7 @@
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	transition: opacity 0.2s ease-in-out;
-	font-family: 'Soruce Code Pro', 'Roboto Mono', 'Consolas', monospace;
+	font-family: 'Source Code Pro', 'Roboto Mono', 'Consolas', monospace;
 }
 .button.disabled {
 	opacity: 0.5;
